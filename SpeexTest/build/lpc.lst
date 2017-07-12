@@ -1,0 +1,738 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"lpc.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._spx_lpc,"ax",%progbits
+  20              		.align	2
+  21              		.global	_spx_lpc
+  22              		.thumb
+  23              		.thumb_func
+  25              	_spx_lpc:
+  26              	.LFB0:
+  27              		.file 1 "STM32F10x_Speex_Lib/libspeex/lpc.c"
+   1:STM32F10x_Speex_Lib/libspeex/lpc.c **** /*
+   2:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Copyright 1992, 1993, 1994 by Jutta Degener and Carsten Bormann,
+   3:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Technische Universitaet Berlin
+   4:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+   5:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Any use of this software is permitted provided that this notice is not
+   6:STM32F10x_Speex_Lib/libspeex/lpc.c ****   removed and that neither the authors nor the Technische Universitaet Berlin
+   7:STM32F10x_Speex_Lib/libspeex/lpc.c ****   are deemed to have made any representations as to the suitability of this
+   8:STM32F10x_Speex_Lib/libspeex/lpc.c ****   software for any purpose nor are held responsible for any defects of
+   9:STM32F10x_Speex_Lib/libspeex/lpc.c ****   this software.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
+  10:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  11:STM32F10x_Speex_Lib/libspeex/lpc.c ****   As a matter of courtesy, the authors request to be informed about uses
+  12:STM32F10x_Speex_Lib/libspeex/lpc.c ****   this software has found, about bugs in this software, and about any
+  13:STM32F10x_Speex_Lib/libspeex/lpc.c ****   improvements that may be of general interest.
+  14:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  15:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Berlin, 28.11.1994
+  16:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Jutta Degener
+  17:STM32F10x_Speex_Lib/libspeex/lpc.c ****   Carsten Bormann
+  18:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  19:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  20:STM32F10x_Speex_Lib/libspeex/lpc.c ****    Code modified by Jean-Marc Valin
+  21:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  22:STM32F10x_Speex_Lib/libspeex/lpc.c ****    Speex License:
+  23:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  24:STM32F10x_Speex_Lib/libspeex/lpc.c ****    Redistribution and use in source and binary forms, with or without
+  25:STM32F10x_Speex_Lib/libspeex/lpc.c ****    modification, are permitted provided that the following conditions
+  26:STM32F10x_Speex_Lib/libspeex/lpc.c ****    are met:
+  27:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+  28:STM32F10x_Speex_Lib/libspeex/lpc.c ****    - Redistributions of source code must retain the above copyright
+  29:STM32F10x_Speex_Lib/libspeex/lpc.c ****    notice, this list of conditions and the following disclaimer.
+  30:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+  31:STM32F10x_Speex_Lib/libspeex/lpc.c ****    - Redistributions in binary form must reproduce the above copyright
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 2
+
+
+  32:STM32F10x_Speex_Lib/libspeex/lpc.c ****    notice, this list of conditions and the following disclaimer in the
+  33:STM32F10x_Speex_Lib/libspeex/lpc.c ****    documentation and/or other materials provided with the distribution.
+  34:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+  35:STM32F10x_Speex_Lib/libspeex/lpc.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  36:STM32F10x_Speex_Lib/libspeex/lpc.c ****    contributors may be used to endorse or promote products derived from
+  37:STM32F10x_Speex_Lib/libspeex/lpc.c ****    this software without specific prior written permission.
+  38:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+  39:STM32F10x_Speex_Lib/libspeex/lpc.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  40:STM32F10x_Speex_Lib/libspeex/lpc.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  41:STM32F10x_Speex_Lib/libspeex/lpc.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  42:STM32F10x_Speex_Lib/libspeex/lpc.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  43:STM32F10x_Speex_Lib/libspeex/lpc.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  44:STM32F10x_Speex_Lib/libspeex/lpc.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  45:STM32F10x_Speex_Lib/libspeex/lpc.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  46:STM32F10x_Speex_Lib/libspeex/lpc.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  47:STM32F10x_Speex_Lib/libspeex/lpc.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  48:STM32F10x_Speex_Lib/libspeex/lpc.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  49:STM32F10x_Speex_Lib/libspeex/lpc.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  50:STM32F10x_Speex_Lib/libspeex/lpc.c **** */
+  51:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  52:STM32F10x_Speex_Lib/libspeex/lpc.c **** // #ifdef HAVE_CONFIG_H
+  53:STM32F10x_Speex_Lib/libspeex/lpc.c **** #include "config.h"
+  54:STM32F10x_Speex_Lib/libspeex/lpc.c **** // #endif
+  55:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  56:STM32F10x_Speex_Lib/libspeex/lpc.c **** #include "lpc.h"
+  57:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  58:STM32F10x_Speex_Lib/libspeex/lpc.c **** #ifdef BFIN_ASM
+  59:STM32F10x_Speex_Lib/libspeex/lpc.c **** #include "lpc_bfin.h"
+  60:STM32F10x_Speex_Lib/libspeex/lpc.c **** #endif
+  61:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  62:STM32F10x_Speex_Lib/libspeex/lpc.c **** /* LPC analysis
+  63:STM32F10x_Speex_Lib/libspeex/lpc.c ****  *
+  64:STM32F10x_Speex_Lib/libspeex/lpc.c ****  * The next two functions calculate linear prediction coefficients
+  65:STM32F10x_Speex_Lib/libspeex/lpc.c ****  * and/or the related reflection coefficients from the first P_MAX+1
+  66:STM32F10x_Speex_Lib/libspeex/lpc.c ****  * values of the autocorrelation function.
+  67:STM32F10x_Speex_Lib/libspeex/lpc.c ****  */
+  68:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  69:STM32F10x_Speex_Lib/libspeex/lpc.c **** /* Invented by N. Levinson in 1947, modified by J. Durbin in 1959.
+  70:STM32F10x_Speex_Lib/libspeex/lpc.c ****  */
+  71:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  72:STM32F10x_Speex_Lib/libspeex/lpc.c **** /* returns minimum mean square error    */
+  73:STM32F10x_Speex_Lib/libspeex/lpc.c **** spx_word32_t _spx_lpc(
+  74:STM32F10x_Speex_Lib/libspeex/lpc.c **** spx_coef_t       *lpc, /* out: [0...p-1] LPC coefficients      */
+  75:STM32F10x_Speex_Lib/libspeex/lpc.c **** const spx_word16_t *ac,  /* in:  [0...p] autocorrelation values  */
+  76:STM32F10x_Speex_Lib/libspeex/lpc.c **** int          p
+  77:STM32F10x_Speex_Lib/libspeex/lpc.c **** )
+  78:STM32F10x_Speex_Lib/libspeex/lpc.c **** {
+  28              		.loc 1 78 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 40
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 90B4     		push	{r4, r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 7, -4
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 3
+
+
+  38 0002 8AB0     		sub	sp, sp, #40
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 48
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 F860     		str	r0, [r7, #12]
+  45 0008 B960     		str	r1, [r7, #8]
+  46 000a 7A60     		str	r2, [r7, #4]
+  79:STM32F10x_Speex_Lib/libspeex/lpc.c ****    int i, j;  
+  80:STM32F10x_Speex_Lib/libspeex/lpc.c ****    spx_word16_t r;
+  81:STM32F10x_Speex_Lib/libspeex/lpc.c ****    spx_word16_t error = ac[0];
+  47              		.loc 1 81 0
+  48 000c BB68     		ldr	r3, [r7, #8]
+  49 000e 1B88     		ldrh	r3, [r3]	@ movhi
+  50 0010 FB83     		strh	r3, [r7, #30]	@ movhi
+  82:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  83:STM32F10x_Speex_Lib/libspeex/lpc.c ****    if (ac[0] == 0)
+  51              		.loc 1 83 0
+  52 0012 BB68     		ldr	r3, [r7, #8]
+  53 0014 B3F90030 		ldrsh	r3, [r3]
+  54 0018 002B     		cmp	r3, #0
+  55 001a 11D1     		bne	.L2
+  84:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+  85:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (i = 0; i < p; i++)
+  56              		.loc 1 85 0
+  57 001c 0023     		movs	r3, #0
+  58 001e 7B62     		str	r3, [r7, #36]
+  59 0020 08E0     		b	.L3
+  60              	.L4:
+  86:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[i] = 0;
+  61              		.loc 1 86 0 discriminator 3
+  62 0022 7B6A     		ldr	r3, [r7, #36]
+  63 0024 5B00     		lsls	r3, r3, #1
+  64 0026 FA68     		ldr	r2, [r7, #12]
+  65 0028 1344     		add	r3, r3, r2
+  66 002a 0022     		movs	r2, #0
+  67 002c 1A80     		strh	r2, [r3]	@ movhi
+  85:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[i] = 0;
+  68              		.loc 1 85 0 discriminator 3
+  69 002e 7B6A     		ldr	r3, [r7, #36]
+  70 0030 0133     		adds	r3, r3, #1
+  71 0032 7B62     		str	r3, [r7, #36]
+  72              	.L3:
+  85:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[i] = 0;
+  73              		.loc 1 85 0 is_stmt 0 discriminator 1
+  74 0034 7A6A     		ldr	r2, [r7, #36]
+  75 0036 7B68     		ldr	r3, [r7, #4]
+  76 0038 9A42     		cmp	r2, r3
+  77 003a F2DB     		blt	.L4
+  87:STM32F10x_Speex_Lib/libspeex/lpc.c ****       return 0;
+  78              		.loc 1 87 0 is_stmt 1
+  79 003c 0023     		movs	r3, #0
+  80 003e CCE0     		b	.L5
+  81              	.L2:
+  88:STM32F10x_Speex_Lib/libspeex/lpc.c ****    }
+  89:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 4
+
+
+  90:STM32F10x_Speex_Lib/libspeex/lpc.c ****    for (i = 0; i < p; i++) {
+  82              		.loc 1 90 0
+  83 0040 0023     		movs	r3, #0
+  84 0042 7B62     		str	r3, [r7, #36]
+  85 0044 C2E0     		b	.L6
+  86              	.L12:
+  87              	.LBB2:
+  91:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+  92:STM32F10x_Speex_Lib/libspeex/lpc.c ****       /* Sum up this iteration's reflection coefficient */
+  93:STM32F10x_Speex_Lib/libspeex/lpc.c ****       spx_word32_t rr = NEG32(SHL32(EXTEND32(ac[i + 1]),13));
+  88              		.loc 1 93 0
+  89 0046 7B6A     		ldr	r3, [r7, #36]
+  90 0048 0133     		adds	r3, r3, #1
+  91 004a 5B00     		lsls	r3, r3, #1
+  92 004c BA68     		ldr	r2, [r7, #8]
+  93 004e 1344     		add	r3, r3, r2
+  94 0050 B3F90030 		ldrsh	r3, [r3]
+  95 0054 5B03     		lsls	r3, r3, #13
+  96 0056 5B42     		negs	r3, r3
+  97 0058 BB61     		str	r3, [r7, #24]
+  94:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j = 0; j < i; j++) 
+  98              		.loc 1 94 0
+  99 005a 0023     		movs	r3, #0
+ 100 005c 3B62     		str	r3, [r7, #32]
+ 101 005e 16E0     		b	.L7
+ 102              	.L8:
+  95:STM32F10x_Speex_Lib/libspeex/lpc.c ****          rr = SUB32(rr,MULT16_16(lpc[j],ac[i - j]));
+ 103              		.loc 1 95 0 discriminator 3
+ 104 0060 3B6A     		ldr	r3, [r7, #32]
+ 105 0062 5B00     		lsls	r3, r3, #1
+ 106 0064 FA68     		ldr	r2, [r7, #12]
+ 107 0066 1344     		add	r3, r3, r2
+ 108 0068 B3F90030 		ldrsh	r3, [r3]
+ 109 006c 1946     		mov	r1, r3
+ 110 006e 7A6A     		ldr	r2, [r7, #36]
+ 111 0070 3B6A     		ldr	r3, [r7, #32]
+ 112 0072 D31A     		subs	r3, r2, r3
+ 113 0074 5B00     		lsls	r3, r3, #1
+ 114 0076 BA68     		ldr	r2, [r7, #8]
+ 115 0078 1344     		add	r3, r3, r2
+ 116 007a B3F90030 		ldrsh	r3, [r3]
+ 117 007e 03FB01F3 		mul	r3, r3, r1
+ 118 0082 BA69     		ldr	r2, [r7, #24]
+ 119 0084 D31A     		subs	r3, r2, r3
+ 120 0086 BB61     		str	r3, [r7, #24]
+  94:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j = 0; j < i; j++) 
+ 121              		.loc 1 94 0 discriminator 3
+ 122 0088 3B6A     		ldr	r3, [r7, #32]
+ 123 008a 0133     		adds	r3, r3, #1
+ 124 008c 3B62     		str	r3, [r7, #32]
+ 125              	.L7:
+  94:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j = 0; j < i; j++) 
+ 126              		.loc 1 94 0 is_stmt 0 discriminator 1
+ 127 008e 3A6A     		ldr	r2, [r7, #32]
+ 128 0090 7B6A     		ldr	r3, [r7, #36]
+ 129 0092 9A42     		cmp	r2, r3
+ 130 0094 E4DB     		blt	.L8
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 5
+
+
+  96:STM32F10x_Speex_Lib/libspeex/lpc.c **** #ifdef FIXED_POINT
+  97:STM32F10x_Speex_Lib/libspeex/lpc.c ****       r = DIV32_16(rr+PSHR32(error,1),ADD16(error,8));
+ 131              		.loc 1 97 0 is_stmt 1
+ 132 0096 B7F91E30 		ldrsh	r3, [r7, #30]
+ 133 009a 0133     		adds	r3, r3, #1
+ 134 009c 5A10     		asrs	r2, r3, #1
+ 135 009e BB69     		ldr	r3, [r7, #24]
+ 136 00a0 1344     		add	r3, r3, r2
+ 137 00a2 FA8B     		ldrh	r2, [r7, #30]
+ 138 00a4 0832     		adds	r2, r2, #8
+ 139 00a6 92B2     		uxth	r2, r2
+ 140 00a8 12B2     		sxth	r2, r2
+ 141 00aa 93FBF2F3 		sdiv	r3, r3, r2
+ 142 00ae FB82     		strh	r3, [r7, #22]	@ movhi
+  98:STM32F10x_Speex_Lib/libspeex/lpc.c **** #else
+  99:STM32F10x_Speex_Lib/libspeex/lpc.c ****       r = rr/(error+.003*ac[0]);
+ 100:STM32F10x_Speex_Lib/libspeex/lpc.c **** #endif
+ 101:STM32F10x_Speex_Lib/libspeex/lpc.c ****       /*  Update LPC coefficients and total error */
+ 102:STM32F10x_Speex_Lib/libspeex/lpc.c ****       lpc[i] = r;
+ 143              		.loc 1 102 0
+ 144 00b0 7B6A     		ldr	r3, [r7, #36]
+ 145 00b2 5B00     		lsls	r3, r3, #1
+ 146 00b4 FA68     		ldr	r2, [r7, #12]
+ 147 00b6 1344     		add	r3, r3, r2
+ 148 00b8 FA8A     		ldrh	r2, [r7, #22]	@ movhi
+ 149 00ba 1A80     		strh	r2, [r3]	@ movhi
+ 103:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j = 0; j < i>>1; j++) 
+ 150              		.loc 1 103 0
+ 151 00bc 0023     		movs	r3, #0
+ 152 00be 3B62     		str	r3, [r7, #32]
+ 153 00c0 47E0     		b	.L9
+ 154              	.L10:
+ 155              	.LBB3:
+ 104:STM32F10x_Speex_Lib/libspeex/lpc.c ****       {
+ 105:STM32F10x_Speex_Lib/libspeex/lpc.c ****          spx_word16_t tmp  = lpc[j];
+ 156              		.loc 1 105 0 discriminator 3
+ 157 00c2 3B6A     		ldr	r3, [r7, #32]
+ 158 00c4 5B00     		lsls	r3, r3, #1
+ 159 00c6 FA68     		ldr	r2, [r7, #12]
+ 160 00c8 1344     		add	r3, r3, r2
+ 161 00ca 1B88     		ldrh	r3, [r3]	@ movhi
+ 162 00cc BB82     		strh	r3, [r7, #20]	@ movhi
+ 106:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[j]     = MAC16_16_P13(lpc[j],r,lpc[i-1-j]);
+ 163              		.loc 1 106 0 discriminator 3
+ 164 00ce 3B6A     		ldr	r3, [r7, #32]
+ 165 00d0 5B00     		lsls	r3, r3, #1
+ 166 00d2 FA68     		ldr	r2, [r7, #12]
+ 167 00d4 1344     		add	r3, r3, r2
+ 168 00d6 3A6A     		ldr	r2, [r7, #32]
+ 169 00d8 5200     		lsls	r2, r2, #1
+ 170 00da F968     		ldr	r1, [r7, #12]
+ 171 00dc 0A44     		add	r2, r2, r1
+ 172 00de B2F90020 		ldrsh	r2, [r2]
+ 173 00e2 91B2     		uxth	r1, r2
+ 174 00e4 B7F91620 		ldrsh	r2, [r7, #22]
+ 175 00e8 786A     		ldr	r0, [r7, #36]
+ 176 00ea 441E     		subs	r4, r0, #1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 6
+
+
+ 177 00ec 386A     		ldr	r0, [r7, #32]
+ 178 00ee 201A     		subs	r0, r4, r0
+ 179 00f0 4000     		lsls	r0, r0, #1
+ 180 00f2 FC68     		ldr	r4, [r7, #12]
+ 181 00f4 2044     		add	r0, r0, r4
+ 182 00f6 B0F90000 		ldrsh	r0, [r0]
+ 183 00fa 00FB02F2 		mul	r2, r0, r2
+ 184 00fe 02F58052 		add	r2, r2, #4096
+ 185 0102 5213     		asrs	r2, r2, #13
+ 186 0104 92B2     		uxth	r2, r2
+ 187 0106 0A44     		add	r2, r2, r1
+ 188 0108 92B2     		uxth	r2, r2
+ 189 010a 12B2     		sxth	r2, r2
+ 190 010c 1A80     		strh	r2, [r3]	@ movhi
+ 107:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[i-1-j] = MAC16_16_P13(lpc[i-1-j],r,tmp);
+ 191              		.loc 1 107 0 discriminator 3
+ 192 010e 7B6A     		ldr	r3, [r7, #36]
+ 193 0110 5A1E     		subs	r2, r3, #1
+ 194 0112 3B6A     		ldr	r3, [r7, #32]
+ 195 0114 D31A     		subs	r3, r2, r3
+ 196 0116 5B00     		lsls	r3, r3, #1
+ 197 0118 FA68     		ldr	r2, [r7, #12]
+ 198 011a 1344     		add	r3, r3, r2
+ 199 011c 7A6A     		ldr	r2, [r7, #36]
+ 200 011e 511E     		subs	r1, r2, #1
+ 201 0120 3A6A     		ldr	r2, [r7, #32]
+ 202 0122 8A1A     		subs	r2, r1, r2
+ 203 0124 5200     		lsls	r2, r2, #1
+ 204 0126 F968     		ldr	r1, [r7, #12]
+ 205 0128 0A44     		add	r2, r2, r1
+ 206 012a B2F90020 		ldrsh	r2, [r2]
+ 207 012e 91B2     		uxth	r1, r2
+ 208 0130 B7F91620 		ldrsh	r2, [r7, #22]
+ 209 0134 B7F91400 		ldrsh	r0, [r7, #20]
+ 210 0138 00FB02F2 		mul	r2, r0, r2
+ 211 013c 02F58052 		add	r2, r2, #4096
+ 212 0140 5213     		asrs	r2, r2, #13
+ 213 0142 92B2     		uxth	r2, r2
+ 214 0144 0A44     		add	r2, r2, r1
+ 215 0146 92B2     		uxth	r2, r2
+ 216 0148 12B2     		sxth	r2, r2
+ 217 014a 1A80     		strh	r2, [r3]	@ movhi
+ 218              	.LBE3:
+ 103:STM32F10x_Speex_Lib/libspeex/lpc.c ****       {
+ 219              		.loc 1 103 0 discriminator 3
+ 220 014c 3B6A     		ldr	r3, [r7, #32]
+ 221 014e 0133     		adds	r3, r3, #1
+ 222 0150 3B62     		str	r3, [r7, #32]
+ 223              	.L9:
+ 103:STM32F10x_Speex_Lib/libspeex/lpc.c ****       {
+ 224              		.loc 1 103 0 is_stmt 0 discriminator 1
+ 225 0152 7B6A     		ldr	r3, [r7, #36]
+ 226 0154 5A10     		asrs	r2, r3, #1
+ 227 0156 3B6A     		ldr	r3, [r7, #32]
+ 228 0158 9A42     		cmp	r2, r3
+ 229 015a B2DC     		bgt	.L10
+ 108:STM32F10x_Speex_Lib/libspeex/lpc.c ****       }
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 7
+
+
+ 109:STM32F10x_Speex_Lib/libspeex/lpc.c ****       if (i & 1) 
+ 230              		.loc 1 109 0 is_stmt 1
+ 231 015c 7B6A     		ldr	r3, [r7, #36]
+ 232 015e 03F00103 		and	r3, r3, #1
+ 233 0162 002B     		cmp	r3, #0
+ 234 0164 1DD0     		beq	.L11
+ 110:STM32F10x_Speex_Lib/libspeex/lpc.c ****          lpc[j] = MAC16_16_P13(lpc[j],lpc[j],r);
+ 235              		.loc 1 110 0
+ 236 0166 3B6A     		ldr	r3, [r7, #32]
+ 237 0168 5B00     		lsls	r3, r3, #1
+ 238 016a FA68     		ldr	r2, [r7, #12]
+ 239 016c 1344     		add	r3, r3, r2
+ 240 016e 3A6A     		ldr	r2, [r7, #32]
+ 241 0170 5200     		lsls	r2, r2, #1
+ 242 0172 F968     		ldr	r1, [r7, #12]
+ 243 0174 0A44     		add	r2, r2, r1
+ 244 0176 B2F90020 		ldrsh	r2, [r2]
+ 245 017a 91B2     		uxth	r1, r2
+ 246 017c 3A6A     		ldr	r2, [r7, #32]
+ 247 017e 5200     		lsls	r2, r2, #1
+ 248 0180 F868     		ldr	r0, [r7, #12]
+ 249 0182 0244     		add	r2, r2, r0
+ 250 0184 B2F90020 		ldrsh	r2, [r2]
+ 251 0188 1046     		mov	r0, r2
+ 252 018a B7F91620 		ldrsh	r2, [r7, #22]
+ 253 018e 02FB00F2 		mul	r2, r2, r0
+ 254 0192 02F58052 		add	r2, r2, #4096
+ 255 0196 5213     		asrs	r2, r2, #13
+ 256 0198 92B2     		uxth	r2, r2
+ 257 019a 0A44     		add	r2, r2, r1
+ 258 019c 92B2     		uxth	r2, r2
+ 259 019e 12B2     		sxth	r2, r2
+ 260 01a0 1A80     		strh	r2, [r3]	@ movhi
+ 261              	.L11:
+ 111:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 112:STM32F10x_Speex_Lib/libspeex/lpc.c ****       error = SUB16(error,MULT16_16_Q13(r,MULT16_16_Q13(error,r)));
+ 262              		.loc 1 112 0 discriminator 2
+ 263 01a2 FA8B     		ldrh	r2, [r7, #30]
+ 264 01a4 B7F91630 		ldrsh	r3, [r7, #22]
+ 265 01a8 B7F91E10 		ldrsh	r1, [r7, #30]
+ 266 01ac B7F91600 		ldrsh	r0, [r7, #22]
+ 267 01b0 00FB01F1 		mul	r1, r0, r1
+ 268 01b4 4913     		asrs	r1, r1, #13
+ 269 01b6 09B2     		sxth	r1, r1
+ 270 01b8 01FB03F3 		mul	r3, r1, r3
+ 271 01bc 5B13     		asrs	r3, r3, #13
+ 272 01be 9BB2     		uxth	r3, r3
+ 273 01c0 D31A     		subs	r3, r2, r3
+ 274 01c2 9BB2     		uxth	r3, r3
+ 275 01c4 FB83     		strh	r3, [r7, #30]	@ movhi
+ 276              	.LBE2:
+  90:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 277              		.loc 1 90 0 discriminator 2
+ 278 01c6 7B6A     		ldr	r3, [r7, #36]
+ 279 01c8 0133     		adds	r3, r3, #1
+ 280 01ca 7B62     		str	r3, [r7, #36]
+ 281              	.L6:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 8
+
+
+  90:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 282              		.loc 1 90 0 is_stmt 0 discriminator 1
+ 283 01cc 7A6A     		ldr	r2, [r7, #36]
+ 284 01ce 7B68     		ldr	r3, [r7, #4]
+ 285 01d0 9A42     		cmp	r2, r3
+ 286 01d2 FFF638AF 		blt	.L12
+ 113:STM32F10x_Speex_Lib/libspeex/lpc.c ****    }
+ 114:STM32F10x_Speex_Lib/libspeex/lpc.c ****    return error;
+ 287              		.loc 1 114 0 is_stmt 1
+ 288 01d6 B7F91E30 		ldrsh	r3, [r7, #30]
+ 289              	.L5:
+ 115:STM32F10x_Speex_Lib/libspeex/lpc.c **** }
+ 290              		.loc 1 115 0
+ 291 01da 1846     		mov	r0, r3
+ 292 01dc 2837     		adds	r7, r7, #40
+ 293              	.LCFI3:
+ 294              		.cfi_def_cfa_offset 8
+ 295 01de BD46     		mov	sp, r7
+ 296              	.LCFI4:
+ 297              		.cfi_def_cfa_register 13
+ 298              		@ sp needed
+ 299 01e0 90BC     		pop	{r4, r7}
+ 300              	.LCFI5:
+ 301              		.cfi_restore 7
+ 302              		.cfi_restore 4
+ 303              		.cfi_def_cfa_offset 0
+ 304 01e2 7047     		bx	lr
+ 305              		.cfi_endproc
+ 306              	.LFE0:
+ 308              		.section	.text._spx_autocorr,"ax",%progbits
+ 309              		.align	2
+ 310              		.global	_spx_autocorr
+ 311              		.thumb
+ 312              		.thumb_func
+ 314              	_spx_autocorr:
+ 315              	.LFB1:
+ 116:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 117:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 118:STM32F10x_Speex_Lib/libspeex/lpc.c **** #ifdef FIXED_POINT
+ 119:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 120:STM32F10x_Speex_Lib/libspeex/lpc.c **** /* Compute the autocorrelation
+ 121:STM32F10x_Speex_Lib/libspeex/lpc.c ****  *                      ,--,
+ 122:STM32F10x_Speex_Lib/libspeex/lpc.c ****  *              ac(i) = >  x(n) * x(n-i)  for all n
+ 123:STM32F10x_Speex_Lib/libspeex/lpc.c ****  *                      `--'
+ 124:STM32F10x_Speex_Lib/libspeex/lpc.c ****  * for lags between 0 and lag-1, and x == 0 outside 0...n-1
+ 125:STM32F10x_Speex_Lib/libspeex/lpc.c ****  */
+ 126:STM32F10x_Speex_Lib/libspeex/lpc.c **** 
+ 127:STM32F10x_Speex_Lib/libspeex/lpc.c **** #ifndef OVERRIDE_SPEEX_AUTOCORR
+ 128:STM32F10x_Speex_Lib/libspeex/lpc.c **** void _spx_autocorr(
+ 129:STM32F10x_Speex_Lib/libspeex/lpc.c **** const spx_word16_t *x,   /*  in: [0...n-1] samples x   */
+ 130:STM32F10x_Speex_Lib/libspeex/lpc.c **** spx_word16_t       *ac,  /* out: [0...lag-1] ac values */
+ 131:STM32F10x_Speex_Lib/libspeex/lpc.c **** int          lag, 
+ 132:STM32F10x_Speex_Lib/libspeex/lpc.c **** int          n
+ 133:STM32F10x_Speex_Lib/libspeex/lpc.c **** )
+ 134:STM32F10x_Speex_Lib/libspeex/lpc.c **** {
+ 316              		.loc 1 134 0
+ 317              		.cfi_startproc
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 9
+
+
+ 318              		@ args = 0, pretend = 0, frame = 40
+ 319              		@ frame_needed = 1, uses_anonymous_args = 0
+ 320              		@ link register save eliminated.
+ 321 0000 80B4     		push	{r7}
+ 322              	.LCFI6:
+ 323              		.cfi_def_cfa_offset 4
+ 324              		.cfi_offset 7, -4
+ 325 0002 8BB0     		sub	sp, sp, #44
+ 326              	.LCFI7:
+ 327              		.cfi_def_cfa_offset 48
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              	.LCFI8:
+ 330              		.cfi_def_cfa_register 7
+ 331 0006 F860     		str	r0, [r7, #12]
+ 332 0008 B960     		str	r1, [r7, #8]
+ 333 000a 7A60     		str	r2, [r7, #4]
+ 334 000c 3B60     		str	r3, [r7]
+ 135:STM32F10x_Speex_Lib/libspeex/lpc.c ****    spx_word32_t d;
+ 136:STM32F10x_Speex_Lib/libspeex/lpc.c ****    int i, j;
+ 137:STM32F10x_Speex_Lib/libspeex/lpc.c ****    spx_word32_t ac0=1;
+ 335              		.loc 1 137 0
+ 336 000e 0123     		movs	r3, #1
+ 337 0010 BB61     		str	r3, [r7, #24]
+ 138:STM32F10x_Speex_Lib/libspeex/lpc.c ****    int shift, ac_shift;
+ 139:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+ 140:STM32F10x_Speex_Lib/libspeex/lpc.c ****    for (j=0;j<n;j++)
+ 338              		.loc 1 140 0
+ 339 0012 0023     		movs	r3, #0
+ 340 0014 FB61     		str	r3, [r7, #28]
+ 341 0016 15E0     		b	.L14
+ 342              	.L15:
+ 141:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac0 = ADD32(ac0,SHR32(MULT16_16(x[j],x[j]),8));
+ 343              		.loc 1 141 0 discriminator 3
+ 344 0018 FB69     		ldr	r3, [r7, #28]
+ 345 001a 5B00     		lsls	r3, r3, #1
+ 346 001c FA68     		ldr	r2, [r7, #12]
+ 347 001e 1344     		add	r3, r3, r2
+ 348 0020 B3F90030 		ldrsh	r3, [r3]
+ 349 0024 1946     		mov	r1, r3
+ 350 0026 FB69     		ldr	r3, [r7, #28]
+ 351 0028 5B00     		lsls	r3, r3, #1
+ 352 002a FA68     		ldr	r2, [r7, #12]
+ 353 002c 1344     		add	r3, r3, r2
+ 354 002e B3F90030 		ldrsh	r3, [r3]
+ 355 0032 03FB01F3 		mul	r3, r3, r1
+ 356 0036 1B12     		asrs	r3, r3, #8
+ 357 0038 BA69     		ldr	r2, [r7, #24]
+ 358 003a 1344     		add	r3, r3, r2
+ 359 003c BB61     		str	r3, [r7, #24]
+ 140:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac0 = ADD32(ac0,SHR32(MULT16_16(x[j],x[j]),8));
+ 360              		.loc 1 140 0 discriminator 3
+ 361 003e FB69     		ldr	r3, [r7, #28]
+ 362 0040 0133     		adds	r3, r3, #1
+ 363 0042 FB61     		str	r3, [r7, #28]
+ 364              	.L14:
+ 140:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac0 = ADD32(ac0,SHR32(MULT16_16(x[j],x[j]),8));
+ 365              		.loc 1 140 0 is_stmt 0 discriminator 1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 10
+
+
+ 366 0044 FA69     		ldr	r2, [r7, #28]
+ 367 0046 3B68     		ldr	r3, [r7]
+ 368 0048 9A42     		cmp	r2, r3
+ 369 004a E5DB     		blt	.L15
+ 142:STM32F10x_Speex_Lib/libspeex/lpc.c ****    ac0 = ADD32(ac0,n);
+ 370              		.loc 1 142 0 is_stmt 1
+ 371 004c BA69     		ldr	r2, [r7, #24]
+ 372 004e 3B68     		ldr	r3, [r7]
+ 373 0050 1344     		add	r3, r3, r2
+ 374 0052 BB61     		str	r3, [r7, #24]
+ 143:STM32F10x_Speex_Lib/libspeex/lpc.c ****    shift = 8;
+ 375              		.loc 1 143 0
+ 376 0054 0823     		movs	r3, #8
+ 377 0056 7B61     		str	r3, [r7, #20]
+ 144:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (shift && ac0<0x40000000)
+ 378              		.loc 1 144 0
+ 379 0058 05E0     		b	.L16
+ 380              	.L18:
+ 145:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+ 146:STM32F10x_Speex_Lib/libspeex/lpc.c ****       shift--;
+ 381              		.loc 1 146 0
+ 382 005a 7B69     		ldr	r3, [r7, #20]
+ 383 005c 013B     		subs	r3, r3, #1
+ 384 005e 7B61     		str	r3, [r7, #20]
+ 147:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac0 <<= 1;
+ 385              		.loc 1 147 0
+ 386 0060 BB69     		ldr	r3, [r7, #24]
+ 387 0062 5B00     		lsls	r3, r3, #1
+ 388 0064 BB61     		str	r3, [r7, #24]
+ 389              	.L16:
+ 144:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (shift && ac0<0x40000000)
+ 390              		.loc 1 144 0
+ 391 0066 7B69     		ldr	r3, [r7, #20]
+ 392 0068 002B     		cmp	r3, #0
+ 393 006a 03D0     		beq	.L17
+ 144:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (shift && ac0<0x40000000)
+ 394              		.loc 1 144 0 is_stmt 0 discriminator 1
+ 395 006c BB69     		ldr	r3, [r7, #24]
+ 396 006e B3F1804F 		cmp	r3, #1073741824
+ 397 0072 F2DB     		blt	.L18
+ 398              	.L17:
+ 148:STM32F10x_Speex_Lib/libspeex/lpc.c ****    }
+ 149:STM32F10x_Speex_Lib/libspeex/lpc.c ****    ac_shift = 18;
+ 399              		.loc 1 149 0 is_stmt 1
+ 400 0074 1223     		movs	r3, #18
+ 401 0076 3B61     		str	r3, [r7, #16]
+ 150:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (ac_shift && ac0<0x40000000)
+ 402              		.loc 1 150 0
+ 403 0078 05E0     		b	.L19
+ 404              	.L21:
+ 151:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+ 152:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac_shift--;
+ 405              		.loc 1 152 0
+ 406 007a 3B69     		ldr	r3, [r7, #16]
+ 407 007c 013B     		subs	r3, r3, #1
+ 408 007e 3B61     		str	r3, [r7, #16]
+ 153:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac0 <<= 1;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 11
+
+
+ 409              		.loc 1 153 0
+ 410 0080 BB69     		ldr	r3, [r7, #24]
+ 411 0082 5B00     		lsls	r3, r3, #1
+ 412 0084 BB61     		str	r3, [r7, #24]
+ 413              	.L19:
+ 150:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (ac_shift && ac0<0x40000000)
+ 414              		.loc 1 150 0
+ 415 0086 3B69     		ldr	r3, [r7, #16]
+ 416 0088 002B     		cmp	r3, #0
+ 417 008a 03D0     		beq	.L20
+ 150:STM32F10x_Speex_Lib/libspeex/lpc.c ****    while (ac_shift && ac0<0x40000000)
+ 418              		.loc 1 150 0 is_stmt 0 discriminator 1
+ 419 008c BB69     		ldr	r3, [r7, #24]
+ 420 008e B3F1804F 		cmp	r3, #1073741824
+ 421 0092 F2DB     		blt	.L21
+ 422              	.L20:
+ 154:STM32F10x_Speex_Lib/libspeex/lpc.c ****    }
+ 155:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+ 156:STM32F10x_Speex_Lib/libspeex/lpc.c ****    
+ 157:STM32F10x_Speex_Lib/libspeex/lpc.c ****    for (i=0;i<lag;i++)
+ 423              		.loc 1 157 0 is_stmt 1
+ 424 0094 0023     		movs	r3, #0
+ 425 0096 3B62     		str	r3, [r7, #32]
+ 426 0098 2FE0     		b	.L22
+ 427              	.L25:
+ 158:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+ 159:STM32F10x_Speex_Lib/libspeex/lpc.c ****       d=0;
+ 428              		.loc 1 159 0
+ 429 009a 0023     		movs	r3, #0
+ 430 009c 7B62     		str	r3, [r7, #36]
+ 160:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j=i;j<n;j++)
+ 431              		.loc 1 160 0
+ 432 009e 3B6A     		ldr	r3, [r7, #32]
+ 433 00a0 FB61     		str	r3, [r7, #28]
+ 434 00a2 19E0     		b	.L23
+ 435              	.L24:
+ 161:STM32F10x_Speex_Lib/libspeex/lpc.c ****       {
+ 162:STM32F10x_Speex_Lib/libspeex/lpc.c ****          d = ADD32(d,SHR32(MULT16_16(x[j],x[j-i]), shift));
+ 436              		.loc 1 162 0 discriminator 3
+ 437 00a4 FB69     		ldr	r3, [r7, #28]
+ 438 00a6 5B00     		lsls	r3, r3, #1
+ 439 00a8 FA68     		ldr	r2, [r7, #12]
+ 440 00aa 1344     		add	r3, r3, r2
+ 441 00ac B3F90030 		ldrsh	r3, [r3]
+ 442 00b0 1946     		mov	r1, r3
+ 443 00b2 FA69     		ldr	r2, [r7, #28]
+ 444 00b4 3B6A     		ldr	r3, [r7, #32]
+ 445 00b6 D31A     		subs	r3, r2, r3
+ 446 00b8 5B00     		lsls	r3, r3, #1
+ 447 00ba FA68     		ldr	r2, [r7, #12]
+ 448 00bc 1344     		add	r3, r3, r2
+ 449 00be B3F90030 		ldrsh	r3, [r3]
+ 450 00c2 03FB01F2 		mul	r2, r3, r1
+ 451 00c6 7B69     		ldr	r3, [r7, #20]
+ 452 00c8 42FA03F3 		asr	r3, r2, r3
+ 453 00cc 7A6A     		ldr	r2, [r7, #36]
+ 454 00ce 1344     		add	r3, r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 12
+
+
+ 455 00d0 7B62     		str	r3, [r7, #36]
+ 160:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j=i;j<n;j++)
+ 456              		.loc 1 160 0 discriminator 3
+ 457 00d2 FB69     		ldr	r3, [r7, #28]
+ 458 00d4 0133     		adds	r3, r3, #1
+ 459 00d6 FB61     		str	r3, [r7, #28]
+ 460              	.L23:
+ 160:STM32F10x_Speex_Lib/libspeex/lpc.c ****       for (j=i;j<n;j++)
+ 461              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 462 00d8 FA69     		ldr	r2, [r7, #28]
+ 463 00da 3B68     		ldr	r3, [r7]
+ 464 00dc 9A42     		cmp	r2, r3
+ 465 00de E1DB     		blt	.L24
+ 163:STM32F10x_Speex_Lib/libspeex/lpc.c ****       }
+ 164:STM32F10x_Speex_Lib/libspeex/lpc.c ****       
+ 165:STM32F10x_Speex_Lib/libspeex/lpc.c ****       ac[i] = SHR32(d, ac_shift);
+ 466              		.loc 1 165 0 is_stmt 1 discriminator 2
+ 467 00e0 3B6A     		ldr	r3, [r7, #32]
+ 468 00e2 5B00     		lsls	r3, r3, #1
+ 469 00e4 BA68     		ldr	r2, [r7, #8]
+ 470 00e6 1344     		add	r3, r3, r2
+ 471 00e8 796A     		ldr	r1, [r7, #36]
+ 472 00ea 3A69     		ldr	r2, [r7, #16]
+ 473 00ec 41FA02F2 		asr	r2, r1, r2
+ 474 00f0 12B2     		sxth	r2, r2
+ 475 00f2 1A80     		strh	r2, [r3]	@ movhi
+ 157:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+ 476              		.loc 1 157 0 discriminator 2
+ 477 00f4 3B6A     		ldr	r3, [r7, #32]
+ 478 00f6 0133     		adds	r3, r3, #1
+ 479 00f8 3B62     		str	r3, [r7, #32]
+ 480              	.L22:
+ 157:STM32F10x_Speex_Lib/libspeex/lpc.c ****    {
+ 481              		.loc 1 157 0 is_stmt 0 discriminator 1
+ 482 00fa 3A6A     		ldr	r2, [r7, #32]
+ 483 00fc 7B68     		ldr	r3, [r7, #4]
+ 484 00fe 9A42     		cmp	r2, r3
+ 485 0100 CBDB     		blt	.L25
+ 166:STM32F10x_Speex_Lib/libspeex/lpc.c ****    }
+ 167:STM32F10x_Speex_Lib/libspeex/lpc.c **** }
+ 486              		.loc 1 167 0 is_stmt 1
+ 487 0102 00BF     		nop
+ 488 0104 2C37     		adds	r7, r7, #44
+ 489              	.LCFI9:
+ 490              		.cfi_def_cfa_offset 4
+ 491 0106 BD46     		mov	sp, r7
+ 492              	.LCFI10:
+ 493              		.cfi_def_cfa_register 13
+ 494              		@ sp needed
+ 495 0108 80BC     		pop	{r7}
+ 496              	.LCFI11:
+ 497              		.cfi_restore 7
+ 498              		.cfi_def_cfa_offset 0
+ 499 010a 7047     		bx	lr
+ 500              		.cfi_endproc
+ 501              	.LFE1:
+ 503              		.text
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 13
+
+
+ 504              	.Letext0:
+ 505              		.file 2 "Inc/speex/speex_config_types.h"
+ 506              		.file 3 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 lpc.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s:20     .text._spx_lpc:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s:25     .text._spx_lpc:0000000000000000 _spx_lpc
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s:309    .text._spx_autocorr:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc6f8JjE.s:314    .text._spx_autocorr:0000000000000000 _spx_autocorr
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

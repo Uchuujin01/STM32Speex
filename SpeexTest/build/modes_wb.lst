@@ -1,0 +1,990 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"modes_wb.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.speex_warning_int,"ax",%progbits
+  20              		.align	2
+  21              		.thumb
+  22              		.thumb_func
+  24              	speex_warning_int:
+  25              	.LFB7:
+  26              		.file 1 "STM32F10x_Speex_Lib/libspeex/os_support.h"
+   1:STM32F10x_Speex_Lib/libspeex/os_support.h **** /* Copyright (C) 2007 Jean-Marc Valin
+   2:STM32F10x_Speex_Lib/libspeex/os_support.h ****       
+   3:STM32F10x_Speex_Lib/libspeex/os_support.h ****    File: os_support.h
+   4:STM32F10x_Speex_Lib/libspeex/os_support.h ****    This is the (tiny) OS abstraction layer. Aside from math.h, this is the
+   5:STM32F10x_Speex_Lib/libspeex/os_support.h ****    only place where system headers are allowed.
+   6:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+   7:STM32F10x_Speex_Lib/libspeex/os_support.h ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/os_support.h ****    modification, are permitted provided that the following conditions are
+   9:STM32F10x_Speex_Lib/libspeex/os_support.h ****    met:
+  10:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  11:STM32F10x_Speex_Lib/libspeex/os_support.h ****    1. Redistributions of source code must retain the above copyright notice,
+  12:STM32F10x_Speex_Lib/libspeex/os_support.h ****    this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  14:STM32F10x_Speex_Lib/libspeex/os_support.h ****    2. Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/os_support.h ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/os_support.h ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  18:STM32F10x_Speex_Lib/libspeex/os_support.h ****    3. The name of the author may not be used to endorse or promote products
+  19:STM32F10x_Speex_Lib/libspeex/os_support.h ****    derived from this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  21:STM32F10x_Speex_Lib/libspeex/os_support.h ****    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  22:STM32F10x_Speex_Lib/libspeex/os_support.h ****    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  23:STM32F10x_Speex_Lib/libspeex/os_support.h ****    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  24:STM32F10x_Speex_Lib/libspeex/os_support.h ****    DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+  25:STM32F10x_Speex_Lib/libspeex/os_support.h ****    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  26:STM32F10x_Speex_Lib/libspeex/os_support.h ****    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  27:STM32F10x_Speex_Lib/libspeex/os_support.h ****    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  28:STM32F10x_Speex_Lib/libspeex/os_support.h ****    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  29:STM32F10x_Speex_Lib/libspeex/os_support.h ****    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  30:STM32F10x_Speex_Lib/libspeex/os_support.h ****    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:STM32F10x_Speex_Lib/libspeex/os_support.h ****    POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/libspeex/os_support.h **** */
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 2
+
+
+  33:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  34:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OS_SUPPORT_H
+  35:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define OS_SUPPORT_H
+  36:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  37:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <string.h>
+  38:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdio.h>
+  39:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdlib.h>
+  40:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  41:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #ifdef HAVE_CONFIG_H
+  42:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "config.h"
+  43:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #endif
+  44:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifdef OS_SUPPORT_CUSTOM
+  45:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "os_support_custom.h"
+  46:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  47:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  48:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+  49:STM32F10x_Speex_Lib/libspeex/os_support.h ****     NOTE: speex_alloc needs to CLEAR THE MEMORY */
+  50:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC
+  51:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc (int size)
+  52:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  53:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* WARNING: this is not equivalent to malloc(). If you want to use malloc() 
+  54:STM32F10x_Speex_Lib/libspeex/os_support.h ****       or your own allocator, YOU NEED TO CLEAR THE MEMORY ALLOCATED. Otherwise
+  55:STM32F10x_Speex_Lib/libspeex/os_support.h ****       you will experience strange bugs */
+  56:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+  57:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  58:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  59:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  60:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Same as speex_alloc, except that the area is only needed inside a Speex call (might cause probl
+  61:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC_SCRATCH
+  62:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc_scratch (int size)
+  63:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  64:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* Scratch space doesn't need to be cleared */
+  65:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+  66:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  67:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  68:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  69:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for realloc. To do your own dynamic allocation, all you need to do is replace thi
+  70:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_REALLOC
+  71:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_realloc (void *ptr, int size)
+  72:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  73:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return realloc(ptr, size);
+  74:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  75:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  76:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  77:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+  78:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_FREE
+  79:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_free (void *ptr)
+  80:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  81:STM32F10x_Speex_Lib/libspeex/os_support.h ****    free(ptr);
+  82:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  83:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  84:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  85:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Same as speex_free, except that the area is only needed inside a Speex call (might cause proble
+  86:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_FREE_SCRATCH
+  87:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_free_scratch (void *ptr)
+  88:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  89:STM32F10x_Speex_Lib/libspeex/os_support.h ****    free(ptr);
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 3
+
+
+  90:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  91:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  92:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  93:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Copy n bytes of memory from src to dst. The 0* term provides compile-time type checking  */
+  94:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_COPY
+  95:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define SPEEX_COPY(dst, src, n) (memcpy((dst), (src), (n)*sizeof(*(dst)) + 0*((dst)-(src)) ))
+  96:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  97:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  98:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Copy n bytes of memory from src to dst, allowing overlapping regions. The 0* term 
+  99:STM32F10x_Speex_Lib/libspeex/os_support.h ****     provides compile-time type checking */
+ 100:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_MOVE
+ 101:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define SPEEX_MOVE(dst, src, n) (memmove((dst), (src), (n)*sizeof(*(dst)) + 0*((dst)-(src)) ))
+ 102:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 103:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+ 104:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Set n bytes of memory to value of c, starting at address s */
+ 105:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_MEMSET
+ 106:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define SPEEX_MEMSET(dst, c, n) (memset((dst), (c), (n)*sizeof(*(dst))))
+ 107:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 108:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+ 109:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+ 110:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_FATAL
+ 111:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void _speex_fatal(const char *str, const char *file, int line)
+ 112:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+ 113:STM32F10x_Speex_Lib/libspeex/os_support.h ****    fprintf (stderr, "Fatal (internal) error in %s, line %d: %s\n", file, line, str);
+ 114:STM32F10x_Speex_Lib/libspeex/os_support.h ****    exit(1);
+ 115:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+ 116:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 117:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+ 118:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_WARNING
+ 119:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_warning(const char *str)
+ 120:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+ 121:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef DISABLE_WARNINGS
+ 122:STM32F10x_Speex_Lib/libspeex/os_support.h ****    fprintf (stderr, "warning: %s\n", str);
+ 123:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 124:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+ 125:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 126:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+ 127:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_WARNING_INT
+ 128:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_warning_int(const char *str, int val)
+ 129:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  27              		.loc 1 129 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 83B0     		sub	sp, sp, #12
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 16
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  43 0008 3960     		str	r1, [r7]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 4
+
+
+ 130:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef DISABLE_WARNINGS
+ 131:STM32F10x_Speex_Lib/libspeex/os_support.h ****    fprintf (stderr, "warning: %s %d\n", str, val);
+ 132:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+ 133:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  44              		.loc 1 133 0
+  45 000a 00BF     		nop
+  46 000c 0C37     		adds	r7, r7, #12
+  47              	.LCFI3:
+  48              		.cfi_def_cfa_offset 4
+  49 000e BD46     		mov	sp, r7
+  50              	.LCFI4:
+  51              		.cfi_def_cfa_register 13
+  52              		@ sp needed
+  53 0010 80BC     		pop	{r7}
+  54              	.LCFI5:
+  55              		.cfi_restore 7
+  56              		.cfi_def_cfa_offset 0
+  57 0012 7047     		bx	lr
+  58              		.cfi_endproc
+  59              	.LFE7:
+  61              		.global	speex_mode_list
+  62              		.section	.rodata.speex_mode_list,"a",%progbits
+  63              		.align	2
+  66              	speex_mode_list:
+  67 0000 00000000 		.word	speex_nb_mode
+  68 0004 00000000 		.word	speex_wb_mode
+  69 0008 00000000 		.word	speex_uwb_mode
+  70              		.section	.rodata.wb_submode1,"a",%progbits
+  71              		.align	2
+  74              	wb_submode1:
+  75 0000 00000000 		.word	0
+  76 0004 00000000 		.word	0
+  77 0008 01000000 		.word	1
+  78 000c 00000000 		.word	0
+  79 0010 00000000 		.word	lsp_quant_high
+  80 0014 00000000 		.word	lsp_unquant_high
+  81 0018 00000000 		.word	0
+  82 001c 00000000 		.word	0
+  83 0020 00000000 		.word	0
+  84 0024 00000000 		.word	0
+  85 0028 00000000 		.word	0
+  86 002c 00000000 		.word	0
+  87 0030 FFFF     		.short	-1
+  88 0032 0000     		.space	2
+  89 0034 24000000 		.word	36
+  90              		.section	.rodata.wb_submode2,"a",%progbits
+  91              		.align	2
+  94              	wb_submode2:
+  95 0000 00000000 		.word	0
+  96 0004 00000000 		.word	0
+  97 0008 01000000 		.word	1
+  98 000c 00000000 		.word	0
+  99 0010 00000000 		.word	lsp_quant_high
+ 100 0014 00000000 		.word	lsp_unquant_high
+ 101 0018 00000000 		.word	0
+ 102 001c 00000000 		.word	0
+ 103 0020 00000000 		.word	0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 5
+
+
+ 104 0024 00000000 		.word	split_cb_search_shape_sign
+ 105 0028 00000000 		.word	split_cb_shape_sign_unquant
+ 106 002c 00000000 		.word	0
+ 107 0030 FFFF     		.short	-1
+ 108 0032 0000     		.space	2
+ 109 0034 70000000 		.word	112
+ 110              		.section	.rodata.wb_submode3,"a",%progbits
+ 111              		.align	2
+ 114              	wb_submode3:
+ 115 0000 00000000 		.word	0
+ 116 0004 00000000 		.word	0
+ 117 0008 01000000 		.word	1
+ 118 000c 00000000 		.word	0
+ 119 0010 00000000 		.word	lsp_quant_high
+ 120 0014 00000000 		.word	lsp_unquant_high
+ 121 0018 00000000 		.word	0
+ 122 001c 00000000 		.word	0
+ 123 0020 00000000 		.word	0
+ 124 0024 00000000 		.word	split_cb_search_shape_sign
+ 125 0028 00000000 		.word	split_cb_shape_sign_unquant
+ 126 002c 00000000 		.word	0
+ 127 0030 FFFF     		.short	-1
+ 128 0032 0000     		.space	2
+ 129 0034 C0000000 		.word	192
+ 130              		.section	.rodata.wb_submode4,"a",%progbits
+ 131              		.align	2
+ 134              	wb_submode4:
+ 135 0000 00000000 		.word	0
+ 136 0004 00000000 		.word	0
+ 137 0008 01000000 		.word	1
+ 138 000c 01000000 		.word	1
+ 139 0010 00000000 		.word	lsp_quant_high
+ 140 0014 00000000 		.word	lsp_unquant_high
+ 141 0018 00000000 		.word	0
+ 142 001c 00000000 		.word	0
+ 143 0020 00000000 		.word	0
+ 144 0024 00000000 		.word	split_cb_search_shape_sign
+ 145 0028 00000000 		.word	split_cb_shape_sign_unquant
+ 146 002c 00000000 		.word	0
+ 147 0030 FFFF     		.short	-1
+ 148 0032 0000     		.space	2
+ 149 0034 60010000 		.word	352
+ 150              		.section	.rodata.sb_wb_mode,"a",%progbits
+ 151              		.align	2
+ 154              	sb_wb_mode:
+ 155 0000 00000000 		.word	speex_nb_mode
+ 156 0004 A0000000 		.word	160
+ 157 0008 28000000 		.word	40
+ 158 000c 08000000 		.word	8
+ 159 0010 3373     		.short	29491
+ 160 0012 CD4C     		.short	19661
+ 161 0014 0700     		.short	7
+ 162 0016 3373     		.short	29491
+ 163 0018 00000000 		.word	0
+ 164 001c 00000000 		.word	wb_submode1
+ 165 0020 00000000 		.word	wb_submode2
+ 166 0024 00000000 		.word	wb_submode3
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 6
+
+
+ 167 0028 00000000 		.word	wb_submode4
+ 168 002c 00000000 		.word	0
+ 169 0030 00000000 		.word	0
+ 170 0034 00000000 		.word	0
+ 171 0038 03000000 		.word	3
+ 172 003c 01000000 		.word	1
+ 173 0040 08000000 		.word	8
+ 174 0044 02000000 		.word	2
+ 175 0048 03000000 		.word	3
+ 176 004c 04000000 		.word	4
+ 177 0050 05000000 		.word	5
+ 178 0054 05000000 		.word	5
+ 179 0058 06000000 		.word	6
+ 180 005c 06000000 		.word	6
+ 181 0060 07000000 		.word	7
+ 182 0064 07000000 		.word	7
+ 183 0068 01000000 		.word	1
+ 184 006c 01000000 		.word	1
+ 185 0070 01000000 		.word	1
+ 186 0074 01000000 		.word	1
+ 187 0078 01000000 		.word	1
+ 188 007c 01000000 		.word	1
+ 189 0080 02000000 		.word	2
+ 190 0084 02000000 		.word	2
+ 191 0088 03000000 		.word	3
+ 192 008c 03000000 		.word	3
+ 193 0090 04000000 		.word	4
+ 194 0094 05000000 		.word	5
+ 195              		.global	speex_wb_mode
+ 196              		.section	.rodata
+ 197              		.align	2
+ 198              	.LC0:
+ 199 0000 77696465 		.ascii	"wideband (sub-band CELP)\000"
+ 199      62616E64 
+ 199      20287375 
+ 199      622D6261 
+ 199      6E642043 
+ 200              		.section	.rodata.speex_wb_mode,"a",%progbits
+ 201              		.align	2
+ 204              	speex_wb_mode:
+ 205 0000 00000000 		.word	sb_wb_mode
+ 206 0004 00000000 		.word	wb_mode_query
+ 207 0008 00000000 		.word	.LC0
+ 208 000c 01000000 		.word	1
+ 209 0010 04000000 		.word	4
+ 210 0014 00000000 		.word	sb_encoder_init
+ 211 0018 00000000 		.word	sb_encoder_destroy
+ 212 001c 00000000 		.word	sb_encode
+ 213 0020 00000000 		.word	sb_decoder_init
+ 214 0024 00000000 		.word	sb_decoder_destroy
+ 215 0028 00000000 		.word	sb_decode
+ 216 002c 00000000 		.word	sb_encoder_ctl
+ 217 0030 00000000 		.word	sb_decoder_ctl
+ 218              		.section	.rodata.sb_uwb_mode,"a",%progbits
+ 219              		.align	2
+ 222              	sb_uwb_mode:
+ 223 0000 00000000 		.word	speex_wb_mode
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 7
+
+
+ 224 0004 40010000 		.word	320
+ 225 0008 50000000 		.word	80
+ 226 000c 08000000 		.word	8
+ 227 0010 3373     		.short	29491
+ 228 0012 CD4C     		.short	19661
+ 229 0014 0700     		.short	7
+ 230 0016 9A59     		.short	22938
+ 231 0018 00000000 		.word	0
+ 232 001c 00000000 		.word	wb_submode1
+ 233 0020 00000000 		.word	0
+ 234 0024 00000000 		.word	0
+ 235 0028 00000000 		.word	0
+ 236 002c 00000000 		.word	0
+ 237 0030 00000000 		.word	0
+ 238 0034 00000000 		.word	0
+ 239 0038 01000000 		.word	1
+ 240 003c 00000000 		.word	0
+ 241 0040 01000000 		.word	1
+ 242 0044 02000000 		.word	2
+ 243 0048 03000000 		.word	3
+ 244 004c 04000000 		.word	4
+ 245 0050 05000000 		.word	5
+ 246 0054 06000000 		.word	6
+ 247 0058 07000000 		.word	7
+ 248 005c 08000000 		.word	8
+ 249 0060 09000000 		.word	9
+ 250 0064 0A000000 		.word	10
+ 251 0068 00000000 		.word	0
+ 252 006c 01000000 		.word	1
+ 253 0070 01000000 		.word	1
+ 254 0074 01000000 		.word	1
+ 255 0078 01000000 		.word	1
+ 256 007c 01000000 		.word	1
+ 257 0080 01000000 		.word	1
+ 258 0084 01000000 		.word	1
+ 259 0088 01000000 		.word	1
+ 260 008c 01000000 		.word	1
+ 261 0090 01000000 		.word	1
+ 262 0094 02000000 		.word	2
+ 263              		.section	.rodata
+ 264 0019 000000   		.align	2
+ 265              	.LC1:
+ 266 001c 556E6B6E 		.ascii	"Unknown wb_mode_query request: \000"
+ 266      6F776E20 
+ 266      77625F6D 
+ 266      6F64655F 
+ 266      71756572 
+ 267              		.section	.text.wb_mode_query,"ax",%progbits
+ 268              		.align	2
+ 269              		.global	wb_mode_query
+ 270              		.thumb
+ 271              		.thumb_func
+ 273              	wb_mode_query:
+ 274              	.LFB9:
+ 275              		.file 2 "STM32F10x_Speex_Lib/libspeex/modes_wb.c"
+   1:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* Copyright (C) 2002-2007 Jean-Marc Valin 
+   2:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    File: modes.c
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 8
+
+
+   3:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+   4:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    Describes the wideband modes of the codec
+   5:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+   6:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    Redistribution and use in source and binary forms, with or without
+   7:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    modification, are permitted provided that the following conditions
+   8:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    are met:
+   9:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    
+  10:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    - Redistributions of source code must retain the above copyright
+  11:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    notice, this list of conditions and the following disclaimer.
+  12:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    
+  13:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    - Redistributions in binary form must reproduce the above copyright
+  14:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    notice, this list of conditions and the following disclaimer in the
+  15:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    documentation and/or other materials provided with the distribution.
+  16:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    
+  17:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  18:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    contributors may be used to endorse or promote products derived from
+  19:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    
+  21:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  22:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  23:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  24:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  25:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  27:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  28:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  29:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  30:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  31:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  33:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** */
+  34:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  35:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** // #ifdef HAVE_CONFIG_H
+  36:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "config.h"
+  37:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** // #endif
+  38:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  39:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "modes.h"
+  40:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "ltp.h"
+  41:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "quant_lsp.h"
+  42:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "cb_search.h"
+  43:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "sb_celp.h"
+  44:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "nb_celp.h"
+  45:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "vbr.h"
+  46:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "arch.h"
+  47:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include <math.h>
+  48:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #include "os_support.h"
+  49:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  50:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  51:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifndef NULL
+  52:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #define NULL 0
+  53:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+  54:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  55:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** EXPORT const SpeexMode * const speex_mode_list[SPEEX_NB_MODES] = {&speex_nb_mode, &speex_wb_mode, &
+  56:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  57:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** extern const signed char hexc_table[];
+  58:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** extern const signed char hexc_10_32_table[];
+  59:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 9
+
+
+  60:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifndef DISABLE_WIDEBAND
+  61:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  62:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* Split-VQ innovation for high-band wideband */
+  63:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const split_cb_params split_cb_high = {
+  64:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    8,               /*subvect_size*/
+  65:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    5,               /*nb_subvect*/
+  66:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    hexc_table,       /*shape_cb*/
+  67:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    7,               /*shape_bits*/
+  68:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+  69:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+  70:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  71:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  72:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* Split-VQ innovation for high-band wideband */
+  73:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const split_cb_params split_cb_high_lbr = {
+  74:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    10,               /*subvect_size*/
+  75:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    4,               /*nb_subvect*/
+  76:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    hexc_10_32_table,       /*shape_cb*/
+  77:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    5,               /*shape_bits*/
+  78:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+  79:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+  80:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  81:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+  82:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  83:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+  84:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSubmode wb_submode1 = {
+  85:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+  86:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+  87:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+  88:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+  89:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*LSP quantization*/
+  90:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_quant_high,
+  91:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_unquant_high,
+  92:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Pitch quantization*/
+  93:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+  94:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+  95:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+  96:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*No innovation quantization*/
+  97:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+  98:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+  99:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 100:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    -1,
+ 101:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    36
+ 102:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 103:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 104:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 105:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSubmode wb_submode2 = {
+ 106:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 107:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 108:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 109:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 110:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*LSP quantization*/
+ 111:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_quant_high,
+ 112:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_unquant_high,
+ 113:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Pitch quantization*/
+ 114:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 115:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 116:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 10
+
+
+ 117:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Innovation quantization*/
+ 118:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_search_shape_sign,
+ 119:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_shape_sign_unquant,
+ 120:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifdef DISABLE_WIDEBAND
+ 121:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 122:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #else
+ 123:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &split_cb_high_lbr,
+ 124:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 125:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    -1,
+ 126:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    112
+ 127:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 128:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 129:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 130:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSubmode wb_submode3 = {
+ 131:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 132:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 133:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 134:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 135:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*LSP quantization*/
+ 136:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_quant_high,
+ 137:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_unquant_high,
+ 138:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Pitch quantization*/
+ 139:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 140:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 141:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 142:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Innovation quantization*/
+ 143:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_search_shape_sign,
+ 144:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_shape_sign_unquant,
+ 145:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifdef DISABLE_WIDEBAND
+ 146:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 147:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #else
+ 148:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &split_cb_high,
+ 149:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 150:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    -1,
+ 151:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    192
+ 152:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 153:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 154:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSubmode wb_submode4 = {
+ 155:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 156:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0,
+ 157:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 158:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 159:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*LSP quantization*/
+ 160:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_quant_high,
+ 161:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    lsp_unquant_high,
+ 162:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Pitch quantization*/
+ 163:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 164:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 165:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 166:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    /*Innovation quantization*/
+ 167:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_search_shape_sign,
+ 168:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    split_cb_shape_sign_unquant,
+ 169:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifdef DISABLE_WIDEBAND
+ 170:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    NULL,
+ 171:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #else
+ 172:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &split_cb_high,
+ 173:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 11
+
+
+ 174:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    -1,
+ 175:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    352
+ 176:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 177:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 178:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 179:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* Split-band wideband CELP mode*/
+ 180:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSBMode sb_wb_mode = {
+ 181:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &speex_nb_mode,
+ 182:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    160,    /*frameSize*/
+ 183:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    40,     /*subframeSize*/
+ 184:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    8,     /*lpcSize*/
+ 185:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifdef FIXED_POINT
+ 186:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    29491, 19661, /* gamma1, gamma2 */
+ 187:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #else
+ 188:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0.9, 0.6, /* gamma1, gamma2 */
+ 189:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 190:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    QCONST16(.0002,15), /*lpc_floor*/
+ 191:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    QCONST16(0.9f,15),
+ 192:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {NULL, &wb_submode1, &wb_submode2, &wb_submode3, &wb_submode4, NULL, NULL, NULL},
+ 193:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    3,
+ 194:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {1, 8, 2, 3, 4, 5, 5, 6, 6, 7, 7},
+ 195:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 4},
+ 196:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifndef DISABLE_VBR
+ 197:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    vbr_hb_thresh,
+ 198:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 199:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    5
+ 200:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 201:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 202:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 203:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** EXPORT const SpeexMode speex_wb_mode = {
+ 204:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_wb_mode,
+ 205:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    wb_mode_query,
+ 206:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    "wideband (sub-band CELP)",
+ 207:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 208:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    4,
+ 209:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_init,
+ 210:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_destroy,
+ 211:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encode,
+ 212:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_init,
+ 213:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_destroy,
+ 214:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decode,
+ 215:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_ctl,
+ 216:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_ctl,
+ 217:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 218:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 219:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 220:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 221:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* "Ultra-wideband" mode stuff */
+ 222:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 223:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 224:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 225:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* Split-band "ultra-wideband" (32 kbps) CELP mode*/
+ 226:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** static const SpeexSBMode sb_uwb_mode = {
+ 227:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &speex_wb_mode,
+ 228:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    320,    /*frameSize*/
+ 229:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    80,     /*subframeSize*/
+ 230:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    8,     /*lpcSize*/
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 12
+
+
+ 231:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifdef FIXED_POINT
+ 232:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    29491, 19661, /* gamma1, gamma2 */
+ 233:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #else
+ 234:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    0.9, 0.6, /* gamma1, gamma2 */
+ 235:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 236:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    QCONST16(.0002,15), /*lpc_floor*/
+ 237:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    QCONST16(0.7f,15),
+ 238:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {NULL, &wb_submode1, NULL, NULL, NULL, NULL, NULL, NULL},
+ 239:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    1,
+ 240:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+ 241:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+ 242:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #ifndef DISABLE_VBR
+ 243:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    vbr_uhb_thresh,
+ 244:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #endif
+ 245:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    2
+ 246:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 247:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 248:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** int wb_mode_query(const void *mode, int request, void *ptr)
+ 249:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** {
+ 276              		.loc 2 249 0
+ 277              		.cfi_startproc
+ 278              		@ args = 0, pretend = 0, frame = 24
+ 279              		@ frame_needed = 1, uses_anonymous_args = 0
+ 280 0000 80B5     		push	{r7, lr}
+ 281              	.LCFI6:
+ 282              		.cfi_def_cfa_offset 8
+ 283              		.cfi_offset 7, -8
+ 284              		.cfi_offset 14, -4
+ 285 0002 86B0     		sub	sp, sp, #24
+ 286              	.LCFI7:
+ 287              		.cfi_def_cfa_offset 32
+ 288 0004 00AF     		add	r7, sp, #0
+ 289              	.LCFI8:
+ 290              		.cfi_def_cfa_register 7
+ 291 0006 F860     		str	r0, [r7, #12]
+ 292 0008 B960     		str	r1, [r7, #8]
+ 293 000a 7A60     		str	r2, [r7, #4]
+ 250:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    const SpeexSBMode *m = (const SpeexSBMode*)mode;
+ 294              		.loc 2 250 0
+ 295 000c FB68     		ldr	r3, [r7, #12]
+ 296 000e 7B61     		str	r3, [r7, #20]
+ 251:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 252:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    switch (request)
+ 297              		.loc 2 252 0
+ 298 0010 BB68     		ldr	r3, [r7, #8]
+ 299 0012 002B     		cmp	r3, #0
+ 300 0014 02D0     		beq	.L4
+ 301 0016 012B     		cmp	r3, #1
+ 302 0018 06D0     		beq	.L5
+ 303 001a 24E0     		b	.L11
+ 304              	.L4:
+ 253:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    {
+ 254:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****       case SPEEX_MODE_FRAME_SIZE:
+ 255:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          *((int*)ptr)=2*m->frameSize;
+ 305              		.loc 2 255 0
+ 306 001c 7B69     		ldr	r3, [r7, #20]
+ 307 001e 5B68     		ldr	r3, [r3, #4]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 13
+
+
+ 308 0020 5A00     		lsls	r2, r3, #1
+ 309 0022 7B68     		ldr	r3, [r7, #4]
+ 310 0024 1A60     		str	r2, [r3]
+ 256:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          break;
+ 311              		.loc 2 256 0
+ 312 0026 25E0     		b	.L6
+ 313              	.L5:
+ 257:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****       case SPEEX_SUBMODE_BITS_PER_FRAME:
+ 258:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          if (*((int*)ptr)==0)
+ 314              		.loc 2 258 0
+ 315 0028 7B68     		ldr	r3, [r7, #4]
+ 316 002a 1B68     		ldr	r3, [r3]
+ 317 002c 002B     		cmp	r3, #0
+ 318 002e 03D1     		bne	.L7
+ 259:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****             *((int*)ptr) = SB_SUBMODE_BITS+1;
+ 319              		.loc 2 259 0
+ 320 0030 7B68     		ldr	r3, [r7, #4]
+ 321 0032 0422     		movs	r2, #4
+ 322 0034 1A60     		str	r2, [r3]
+ 260:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          else if (m->submodes[*((int*)ptr)]==NULL)
+ 261:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****             *((int*)ptr) = -1;
+ 262:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          else
+ 263:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****             *((int*)ptr) = m->submodes[*((int*)ptr)]->bits_per_frame;
+ 264:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          break;
+ 323              		.loc 2 264 0
+ 324 0036 1DE0     		b	.L6
+ 325              	.L7:
+ 260:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          else if (m->submodes[*((int*)ptr)]==NULL)
+ 326              		.loc 2 260 0
+ 327 0038 7B68     		ldr	r3, [r7, #4]
+ 328 003a 1A68     		ldr	r2, [r3]
+ 329 003c 7B69     		ldr	r3, [r7, #20]
+ 330 003e 0632     		adds	r2, r2, #6
+ 331 0040 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 332 0044 002B     		cmp	r3, #0
+ 333 0046 04D1     		bne	.L9
+ 261:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          else
+ 334              		.loc 2 261 0
+ 335 0048 7B68     		ldr	r3, [r7, #4]
+ 336 004a 4FF0FF32 		mov	r2, #-1
+ 337 004e 1A60     		str	r2, [r3]
+ 338              		.loc 2 264 0
+ 339 0050 10E0     		b	.L6
+ 340              	.L9:
+ 263:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          break;
+ 341              		.loc 2 263 0
+ 342 0052 7B68     		ldr	r3, [r7, #4]
+ 343 0054 1A68     		ldr	r2, [r3]
+ 344 0056 7B69     		ldr	r3, [r7, #20]
+ 345 0058 0632     		adds	r2, r2, #6
+ 346 005a 53F82230 		ldr	r3, [r3, r2, lsl #2]
+ 347 005e 5A6B     		ldr	r2, [r3, #52]
+ 348 0060 7B68     		ldr	r3, [r7, #4]
+ 349 0062 1A60     		str	r2, [r3]
+ 350              		.loc 2 264 0
+ 351 0064 06E0     		b	.L6
+ 352              	.L11:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 14
+
+
+ 265:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****       default:
+ 266:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          speex_warning_int("Unknown wb_mode_query request: ", request);
+ 353              		.loc 2 266 0
+ 354 0066 B968     		ldr	r1, [r7, #8]
+ 355 0068 0548     		ldr	r0, .L12
+ 356 006a FFF7FEFF 		bl	speex_warning_int
+ 267:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****          return -1;
+ 357              		.loc 2 267 0
+ 358 006e 4FF0FF33 		mov	r3, #-1
+ 359 0072 00E0     		b	.L10
+ 360              	.L6:
+ 268:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    }
+ 269:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    return 0;
+ 361              		.loc 2 269 0
+ 362 0074 0023     		movs	r3, #0
+ 363              	.L10:
+ 270:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** }
+ 364              		.loc 2 270 0
+ 365 0076 1846     		mov	r0, r3
+ 366 0078 1837     		adds	r7, r7, #24
+ 367              	.LCFI9:
+ 368              		.cfi_def_cfa_offset 8
+ 369 007a BD46     		mov	sp, r7
+ 370              	.LCFI10:
+ 371              		.cfi_def_cfa_register 13
+ 372              		@ sp needed
+ 373 007c 80BD     		pop	{r7, pc}
+ 374              	.L13:
+ 375 007e 00BF     		.align	2
+ 376              	.L12:
+ 377 0080 1C000000 		.word	.LC1
+ 378              		.cfi_endproc
+ 379              	.LFE9:
+ 381              		.global	speex_uwb_mode
+ 382              		.section	.rodata
+ 383              		.align	2
+ 384              	.LC2:
+ 385 003c 756C7472 		.ascii	"ultra-wideband (sub-band CELP)\000"
+ 385      612D7769 
+ 385      64656261 
+ 385      6E642028 
+ 385      7375622D 
+ 386              		.section	.rodata.speex_uwb_mode,"a",%progbits
+ 387              		.align	2
+ 390              	speex_uwb_mode:
+ 391 0000 00000000 		.word	sb_uwb_mode
+ 392 0004 00000000 		.word	wb_mode_query
+ 393 0008 3C000000 		.word	.LC2
+ 394 000c 02000000 		.word	2
+ 395 0010 04000000 		.word	4
+ 396 0014 00000000 		.word	sb_encoder_init
+ 397 0018 00000000 		.word	sb_encoder_destroy
+ 398 001c 00000000 		.word	sb_encode
+ 399 0020 00000000 		.word	sb_decoder_init
+ 400 0024 00000000 		.word	sb_decoder_destroy
+ 401 0028 00000000 		.word	sb_decode
+ 402 002c 00000000 		.word	sb_encoder_ctl
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 15
+
+
+ 403 0030 00000000 		.word	sb_decoder_ctl
+ 404              		.section	.text.speex_lib_get_mode,"ax",%progbits
+ 405              		.align	2
+ 406              		.global	speex_lib_get_mode
+ 407              		.thumb
+ 408              		.thumb_func
+ 410              	speex_lib_get_mode:
+ 411              	.LFB10:
+ 271:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 272:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 273:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** EXPORT const SpeexMode speex_uwb_mode = {
+ 274:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_uwb_mode,
+ 275:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    wb_mode_query,
+ 276:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    "ultra-wideband (sub-band CELP)",
+ 277:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    2,
+ 278:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    4,
+ 279:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_init,
+ 280:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_destroy,
+ 281:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encode,
+ 282:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_init,
+ 283:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_destroy,
+ 284:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decode,
+ 285:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_encoder_ctl,
+ 286:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    &sb_decoder_ctl,
+ 287:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** };
+ 288:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 289:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** /* We have defined speex_lib_get_mode() as a macro in speex.h */
+ 290:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** #undef speex_lib_get_mode
+ 291:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 292:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** EXPORT const SpeexMode * speex_lib_get_mode (int mode)
+ 293:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** {
+ 412              		.loc 2 293 0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 8
+ 415              		@ frame_needed = 1, uses_anonymous_args = 0
+ 416              		@ link register save eliminated.
+ 417 0000 80B4     		push	{r7}
+ 418              	.LCFI11:
+ 419              		.cfi_def_cfa_offset 4
+ 420              		.cfi_offset 7, -4
+ 421 0002 83B0     		sub	sp, sp, #12
+ 422              	.LCFI12:
+ 423              		.cfi_def_cfa_offset 16
+ 424 0004 00AF     		add	r7, sp, #0
+ 425              	.LCFI13:
+ 426              		.cfi_def_cfa_register 7
+ 427 0006 7860     		str	r0, [r7, #4]
+ 294:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    if (mode < 0 || mode >= SPEEX_NB_MODES) return NULL;
+ 428              		.loc 2 294 0
+ 429 0008 7B68     		ldr	r3, [r7, #4]
+ 430 000a 002B     		cmp	r3, #0
+ 431 000c 02DB     		blt	.L15
+ 432              		.loc 2 294 0 is_stmt 0 discriminator 2
+ 433 000e 7B68     		ldr	r3, [r7, #4]
+ 434 0010 022B     		cmp	r3, #2
+ 435 0012 01DD     		ble	.L16
+ 436              	.L15:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 16
+
+
+ 437              		.loc 2 294 0 discriminator 3
+ 438 0014 0023     		movs	r3, #0
+ 439 0016 03E0     		b	.L17
+ 440              	.L16:
+ 295:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** 
+ 296:STM32F10x_Speex_Lib/libspeex/modes_wb.c ****    return speex_mode_list[mode];
+ 441              		.loc 2 296 0 is_stmt 1
+ 442 0018 044A     		ldr	r2, .L18
+ 443 001a 7B68     		ldr	r3, [r7, #4]
+ 444 001c 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 445              	.L17:
+ 297:STM32F10x_Speex_Lib/libspeex/modes_wb.c **** }
+ 446              		.loc 2 297 0
+ 447 0020 1846     		mov	r0, r3
+ 448 0022 0C37     		adds	r7, r7, #12
+ 449              	.LCFI14:
+ 450              		.cfi_def_cfa_offset 4
+ 451 0024 BD46     		mov	sp, r7
+ 452              	.LCFI15:
+ 453              		.cfi_def_cfa_register 13
+ 454              		@ sp needed
+ 455 0026 80BC     		pop	{r7}
+ 456              	.LCFI16:
+ 457              		.cfi_restore 7
+ 458              		.cfi_def_cfa_offset 0
+ 459 0028 7047     		bx	lr
+ 460              	.L19:
+ 461 002a 00BF     		.align	2
+ 462              	.L18:
+ 463 002c 00000000 		.word	speex_mode_list
+ 464              		.cfi_endproc
+ 465              	.LFE10:
+ 467              		.text
+ 468              	.Letext0:
+ 469              		.file 3 "Inc/speex/speex_bits.h"
+ 470              		.file 4 "Inc/speex/speex_config_types.h"
+ 471              		.file 5 "Inc/speex/speex.h"
+ 472              		.file 6 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ 473              		.file 7 "STM32F10x_Speex_Lib/libspeex/modes.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 modes_wb.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:20     .text.speex_warning_int:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:24     .text.speex_warning_int:0000000000000000 speex_warning_int
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:66     .rodata.speex_mode_list:0000000000000000 speex_mode_list
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:63     .rodata.speex_mode_list:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:204    .rodata.speex_wb_mode:0000000000000000 speex_wb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:390    .rodata.speex_uwb_mode:0000000000000000 speex_uwb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:71     .rodata.wb_submode1:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:74     .rodata.wb_submode1:0000000000000000 wb_submode1
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:91     .rodata.wb_submode2:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:94     .rodata.wb_submode2:0000000000000000 wb_submode2
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:111    .rodata.wb_submode3:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:114    .rodata.wb_submode3:0000000000000000 wb_submode3
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:131    .rodata.wb_submode4:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:134    .rodata.wb_submode4:0000000000000000 wb_submode4
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:151    .rodata.sb_wb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:154    .rodata.sb_wb_mode:0000000000000000 sb_wb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:197    .rodata:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:201    .rodata.speex_wb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:273    .text.wb_mode_query:0000000000000000 wb_mode_query
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:219    .rodata.sb_uwb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:222    .rodata.sb_uwb_mode:0000000000000000 sb_uwb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:268    .text.wb_mode_query:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:377    .text.wb_mode_query:0000000000000080 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:387    .rodata.speex_uwb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:405    .text.speex_lib_get_mode:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:410    .text.speex_lib_get_mode:0000000000000000 speex_lib_get_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc8yr9fV.s:463    .text.speex_lib_get_mode:000000000000002c $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+speex_nb_mode
+lsp_quant_high
+lsp_unquant_high
+split_cb_search_shape_sign
+split_cb_shape_sign_unquant
+sb_encoder_init
+sb_encoder_destroy
+sb_encode
+sb_decoder_init
+sb_decoder_destroy
+sb_decode
+sb_encoder_ctl
+sb_decoder_ctl

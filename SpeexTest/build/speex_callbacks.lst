@@ -1,0 +1,661 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"speex_callbacks.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.speex_inband_handler,"ax",%progbits
+  20              		.align	2
+  21              		.global	speex_inband_handler
+  22              		.thumb
+  23              		.thumb_func
+  25              	speex_inband_handler:
+  26              	.LFB9:
+  27              		.file 1 "STM32F10x_Speex_Lib/libspeex/speex_callbacks.c"
+   1:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** /* Copyright (C) 2002 Jean-Marc Valin
+   2:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    File speex_callbacks.c
+   3:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    Callback handling and in-band signalling
+   4:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+   5:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+   6:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    Redistribution and use in source and binary forms, with or without
+   7:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    modification, are permitted provided that the following conditions
+   8:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    are met:
+   9:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    
+  10:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    - Redistributions of source code must retain the above copyright
+  11:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    notice, this list of conditions and the following disclaimer.
+  12:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    
+  13:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    - Redistributions in binary form must reproduce the above copyright
+  14:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    notice, this list of conditions and the following disclaimer in the
+  15:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    documentation and/or other materials provided with the distribution.
+  16:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    
+  17:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  18:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    contributors may be used to endorse or promote products derived from
+  19:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    
+  21:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  22:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  23:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  24:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  25:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  27:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  28:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  29:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  30:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  31:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 2
+
+
+  32:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  33:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** */
+  34:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  35:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** // #ifdef HAVE_CONFIG_H
+  36:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #include "config.h"
+  37:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** // #endif
+  38:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  39:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #include <speex/speex_callbacks.h>
+  40:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #include "arch.h"
+  41:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #include "os_support.h"
+  42:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  43:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_inband_handler(SpeexBits *bits, SpeexCallback *callback_list, void *state)
+  44:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+  28              		.loc 1 44 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 32
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 88B0     		sub	sp, sp, #32
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 40
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 F860     		str	r0, [r7, #12]
+  44 0008 B960     		str	r1, [r7, #8]
+  45 000a 7A60     		str	r2, [r7, #4]
+  45:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    int id;
+  46:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    SpeexCallback *callback;
+  47:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    /*speex_bits_advance(bits, 5);*/
+  48:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    id=speex_bits_unpack_unsigned(bits, 4);
+  46              		.loc 1 48 0
+  47 000c 0421     		movs	r1, #4
+  48 000e F868     		ldr	r0, [r7, #12]
+  49 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+  50 0014 0346     		mov	r3, r0
+  51 0016 BB61     		str	r3, [r7, #24]
+  49:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    callback = callback_list+id;
+  52              		.loc 1 49 0
+  53 0018 BA69     		ldr	r2, [r7, #24]
+  54 001a 1346     		mov	r3, r2
+  55 001c 9B00     		lsls	r3, r3, #2
+  56 001e 1344     		add	r3, r3, r2
+  57 0020 9B00     		lsls	r3, r3, #2
+  58 0022 1A46     		mov	r2, r3
+  59 0024 BB68     		ldr	r3, [r7, #8]
+  60 0026 1344     		add	r3, r3, r2
+  61 0028 7B61     		str	r3, [r7, #20]
+  50:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  51:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    if (callback->func)
+  62              		.loc 1 51 0
+  63 002a 7B69     		ldr	r3, [r7, #20]
+  64 002c 5B68     		ldr	r3, [r3, #4]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 3
+
+
+  65 002e 002B     		cmp	r3, #0
+  66 0030 08D0     		beq	.L2
+  52:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    {
+  53:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       return callback->func(bits, state, callback->data);
+  67              		.loc 1 53 0
+  68 0032 7B69     		ldr	r3, [r7, #20]
+  69 0034 5B68     		ldr	r3, [r3, #4]
+  70 0036 7A69     		ldr	r2, [r7, #20]
+  71 0038 9268     		ldr	r2, [r2, #8]
+  72 003a 7968     		ldr	r1, [r7, #4]
+  73 003c F868     		ldr	r0, [r7, #12]
+  74 003e 9847     		blx	r3
+  75 0040 0346     		mov	r3, r0
+  76 0042 24E0     		b	.L3
+  77              	.L2:
+  78              	.LBB2:
+  54:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    } else
+  55:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       /*If callback is not registered, skip the right number of bits*/
+  56:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    {
+  57:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       int adv;
+  58:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       if (id<2)
+  79              		.loc 1 58 0
+  80 0044 BB69     		ldr	r3, [r7, #24]
+  81 0046 012B     		cmp	r3, #1
+  82 0048 02DC     		bgt	.L4
+  59:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 1;
+  83              		.loc 1 59 0
+  84 004a 0123     		movs	r3, #1
+  85 004c FB61     		str	r3, [r7, #28]
+  86 004e 19E0     		b	.L5
+  87              	.L4:
+  60:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       else if (id<8)
+  88              		.loc 1 60 0
+  89 0050 BB69     		ldr	r3, [r7, #24]
+  90 0052 072B     		cmp	r3, #7
+  91 0054 02DC     		bgt	.L6
+  61:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 4;
+  92              		.loc 1 61 0
+  93 0056 0423     		movs	r3, #4
+  94 0058 FB61     		str	r3, [r7, #28]
+  95 005a 13E0     		b	.L5
+  96              	.L6:
+  62:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       else if (id<10)
+  97              		.loc 1 62 0
+  98 005c BB69     		ldr	r3, [r7, #24]
+  99 005e 092B     		cmp	r3, #9
+ 100 0060 02DC     		bgt	.L7
+  63:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 8;
+ 101              		.loc 1 63 0
+ 102 0062 0823     		movs	r3, #8
+ 103 0064 FB61     		str	r3, [r7, #28]
+ 104 0066 0DE0     		b	.L5
+ 105              	.L7:
+  64:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       else if (id<12)
+ 106              		.loc 1 64 0
+ 107 0068 BB69     		ldr	r3, [r7, #24]
+ 108 006a 0B2B     		cmp	r3, #11
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 4
+
+
+ 109 006c 02DC     		bgt	.L8
+  65:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 16;
+ 110              		.loc 1 65 0
+ 111 006e 1023     		movs	r3, #16
+ 112 0070 FB61     		str	r3, [r7, #28]
+ 113 0072 07E0     		b	.L5
+ 114              	.L8:
+  66:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       else if (id<14)
+ 115              		.loc 1 66 0
+ 116 0074 BB69     		ldr	r3, [r7, #24]
+ 117 0076 0D2B     		cmp	r3, #13
+ 118 0078 02DC     		bgt	.L9
+  67:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 32;
+ 119              		.loc 1 67 0
+ 120 007a 2023     		movs	r3, #32
+ 121 007c FB61     		str	r3, [r7, #28]
+ 122 007e 01E0     		b	.L5
+ 123              	.L9:
+  68:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       else 
+  69:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****          adv = 64;
+ 124              		.loc 1 69 0
+ 125 0080 4023     		movs	r3, #64
+ 126 0082 FB61     		str	r3, [r7, #28]
+ 127              	.L5:
+  70:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****       speex_bits_advance(bits, adv);
+ 128              		.loc 1 70 0
+ 129 0084 F969     		ldr	r1, [r7, #28]
+ 130 0086 F868     		ldr	r0, [r7, #12]
+ 131 0088 FFF7FEFF 		bl	speex_bits_advance
+ 132              	.LBE2:
+  71:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    }
+  72:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 133              		.loc 1 72 0
+ 134 008c 0023     		movs	r3, #0
+ 135              	.L3:
+  73:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 136              		.loc 1 73 0
+ 137 008e 1846     		mov	r0, r3
+ 138 0090 2037     		adds	r7, r7, #32
+ 139              	.LCFI3:
+ 140              		.cfi_def_cfa_offset 8
+ 141 0092 BD46     		mov	sp, r7
+ 142              	.LCFI4:
+ 143              		.cfi_def_cfa_register 13
+ 144              		@ sp needed
+ 145 0094 80BD     		pop	{r7, pc}
+ 146              		.cfi_endproc
+ 147              	.LFE9:
+ 149 0096 00BF     		.section	.text.speex_std_mode_request_handler,"ax",%progbits
+ 150              		.align	2
+ 151              		.global	speex_std_mode_request_handler
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	speex_std_mode_request_handler:
+ 156              	.LFB10:
+  74:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  75:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_mode_request_handler(SpeexBits *bits, void *state, void *data)
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 5
+
+
+  76:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 157              		.loc 1 76 0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 24
+ 160              		@ frame_needed = 1, uses_anonymous_args = 0
+ 161 0000 80B5     		push	{r7, lr}
+ 162              	.LCFI5:
+ 163              		.cfi_def_cfa_offset 8
+ 164              		.cfi_offset 7, -8
+ 165              		.cfi_offset 14, -4
+ 166 0002 86B0     		sub	sp, sp, #24
+ 167              	.LCFI6:
+ 168              		.cfi_def_cfa_offset 32
+ 169 0004 00AF     		add	r7, sp, #0
+ 170              	.LCFI7:
+ 171              		.cfi_def_cfa_register 7
+ 172 0006 F860     		str	r0, [r7, #12]
+ 173 0008 B960     		str	r1, [r7, #8]
+ 174 000a 7A60     		str	r2, [r7, #4]
+  77:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    spx_int32_t m;
+  78:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    m = speex_bits_unpack_unsigned(bits, 4);
+ 175              		.loc 1 78 0
+ 176 000c 0421     		movs	r1, #4
+ 177 000e F868     		ldr	r0, [r7, #12]
+ 178 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 179 0014 0346     		mov	r3, r0
+ 180 0016 7B61     		str	r3, [r7, #20]
+  79:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_encoder_ctl(data, SPEEX_SET_MODE, &m);
+ 181              		.loc 1 79 0
+ 182 0018 07F11403 		add	r3, r7, #20
+ 183 001c 1A46     		mov	r2, r3
+ 184 001e 0621     		movs	r1, #6
+ 185 0020 7868     		ldr	r0, [r7, #4]
+ 186 0022 FFF7FEFF 		bl	speex_encoder_ctl
+  80:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 187              		.loc 1 80 0
+ 188 0026 0023     		movs	r3, #0
+  81:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 189              		.loc 1 81 0
+ 190 0028 1846     		mov	r0, r3
+ 191 002a 1837     		adds	r7, r7, #24
+ 192              	.LCFI8:
+ 193              		.cfi_def_cfa_offset 8
+ 194 002c BD46     		mov	sp, r7
+ 195              	.LCFI9:
+ 196              		.cfi_def_cfa_register 13
+ 197              		@ sp needed
+ 198 002e 80BD     		pop	{r7, pc}
+ 199              		.cfi_endproc
+ 200              	.LFE10:
+ 202              		.section	.text.speex_std_low_mode_request_handler,"ax",%progbits
+ 203              		.align	2
+ 204              		.global	speex_std_low_mode_request_handler
+ 205              		.thumb
+ 206              		.thumb_func
+ 208              	speex_std_low_mode_request_handler:
+ 209              	.LFB11:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 6
+
+
+  82:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  83:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_low_mode_request_handler(SpeexBits *bits, void *state, void *data)
+  84:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 210              		.loc 1 84 0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 24
+ 213              		@ frame_needed = 1, uses_anonymous_args = 0
+ 214 0000 80B5     		push	{r7, lr}
+ 215              	.LCFI10:
+ 216              		.cfi_def_cfa_offset 8
+ 217              		.cfi_offset 7, -8
+ 218              		.cfi_offset 14, -4
+ 219 0002 86B0     		sub	sp, sp, #24
+ 220              	.LCFI11:
+ 221              		.cfi_def_cfa_offset 32
+ 222 0004 00AF     		add	r7, sp, #0
+ 223              	.LCFI12:
+ 224              		.cfi_def_cfa_register 7
+ 225 0006 F860     		str	r0, [r7, #12]
+ 226 0008 B960     		str	r1, [r7, #8]
+ 227 000a 7A60     		str	r2, [r7, #4]
+  85:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    spx_int32_t m;
+  86:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    m = speex_bits_unpack_unsigned(bits, 4);
+ 228              		.loc 1 86 0
+ 229 000c 0421     		movs	r1, #4
+ 230 000e F868     		ldr	r0, [r7, #12]
+ 231 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 232 0014 0346     		mov	r3, r0
+ 233 0016 7B61     		str	r3, [r7, #20]
+  87:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_encoder_ctl(data, SPEEX_SET_LOW_MODE, &m);
+ 234              		.loc 1 87 0
+ 235 0018 07F11403 		add	r3, r7, #20
+ 236 001c 1A46     		mov	r2, r3
+ 237 001e 0821     		movs	r1, #8
+ 238 0020 7868     		ldr	r0, [r7, #4]
+ 239 0022 FFF7FEFF 		bl	speex_encoder_ctl
+  88:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 240              		.loc 1 88 0
+ 241 0026 0023     		movs	r3, #0
+  89:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 242              		.loc 1 89 0
+ 243 0028 1846     		mov	r0, r3
+ 244 002a 1837     		adds	r7, r7, #24
+ 245              	.LCFI13:
+ 246              		.cfi_def_cfa_offset 8
+ 247 002c BD46     		mov	sp, r7
+ 248              	.LCFI14:
+ 249              		.cfi_def_cfa_register 13
+ 250              		@ sp needed
+ 251 002e 80BD     		pop	{r7, pc}
+ 252              		.cfi_endproc
+ 253              	.LFE11:
+ 255              		.section	.text.speex_std_high_mode_request_handler,"ax",%progbits
+ 256              		.align	2
+ 257              		.global	speex_std_high_mode_request_handler
+ 258              		.thumb
+ 259              		.thumb_func
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 7
+
+
+ 261              	speex_std_high_mode_request_handler:
+ 262              	.LFB12:
+  90:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  91:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_high_mode_request_handler(SpeexBits *bits, void *state, void *data)
+  92:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 263              		.loc 1 92 0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 24
+ 266              		@ frame_needed = 1, uses_anonymous_args = 0
+ 267 0000 80B5     		push	{r7, lr}
+ 268              	.LCFI15:
+ 269              		.cfi_def_cfa_offset 8
+ 270              		.cfi_offset 7, -8
+ 271              		.cfi_offset 14, -4
+ 272 0002 86B0     		sub	sp, sp, #24
+ 273              	.LCFI16:
+ 274              		.cfi_def_cfa_offset 32
+ 275 0004 00AF     		add	r7, sp, #0
+ 276              	.LCFI17:
+ 277              		.cfi_def_cfa_register 7
+ 278 0006 F860     		str	r0, [r7, #12]
+ 279 0008 B960     		str	r1, [r7, #8]
+ 280 000a 7A60     		str	r2, [r7, #4]
+  93:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    spx_int32_t m;
+  94:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    m = speex_bits_unpack_unsigned(bits, 4);
+ 281              		.loc 1 94 0
+ 282 000c 0421     		movs	r1, #4
+ 283 000e F868     		ldr	r0, [r7, #12]
+ 284 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 285 0014 0346     		mov	r3, r0
+ 286 0016 7B61     		str	r3, [r7, #20]
+  95:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_encoder_ctl(data, SPEEX_SET_HIGH_MODE, &m);
+ 287              		.loc 1 95 0
+ 288 0018 07F11403 		add	r3, r7, #20
+ 289 001c 1A46     		mov	r2, r3
+ 290 001e 0A21     		movs	r1, #10
+ 291 0020 7868     		ldr	r0, [r7, #4]
+ 292 0022 FFF7FEFF 		bl	speex_encoder_ctl
+  96:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 293              		.loc 1 96 0
+ 294 0026 0023     		movs	r3, #0
+  97:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 295              		.loc 1 97 0
+ 296 0028 1846     		mov	r0, r3
+ 297 002a 1837     		adds	r7, r7, #24
+ 298              	.LCFI18:
+ 299              		.cfi_def_cfa_offset 8
+ 300 002c BD46     		mov	sp, r7
+ 301              	.LCFI19:
+ 302              		.cfi_def_cfa_register 13
+ 303              		@ sp needed
+ 304 002e 80BD     		pop	{r7, pc}
+ 305              		.cfi_endproc
+ 306              	.LFE12:
+ 308              		.section	.text.speex_std_enh_request_handler,"ax",%progbits
+ 309              		.align	2
+ 310              		.global	speex_std_enh_request_handler
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 8
+
+
+ 311              		.thumb
+ 312              		.thumb_func
+ 314              	speex_std_enh_request_handler:
+ 315              	.LFB13:
+  98:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+  99:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #ifndef DISABLE_VBR
+ 100:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_vbr_request_handler(SpeexBits *bits, void *state, void *data)
+ 101:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 102:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    spx_int32_t vbr;
+ 103:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    vbr = speex_bits_unpack_unsigned(bits, 1);
+ 104:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_encoder_ctl(data, SPEEX_SET_VBR, &vbr);
+ 105:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 106:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 107:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #endif /* #ifndef DISABLE_VBR */
+ 108:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 109:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_enh_request_handler(SpeexBits *bits, void *state, void *data)
+ 110:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 316              		.loc 1 110 0
+ 317              		.cfi_startproc
+ 318              		@ args = 0, pretend = 0, frame = 24
+ 319              		@ frame_needed = 1, uses_anonymous_args = 0
+ 320 0000 80B5     		push	{r7, lr}
+ 321              	.LCFI20:
+ 322              		.cfi_def_cfa_offset 8
+ 323              		.cfi_offset 7, -8
+ 324              		.cfi_offset 14, -4
+ 325 0002 86B0     		sub	sp, sp, #24
+ 326              	.LCFI21:
+ 327              		.cfi_def_cfa_offset 32
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              	.LCFI22:
+ 330              		.cfi_def_cfa_register 7
+ 331 0006 F860     		str	r0, [r7, #12]
+ 332 0008 B960     		str	r1, [r7, #8]
+ 333 000a 7A60     		str	r2, [r7, #4]
+ 111:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    spx_int32_t enh;
+ 112:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    enh = speex_bits_unpack_unsigned(bits, 1);
+ 334              		.loc 1 112 0
+ 335 000c 0121     		movs	r1, #1
+ 336 000e F868     		ldr	r0, [r7, #12]
+ 337 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 338 0014 0346     		mov	r3, r0
+ 339 0016 7B61     		str	r3, [r7, #20]
+ 113:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_decoder_ctl(data, SPEEX_SET_ENH, &enh);
+ 340              		.loc 1 113 0
+ 341 0018 07F11403 		add	r3, r7, #20
+ 342 001c 1A46     		mov	r2, r3
+ 343 001e 0021     		movs	r1, #0
+ 344 0020 7868     		ldr	r0, [r7, #4]
+ 345 0022 FFF7FEFF 		bl	speex_decoder_ctl
+ 114:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 346              		.loc 1 114 0
+ 347 0026 0023     		movs	r3, #0
+ 115:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 348              		.loc 1 115 0
+ 349 0028 1846     		mov	r0, r3
+ 350 002a 1837     		adds	r7, r7, #24
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 9
+
+
+ 351              	.LCFI23:
+ 352              		.cfi_def_cfa_offset 8
+ 353 002c BD46     		mov	sp, r7
+ 354              	.LCFI24:
+ 355              		.cfi_def_cfa_register 13
+ 356              		@ sp needed
+ 357 002e 80BD     		pop	{r7, pc}
+ 358              		.cfi_endproc
+ 359              	.LFE13:
+ 361              		.section	.text.speex_std_char_handler,"ax",%progbits
+ 362              		.align	2
+ 363              		.global	speex_std_char_handler
+ 364              		.thumb
+ 365              		.thumb_func
+ 367              	speex_std_char_handler:
+ 368              	.LFB14:
+ 116:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 117:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #ifndef DISABLE_VBR
+ 118:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_vbr_quality_request_handler(SpeexBits *bits, void *state, void *data)
+ 119:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 120:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    float qual;
+ 121:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    qual = speex_bits_unpack_unsigned(bits, 4);
+ 122:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_encoder_ctl(data, SPEEX_SET_VBR_QUALITY, &qual);
+ 123:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 124:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 125:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** #endif /* #ifndef DISABLE_VBR */
+ 126:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 127:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_std_char_handler(SpeexBits *bits, void *state, void *data)
+ 128:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 369              		.loc 1 128 0
+ 370              		.cfi_startproc
+ 371              		@ args = 0, pretend = 0, frame = 24
+ 372              		@ frame_needed = 1, uses_anonymous_args = 0
+ 373 0000 80B5     		push	{r7, lr}
+ 374              	.LCFI25:
+ 375              		.cfi_def_cfa_offset 8
+ 376              		.cfi_offset 7, -8
+ 377              		.cfi_offset 14, -4
+ 378 0002 86B0     		sub	sp, sp, #24
+ 379              	.LCFI26:
+ 380              		.cfi_def_cfa_offset 32
+ 381 0004 00AF     		add	r7, sp, #0
+ 382              	.LCFI27:
+ 383              		.cfi_def_cfa_register 7
+ 384 0006 F860     		str	r0, [r7, #12]
+ 385 0008 B960     		str	r1, [r7, #8]
+ 386 000a 7A60     		str	r2, [r7, #4]
+ 129:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    unsigned char ch;
+ 130:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    ch = speex_bits_unpack_unsigned(bits, 8);
+ 387              		.loc 1 130 0
+ 388 000c 0821     		movs	r1, #8
+ 389 000e F868     		ldr	r0, [r7, #12]
+ 390 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 391 0014 0346     		mov	r3, r0
+ 392 0016 FB75     		strb	r3, [r7, #23]
+ 131:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    _speex_putc(ch, data);
+ 393              		.loc 1 131 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 10
+
+
+ 394 0018 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 395 001a 7968     		ldr	r1, [r7, #4]
+ 396 001c 1846     		mov	r0, r3
+ 397 001e FFF7FEFF 		bl	_speex_putc
+ 132:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    /*printf("speex_std_char_handler ch=%x\n", ch);*/
+ 133:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 398              		.loc 1 133 0
+ 399 0022 0023     		movs	r3, #0
+ 134:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 400              		.loc 1 134 0
+ 401 0024 1846     		mov	r0, r3
+ 402 0026 1837     		adds	r7, r7, #24
+ 403              	.LCFI28:
+ 404              		.cfi_def_cfa_offset 8
+ 405 0028 BD46     		mov	sp, r7
+ 406              	.LCFI29:
+ 407              		.cfi_def_cfa_register 13
+ 408              		@ sp needed
+ 409 002a 80BD     		pop	{r7, pc}
+ 410              		.cfi_endproc
+ 411              	.LFE14:
+ 413              		.section	.text.speex_default_user_handler,"ax",%progbits
+ 414              		.align	2
+ 415              		.global	speex_default_user_handler
+ 416              		.thumb
+ 417              		.thumb_func
+ 419              	speex_default_user_handler:
+ 420              	.LFB15:
+ 135:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 136:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 137:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** 
+ 138:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** /* Default handler for user callbacks: skip it */
+ 139:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** EXPORT int speex_default_user_handler(SpeexBits *bits, void *state, void *data)
+ 140:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** {
+ 421              		.loc 1 140 0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 24
+ 424              		@ frame_needed = 1, uses_anonymous_args = 0
+ 425 0000 80B5     		push	{r7, lr}
+ 426              	.LCFI30:
+ 427              		.cfi_def_cfa_offset 8
+ 428              		.cfi_offset 7, -8
+ 429              		.cfi_offset 14, -4
+ 430 0002 86B0     		sub	sp, sp, #24
+ 431              	.LCFI31:
+ 432              		.cfi_def_cfa_offset 32
+ 433 0004 00AF     		add	r7, sp, #0
+ 434              	.LCFI32:
+ 435              		.cfi_def_cfa_register 7
+ 436 0006 F860     		str	r0, [r7, #12]
+ 437 0008 B960     		str	r1, [r7, #8]
+ 438 000a 7A60     		str	r2, [r7, #4]
+ 141:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    int req_size = speex_bits_unpack_unsigned(bits, 4);
+ 439              		.loc 1 141 0
+ 440 000c 0421     		movs	r1, #4
+ 441 000e F868     		ldr	r0, [r7, #12]
+ 442 0010 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 11
+
+
+ 443 0014 0346     		mov	r3, r0
+ 444 0016 7B61     		str	r3, [r7, #20]
+ 142:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    speex_bits_advance(bits, 5+8*req_size);
+ 445              		.loc 1 142 0
+ 446 0018 7B69     		ldr	r3, [r7, #20]
+ 447 001a DB00     		lsls	r3, r3, #3
+ 448 001c 0533     		adds	r3, r3, #5
+ 449 001e 1946     		mov	r1, r3
+ 450 0020 F868     		ldr	r0, [r7, #12]
+ 451 0022 FFF7FEFF 		bl	speex_bits_advance
+ 143:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c ****    return 0;
+ 452              		.loc 1 143 0
+ 453 0026 0023     		movs	r3, #0
+ 144:STM32F10x_Speex_Lib/libspeex/speex_callbacks.c **** }
+ 454              		.loc 1 144 0
+ 455 0028 1846     		mov	r0, r3
+ 456 002a 1837     		adds	r7, r7, #24
+ 457              	.LCFI33:
+ 458              		.cfi_def_cfa_offset 8
+ 459 002c BD46     		mov	sp, r7
+ 460              	.LCFI34:
+ 461              		.cfi_def_cfa_register 13
+ 462              		@ sp needed
+ 463 002e 80BD     		pop	{r7, pc}
+ 464              		.cfi_endproc
+ 465              	.LFE15:
+ 467              		.text
+ 468              	.Letext0:
+ 469              		.file 2 "Inc/speex/speex_bits.h"
+ 470              		.file 3 "Inc/speex/speex_config_types.h"
+ 471              		.file 4 "Inc/speex/speex_callbacks.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 speex_callbacks.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:20     .text.speex_inband_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:25     .text.speex_inband_handler:0000000000000000 speex_inband_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:150    .text.speex_std_mode_request_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:155    .text.speex_std_mode_request_handler:0000000000000000 speex_std_mode_request_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:203    .text.speex_std_low_mode_request_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:208    .text.speex_std_low_mode_request_handler:0000000000000000 speex_std_low_mode_request_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:256    .text.speex_std_high_mode_request_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:261    .text.speex_std_high_mode_request_handler:0000000000000000 speex_std_high_mode_request_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:309    .text.speex_std_enh_request_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:314    .text.speex_std_enh_request_handler:0000000000000000 speex_std_enh_request_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:362    .text.speex_std_char_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:367    .text.speex_std_char_handler:0000000000000000 speex_std_char_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:414    .text.speex_default_user_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccmna9WP.s:419    .text.speex_default_user_handler:0000000000000000 speex_default_user_handler
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+speex_bits_unpack_unsigned
+speex_bits_advance
+speex_encoder_ctl
+speex_decoder_ctl
+_speex_putc

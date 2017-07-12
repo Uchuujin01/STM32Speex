@@ -1,0 +1,371 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"modes.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.rodata.ltp_params_lbr,"a",%progbits
+  20              		.align	2
+  23              	ltp_params_lbr:
+  24 0000 00000000 		.word	gain_cdbk_lbr
+  25 0004 05000000 		.word	5
+  26 0008 07000000 		.word	7
+  27              		.section	.rodata.split_cb_nb_lbr,"a",%progbits
+  28              		.align	2
+  31              	split_cb_nb_lbr:
+  32 0000 0A000000 		.word	10
+  33 0004 04000000 		.word	4
+  34 0008 00000000 		.word	exc_10_32_table
+  35 000c 05000000 		.word	5
+  36 0010 00000000 		.word	0
+  37              		.section	.rodata.nb_submode3,"a",%progbits
+  38              		.align	2
+  41              	nb_submode3:
+  42 0000 FFFFFFFF 		.word	-1
+  43 0004 00000000 		.word	0
+  44 0008 01000000 		.word	1
+  45 000c 00000000 		.word	0
+  46 0010 00000000 		.word	lsp_quant_lbr
+  47 0014 00000000 		.word	lsp_unquant_lbr
+  48 0018 00000000 		.word	pitch_search_3tap
+  49 001c 00000000 		.word	pitch_unquant_3tap
+  50 0020 00000000 		.word	ltp_params_lbr
+  51 0024 00000000 		.word	split_cb_search_shape_sign
+  52 0028 00000000 		.word	split_cb_shape_sign_unquant
+  53 002c 00000000 		.word	split_cb_nb_lbr
+  54 0030 6646     		.short	18022
+  55 0032 0000     		.space	2
+  56 0034 A0000000 		.word	160
+  57              		.section	.rodata.nb_mode,"a",%progbits
+  58              		.align	2
+  61              	nb_mode:
+  62 0000 A0000000 		.word	160
+  63 0004 28000000 		.word	40
+  64 0008 0A000000 		.word	10
+  65 000c 11000000 		.word	17
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 2
+
+
+  66 0010 90000000 		.word	144
+  67 0014 3373     		.short	29491
+  68 0016 CD4C     		.short	19661
+  69 0018 0700     		.short	7
+  70 001a 0000     		.space	2
+  71 001c 00000000 		.word	0
+  72 0020 00000000 		.word	0
+  73 0024 00000000 		.word	0
+  74 0028 00000000 		.word	nb_submode3
+  75 002c 00000000 		.word	0
+  76 0030 00000000 		.word	0
+  77 0034 00000000 		.word	0
+  78 0038 00000000 		.word	0
+  79 003c 00000000 		.word	0
+  80 0040 00000000 		.word	0
+  81 0044 00000000 		.word	0
+  82 0048 00000000 		.word	0
+  83 004c 00000000 		.word	0
+  84 0050 00000000 		.word	0
+  85 0054 00000000 		.word	0
+  86 0058 00000000 		.word	0
+  87 005c 05000000 		.word	5
+  88 0060 01000000 		.word	1
+  89 0064 08000000 		.word	8
+  90 0068 02000000 		.word	2
+  91 006c 03000000 		.word	3
+  92 0070 03000000 		.word	3
+  93 0074 04000000 		.word	4
+  94 0078 04000000 		.word	4
+  95 007c 05000000 		.word	5
+  96 0080 05000000 		.word	5
+  97 0084 06000000 		.word	6
+  98 0088 07000000 		.word	7
+  99              		.global	speex_nb_mode
+ 100              		.section	.rodata
+ 101              		.align	2
+ 102              	.LC0:
+ 103 0000 6E617272 		.ascii	"narrowband\000"
+ 103      6F776261 
+ 103      6E6400
+ 104              		.section	.rodata.speex_nb_mode,"a",%progbits
+ 105              		.align	2
+ 108              	speex_nb_mode:
+ 109 0000 00000000 		.word	nb_mode
+ 110 0004 00000000 		.word	nb_mode_query
+ 111 0008 00000000 		.word	.LC0
+ 112 000c 00000000 		.word	0
+ 113 0010 04000000 		.word	4
+ 114 0014 00000000 		.word	nb_encoder_init
+ 115 0018 00000000 		.word	nb_encoder_destroy
+ 116 001c 00000000 		.word	nb_encode
+ 117 0020 00000000 		.word	nb_decoder_init
+ 118 0024 00000000 		.word	nb_decoder_destroy
+ 119 0028 00000000 		.word	nb_decode
+ 120 002c 00000000 		.word	nb_encoder_ctl
+ 121 0030 00000000 		.word	nb_decoder_ctl
+ 122              		.section	.text.speex_mode_query,"ax",%progbits
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 3
+
+
+ 123              		.align	2
+ 124              		.global	speex_mode_query
+ 125              		.thumb
+ 126              		.thumb_func
+ 128              	speex_mode_query:
+ 129              	.LFB0:
+ 130              		.file 1 "STM32F10x_Speex_Lib/STM32/libspeex/modes.c"
+   1:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Copyright (C) 2002-2006 Jean-Marc Valin 
+   2:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    File: modes.c
+   3:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+   4:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    Describes the different modes of the codec
+   5:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+   6:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    Redistribution and use in source and binary forms, with or without
+   7:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    modification, are permitted provided that the following conditions
+   8:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    are met:
+   9:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    
+  10:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    - Redistributions of source code must retain the above copyright
+  11:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    notice, this list of conditions and the following disclaimer.
+  12:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    
+  13:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    - Redistributions in binary form must reproduce the above copyright
+  14:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    notice, this list of conditions and the following disclaimer in the
+  15:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    documentation and/or other materials provided with the distribution.
+  16:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    
+  17:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  18:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    contributors may be used to endorse or promote products derived from
+  19:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    
+  21:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  22:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  23:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  24:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  25:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  26:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  27:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  28:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  29:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  30:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  31:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  33:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** */
+  34:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  35:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  36:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /******************************************************************************/ 
+  37:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Modified by STMicroelectronics, MCD Application Team, June 2008:           */
+  38:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* support only submode 3                                                     */ 
+  39:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /******************************************************************************/
+  40:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  41:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** // #ifdef HAVE_CONFIG_H
+  42:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "config.h"
+  43:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** // #endif
+  44:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  45:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "modes.h"
+  46:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "ltp.h"
+  47:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "quant_lsp.h"
+  48:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "cb_search.h"
+  49:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "sb_celp.h"
+  50:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "nb_celp.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 4
+
+
+  51:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "vbr.h"
+  52:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include "arch.h"
+  53:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #include <math.h>
+  54:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  55:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #ifndef NULL
+  56:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #define NULL 0
+  57:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #endif
+  58:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  59:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  60:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Extern declarations for all codebooks we use here */
+  61:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** extern const signed char gain_cdbk_lbr[];
+  62:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** extern const signed char exc_10_32_table[];
+  63:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  64:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  65:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Parameters for Long-Term Prediction (LTP)*/
+  66:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** static const ltp_params ltp_params_lbr = {
+  67:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    gain_cdbk_lbr,
+  68:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    5,
+  69:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    7
+  70:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** };
+  71:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  72:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  73:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Split-VQ innovation parameters for low bit-rate narrowband */
+  74:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** static const split_cb_params split_cb_nb_lbr = {
+  75:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    10,              /*subvect_size*/
+  76:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    4,               /*nb_subvect*/
+  77:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    exc_10_32_table, /*shape_cb*/
+  78:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    5,               /*shape_bits*/
+  79:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    0,
+  80:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** };
+  81:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+  82:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* 8 kbps low bit-rate mode */
+  83:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** static const SpeexSubmode nb_submode3 = {
+  84:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    -1,
+  85:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    0,
+  86:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    1,
+  87:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    0,
+  88:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    /*LSP quantization*/
+  89:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    lsp_quant_lbr,
+  90:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    lsp_unquant_lbr,
+  91:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    /*Pitch quantization*/
+  92:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    pitch_search_3tap,
+  93:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    pitch_unquant_3tap,
+  94:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &ltp_params_lbr,
+  95:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    /*Innovation quantization*/
+  96:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    split_cb_search_shape_sign,
+  97:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    split_cb_shape_sign_unquant,
+  98:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &split_cb_nb_lbr,
+  99:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    QCONST16(.55,15),
+ 100:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    160
+ 101:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** };
+ 102:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 103:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 104:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Default mode for narrowband */
+ 105:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** static const SpeexNBMode nb_mode = {
+ 106:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    160,    /*frameSize*/
+ 107:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    40,     /*subframeSize*/
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 5
+
+
+ 108:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    10,     /*lpcSize*/
+ 109:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    17,     /*pitchStart*/
+ 110:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    144,    /*pitchEnd*/
+ 111:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #ifdef FIXED_POINT
+ 112:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    29491, 19661, /* gamma1, gamma2 */
+ 113:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #else
+ 114:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    0.9, 0.6, /* gamma1, gamma2 */
+ 115:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** #endif
+ 116:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    QCONST16(.0002,15), /*lpc_floor*/
+ 117:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    {NULL, NULL, NULL, &nb_submode3, NULL, NULL, NULL, NULL,
+ 118:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL},
+ 119:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    5,
+ 120:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    {1, 8, 2, 3, 3, 4, 4, 5, 5, 6, 7}
+ 121:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** };
+ 122:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 123:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 124:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** /* Default mode for narrowband */
+ 125:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** const SpeexMode speex_nb_mode = {
+ 126:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_mode,
+ 127:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    nb_mode_query,
+ 128:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    "narrowband",
+ 129:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    0,
+ 130:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    4,
+ 131:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_encoder_init,
+ 132:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_encoder_destroy,
+ 133:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_encode,
+ 134:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_decoder_init,
+ 135:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_decoder_destroy,
+ 136:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_decode,
+ 137:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_encoder_ctl,
+ 138:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    &nb_decoder_ctl,
+ 139:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** };
+ 140:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 141:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 142:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** 
+ 143:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** int speex_mode_query(const SpeexMode *mode, int request, void *ptr)
+ 144:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** {
+ 131              		.loc 1 144 0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 16
+ 134              		@ frame_needed = 1, uses_anonymous_args = 0
+ 135 0000 80B5     		push	{r7, lr}
+ 136              	.LCFI0:
+ 137              		.cfi_def_cfa_offset 8
+ 138              		.cfi_offset 7, -8
+ 139              		.cfi_offset 14, -4
+ 140 0002 84B0     		sub	sp, sp, #16
+ 141              	.LCFI1:
+ 142              		.cfi_def_cfa_offset 24
+ 143 0004 00AF     		add	r7, sp, #0
+ 144              	.LCFI2:
+ 145              		.cfi_def_cfa_register 7
+ 146 0006 F860     		str	r0, [r7, #12]
+ 147 0008 B960     		str	r1, [r7, #8]
+ 148 000a 7A60     		str	r2, [r7, #4]
+ 145:STM32F10x_Speex_Lib/STM32/libspeex/modes.c ****    return mode->query(mode->mode, request, ptr);
+ 149              		.loc 1 145 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 6
+
+
+ 150 000c FB68     		ldr	r3, [r7, #12]
+ 151 000e 5B68     		ldr	r3, [r3, #4]
+ 152 0010 FA68     		ldr	r2, [r7, #12]
+ 153 0012 1068     		ldr	r0, [r2]
+ 154 0014 7A68     		ldr	r2, [r7, #4]
+ 155 0016 B968     		ldr	r1, [r7, #8]
+ 156 0018 9847     		blx	r3
+ 157 001a 0346     		mov	r3, r0
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/modes.c **** }
+ 158              		.loc 1 146 0
+ 159 001c 1846     		mov	r0, r3
+ 160 001e 1037     		adds	r7, r7, #16
+ 161              	.LCFI3:
+ 162              		.cfi_def_cfa_offset 8
+ 163 0020 BD46     		mov	sp, r7
+ 164              	.LCFI4:
+ 165              		.cfi_def_cfa_register 13
+ 166              		@ sp needed
+ 167 0022 80BD     		pop	{r7, pc}
+ 168              		.cfi_endproc
+ 169              	.LFE0:
+ 171              		.text
+ 172              	.Letext0:
+ 173              		.file 2 "Inc/speex/speex_bits.h"
+ 174              		.file 3 "Inc/speex/speex_config_types.h"
+ 175              		.file 4 "Inc/speex/speex.h"
+ 176              		.file 5 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ 177              		.file 6 "STM32F10x_Speex_Lib/libspeex/modes.h"
+ 178              		.file 7 "STM32F10x_Speex_Lib/libspeex/ltp.h"
+ 179              		.file 8 "STM32F10x_Speex_Lib/libspeex/cb_search.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 modes.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:20     .rodata.ltp_params_lbr:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:23     .rodata.ltp_params_lbr:0000000000000000 ltp_params_lbr
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:28     .rodata.split_cb_nb_lbr:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:31     .rodata.split_cb_nb_lbr:0000000000000000 split_cb_nb_lbr
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:38     .rodata.nb_submode3:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:41     .rodata.nb_submode3:0000000000000000 nb_submode3
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:58     .rodata.nb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:61     .rodata.nb_mode:0000000000000000 nb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:108    .rodata.speex_nb_mode:0000000000000000 speex_nb_mode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:101    .rodata:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:105    .rodata.speex_nb_mode:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:123    .text.speex_mode_query:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccy1RUbI.s:128    .text.speex_mode_query:0000000000000000 speex_mode_query
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+gain_cdbk_lbr
+exc_10_32_table
+lsp_quant_lbr
+lsp_unquant_lbr
+pitch_search_3tap
+pitch_unquant_3tap
+split_cb_search_shape_sign
+split_cb_shape_sign_unquant
+nb_mode_query
+nb_encoder_init
+nb_encoder_destroy
+nb_encode
+nb_decoder_init
+nb_decoder_destroy
+nb_decode
+nb_encoder_ctl
+nb_decoder_ctl

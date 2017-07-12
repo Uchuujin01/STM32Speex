@@ -1,0 +1,576 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"gain_table.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	gain_cdbk_nb
+  20              		.section	.rodata.gain_cdbk_nb,"a",%progbits
+  21              		.align	2
+  24              	gain_cdbk_nb:
+  25 0000 E0       		.byte	-32
+  26 0001 E0       		.byte	-32
+  27 0002 E0       		.byte	-32
+  28 0003 00       		.byte	0
+  29 0004 E4       		.byte	-28
+  30 0005 BD       		.byte	-67
+  31 0006 FB       		.byte	-5
+  32 0007 21       		.byte	33
+  33 0008 D6       		.byte	-42
+  34 0009 FA       		.byte	-6
+  35 000a E0       		.byte	-32
+  36 000b 12       		.byte	18
+  37 000c C7       		.byte	-57
+  38 000d F6       		.byte	-10
+  39 000e CA       		.byte	-54
+  40 000f 23       		.byte	35
+  41 0010 F0       		.byte	-16
+  42 0011 1B       		.byte	27
+  43 0012 D7       		.byte	-41
+  44 0013 2A       		.byte	42
+  45 0014 13       		.byte	19
+  46 0015 ED       		.byte	-19
+  47 0016 D8       		.byte	-40
+  48 0017 24       		.byte	36
+  49 0018 D3       		.byte	-45
+  50 0019 18       		.byte	24
+  51 001a EB       		.byte	-21
+  52 001b 28       		.byte	40
+  53 001c F8       		.byte	-8
+  54 001d F2       		.byte	-14
+  55 001e EE       		.byte	-18
+  56 001f 1C       		.byte	28
+  57 0020 01       		.byte	1
+  58 0021 0E       		.byte	14
+  59 0022 C6       		.byte	-58
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 2
+
+
+  60 0023 35       		.byte	53
+  61 0024 EE       		.byte	-18
+  62 0025 A8       		.byte	-88
+  63 0026 D9       		.byte	-39
+  64 0027 27       		.byte	39
+  65 0028 DA       		.byte	-38
+  66 0029 15       		.byte	21
+  67 002a EE       		.byte	-18
+  68 002b 25       		.byte	37
+  69 002c ED       		.byte	-19
+  70 002d 14       		.byte	20
+  71 002e D5       		.byte	-43
+  72 002f 26       		.byte	38
+  73 0030 0A       		.byte	10
+  74 0031 11       		.byte	17
+  75 0032 D0       		.byte	-48
+  76 0033 36       		.byte	54
+  77 0034 CC       		.byte	-52
+  78 0035 C6       		.byte	-58
+  79 0036 F3       		.byte	-13
+  80 0037 21       		.byte	33
+  81 0038 D4       		.byte	-44
+  82 0039 FF       		.byte	-1
+  83 003a F5       		.byte	-11
+  84 003b 20       		.byte	32
+  85 003c F4       		.byte	-12
+  86 003d F5       		.byte	-11
+  87 003e DE       		.byte	-34
+  88 003f 16       		.byte	22
+  89 0040 0E       		.byte	14
+  90 0041 00       		.byte	0
+  91 0042 D2       		.byte	-46
+  92 0043 2E       		.byte	46
+  93 0044 DB       		.byte	-37
+  94 0045 DD       		.byte	-35
+  95 0046 DE       		.byte	-34
+  96 0047 05       		.byte	5
+  97 0048 E7       		.byte	-25
+  98 0049 2C       		.byte	44
+  99 004a E2       		.byte	-30
+ 100 004b 2B       		.byte	43
+ 101 004c 06       		.byte	6
+ 102 004d FC       		.byte	-4
+ 103 004e C1       		.byte	-63
+ 104 004f 31       		.byte	49
+ 105 0050 E1       		.byte	-31
+ 106 0051 2B       		.byte	43
+ 107 0052 D7       		.byte	-41
+ 108 0053 2B       		.byte	43
+ 109 0054 E9       		.byte	-23
+ 110 0055 1E       		.byte	30
+ 111 0056 D5       		.byte	-43
+ 112 0057 29       		.byte	41
+ 113 0058 D5       		.byte	-43
+ 114 0059 1A       		.byte	26
+ 115 005a F2       		.byte	-14
+ 116 005b 2C       		.byte	44
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 3
+
+
+ 117 005c DF       		.byte	-33
+ 118 005d 01       		.byte	1
+ 119 005e F3       		.byte	-13
+ 120 005f 1B       		.byte	27
+ 121 0060 F3       		.byte	-13
+ 122 0061 12       		.byte	18
+ 123 0062 DB       		.byte	-37
+ 124 0063 25       		.byte	37
+ 125 0064 D2       		.byte	-46
+ 126 0065 B7       		.byte	-73
+ 127 0066 D3       		.byte	-45
+ 128 0067 22       		.byte	34
+ 129 0068 DC       		.byte	-36
+ 130 0069 18       		.byte	24
+ 131 006a E7       		.byte	-25
+ 132 006b 22       		.byte	34
+ 133 006c DC       		.byte	-36
+ 134 006d F5       		.byte	-11
+ 135 006e EC       		.byte	-20
+ 136 006f 13       		.byte	19
+ 137 0070 E7       		.byte	-25
+ 138 0071 0C       		.byte	12
+ 139 0072 EE       		.byte	-18
+ 140 0073 21       		.byte	33
+ 141 0074 DC       		.byte	-36
+ 142 0075 BB       		.byte	-69
+ 143 0076 C5       		.byte	-59
+ 144 0077 22       		.byte	34
+ 145 0078 D3       		.byte	-45
+ 146 0079 06       		.byte	6
+ 147 007a 08       		.byte	8
+ 148 007b 2E       		.byte	46
+ 149 007c EA       		.byte	-22
+ 150 007d F2       		.byte	-14
+ 151 007e E8       		.byte	-24
+ 152 007f 12       		.byte	18
+ 153 0080 FF       		.byte	-1
+ 154 0081 0D       		.byte	13
+ 155 0082 D4       		.byte	-44
+ 156 0083 2C       		.byte	44
+ 157 0084 D9       		.byte	-39
+ 158 0085 D0       		.byte	-48
+ 159 0086 E6       		.byte	-26
+ 160 0087 0F       		.byte	15
+ 161 0088 E0       		.byte	-32
+ 162 0089 1F       		.byte	31
+ 163 008a DB       		.byte	-37
+ 164 008b 22       		.byte	34
+ 165 008c DF       		.byte	-33
+ 166 008d 0F       		.byte	15
+ 167 008e D2       		.byte	-46
+ 168 008f 1F       		.byte	31
+ 169 0090 E8       		.byte	-24
+ 170 0091 1E       		.byte	30
+ 171 0092 DC       		.byte	-36
+ 172 0093 25       		.byte	37
+ 173 0094 D7       		.byte	-41
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 4
+
+
+ 174 0095 1F       		.byte	31
+ 175 0096 E9       		.byte	-23
+ 176 0097 29       		.byte	41
+ 177 0098 CE       		.byte	-50
+ 178 0099 16       		.byte	22
+ 179 009a FC       		.byte	-4
+ 180 009b 32       		.byte	50
+ 181 009c EA       		.byte	-22
+ 182 009d 02       		.byte	2
+ 183 009e EB       		.byte	-21
+ 184 009f 1C       		.byte	28
+ 185 00a0 EF       		.byte	-17
+ 186 00a1 1E       		.byte	30
+ 187 00a2 DE       		.byte	-34
+ 188 00a3 28       		.byte	40
+ 189 00a4 F9       		.byte	-7
+ 190 00a5 C4       		.byte	-60
+ 191 00a6 E4       		.byte	-28
+ 192 00a7 1D       		.byte	29
+ 193 00a8 DA       		.byte	-38
+ 194 00a9 2A       		.byte	42
+ 195 00aa E4       		.byte	-28
+ 196 00ab 2A       		.byte	42
+ 197 00ac D4       		.byte	-44
+ 198 00ad F5       		.byte	-11
+ 199 00ae 15       		.byte	21
+ 200 00af 2B       		.byte	43
+ 201 00b0 F0       		.byte	-16
+ 202 00b1 08       		.byte	8
+ 203 00b2 D4       		.byte	-44
+ 204 00b3 22       		.byte	34
+ 205 00b4 D9       		.byte	-39
+ 206 00b5 C9       		.byte	-55
+ 207 00b6 D5       		.byte	-43
+ 208 00b7 15       		.byte	21
+ 209 00b8 F5       		.byte	-11
+ 210 00b9 DD       		.byte	-35
+ 211 00ba 1A       		.byte	26
+ 212 00bb 29       		.byte	41
+ 213 00bc F7       		.byte	-9
+ 214 00bd 00       		.byte	0
+ 215 00be DE       		.byte	-34
+ 216 00bf 1D       		.byte	29
+ 217 00c0 F8       		.byte	-8
+ 218 00c1 79       		.byte	121
+ 219 00c2 AF       		.byte	-81
+ 220 00c3 71       		.byte	113
+ 221 00c4 07       		.byte	7
+ 222 00c5 F0       		.byte	-16
+ 223 00c6 EA       		.byte	-22
+ 224 00c7 21       		.byte	33
+ 225 00c8 DB       		.byte	-37
+ 226 00c9 21       		.byte	33
+ 227 00ca E1       		.byte	-31
+ 228 00cb 24       		.byte	36
+ 229 00cc E5       		.byte	-27
+ 230 00cd F9       		.byte	-7
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 5
+
+
+ 231 00ce DC       		.byte	-36
+ 232 00cf 11       		.byte	17
+ 233 00d0 DE       		.byte	-34
+ 234 00d1 46       		.byte	70
+ 235 00d2 C7       		.byte	-57
+ 236 00d3 41       		.byte	65
+ 237 00d4 DB       		.byte	-37
+ 238 00d5 F5       		.byte	-11
+ 239 00d6 D0       		.byte	-48
+ 240 00d7 15       		.byte	21
+ 241 00d8 D8       		.byte	-40
+ 242 00d9 11       		.byte	17
+ 243 00da FF       		.byte	-1
+ 244 00db 2C       		.byte	44
+ 245 00dc DF       		.byte	-33
+ 246 00dd 06       		.byte	6
+ 247 00de FA       		.byte	-6
+ 248 00df 21       		.byte	33
+ 249 00e0 F7       		.byte	-9
+ 250 00e1 00       		.byte	0
+ 251 00e2 EC       		.byte	-20
+ 252 00e3 22       		.byte	34
+ 253 00e4 EB       		.byte	-21
+ 254 00e5 45       		.byte	69
+ 255 00e6 DF       		.byte	-33
+ 256 00e7 39       		.byte	57
+ 257 00e8 E3       		.byte	-29
+ 258 00e9 21       		.byte	33
+ 259 00ea E1       		.byte	-31
+ 260 00eb 23       		.byte	35
+ 261 00ec C9       		.byte	-55
+ 262 00ed 0C       		.byte	12
+ 263 00ee FF       		.byte	-1
+ 264 00ef 31       		.byte	49
+ 265 00f0 DF       		.byte	-33
+ 266 00f1 1B       		.byte	27
+ 267 00f2 EA       		.byte	-22
+ 268 00f3 23       		.byte	35
+ 269 00f4 CE       		.byte	-50
+ 270 00f5 DF       		.byte	-33
+ 271 00f6 D1       		.byte	-47
+ 272 00f7 11       		.byte	17
+ 273 00f8 CE       		.byte	-50
+ 274 00f9 36       		.byte	54
+ 275 00fa 33       		.byte	51
+ 276 00fb 5E       		.byte	94
+ 277 00fc FF       		.byte	-1
+ 278 00fd FB       		.byte	-5
+ 279 00fe D4       		.byte	-44
+ 280 00ff 23       		.byte	35
+ 281 0100 FC       		.byte	-4
+ 282 0101 16       		.byte	22
+ 283 0102 D8       		.byte	-40
+ 284 0103 2D       		.byte	45
+ 285 0104 D9       		.byte	-39
+ 286 0105 BE       		.byte	-66
+ 287 0106 E7       		.byte	-25
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 6
+
+
+ 288 0107 18       		.byte	24
+ 289 0108 DF       		.byte	-33
+ 290 0109 01       		.byte	1
+ 291 010a E6       		.byte	-26
+ 292 010b 14       		.byte	20
+ 293 010c E8       		.byte	-24
+ 294 010d E9       		.byte	-23
+ 295 010e E7       		.byte	-25
+ 296 010f 0C       		.byte	12
+ 297 0110 F5       		.byte	-11
+ 298 0111 15       		.byte	21
+ 299 0112 D3       		.byte	-45
+ 300 0113 2C       		.byte	44
+ 301 0114 E7       		.byte	-25
+ 302 0115 D3       		.byte	-45
+ 303 0116 ED       		.byte	-19
+ 304 0117 11       		.byte	17
+ 305 0118 D5       		.byte	-43
+ 306 0119 69       		.byte	105
+ 307 011a F0       		.byte	-16
+ 308 011b 52       		.byte	82
+ 309 011c 05       		.byte	5
+ 310 011d EB       		.byte	-21
+ 311 011e 01       		.byte	1
+ 312 011f 29       		.byte	41
+ 313 0120 F0       		.byte	-16
+ 314 0121 0B       		.byte	11
+ 315 0122 DF       		.byte	-33
+ 316 0123 1E       		.byte	30
+ 317 0124 F3       		.byte	-13
+ 318 0125 9D       		.byte	-99
+ 319 0126 FC       		.byte	-4
+ 320 0127 39       		.byte	57
+ 321 0128 DB       		.byte	-37
+ 322 0129 21       		.byte	33
+ 323 012a F1       		.byte	-15
+ 324 012b 2C       		.byte	44
+ 325 012c E7       		.byte	-25
+ 326 012d 25       		.byte	37
+ 327 012e C1       		.byte	-63
+ 328 012f 36       		.byte	54
+ 329 0130 DC       		.byte	-36
+ 330 0131 18       		.byte	24
+ 331 0132 E1       		.byte	-31
+ 332 0133 1F       		.byte	31
+ 333 0134 CB       		.byte	-53
+ 334 0135 C8       		.byte	-56
+ 335 0136 DA       		.byte	-38
+ 336 0137 1A       		.byte	26
+ 337 0138 D7       		.byte	-41
+ 338 0139 FC       		.byte	-4
+ 339 013a 04       		.byte	4
+ 340 013b 25       		.byte	37
+ 341 013c DF       		.byte	-33
+ 342 013d 0D       		.byte	13
+ 343 013e E2       		.byte	-30
+ 344 013f 18       		.byte	24
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 7
+
+
+ 345 0140 31       		.byte	49
+ 346 0141 34       		.byte	52
+ 347 0142 A2       		.byte	-94
+ 348 0143 72       		.byte	114
+ 349 0144 FB       		.byte	-5
+ 350 0145 E2       		.byte	-30
+ 351 0146 F1       		.byte	-15
+ 352 0147 17       		.byte	23
+ 353 0148 01       		.byte	1
+ 354 0149 26       		.byte	38
+ 355 014a D8       		.byte	-40
+ 356 014b 38       		.byte	56
+ 357 014c E9       		.byte	-23
+ 358 014d 0C       		.byte	12
+ 359 014e DC       		.byte	-36
+ 360 014f 1D       		.byte	29
+ 361 0150 EF       		.byte	-17
+ 362 0151 28       		.byte	40
+ 363 0152 D1       		.byte	-47
+ 364 0153 33       		.byte	51
+ 365 0154 DB       		.byte	-37
+ 366 0155 D7       		.byte	-41
+ 367 0156 D9       		.byte	-39
+ 368 0157 0B       		.byte	11
+ 369 0158 CF       		.byte	-49
+ 370 0159 22       		.byte	34
+ 371 015a 00       		.byte	0
+ 372 015b 3A       		.byte	58
+ 373 015c EE       		.byte	-18
+ 374 015d F9       		.byte	-7
+ 375 015e FC       		.byte	-4
+ 376 015f 22       		.byte	34
+ 377 0160 F0       		.byte	-16
+ 378 0161 11       		.byte	17
+ 379 0162 E5       		.byte	-27
+ 380 0163 23       		.byte	35
+ 381 0164 1E       		.byte	30
+ 382 0165 05       		.byte	5
+ 383 0166 C2       		.byte	-62
+ 384 0167 41       		.byte	65
+ 385 0168 04       		.byte	4
+ 386 0169 30       		.byte	48
+ 387 016a BC       		.byte	-68
+ 388 016b 4C       		.byte	76
+ 389 016c D5       		.byte	-43
+ 390 016d 0B       		.byte	11
+ 391 016e F5       		.byte	-11
+ 392 016f 26       		.byte	38
+ 393 0170 EE       		.byte	-18
+ 394 0171 13       		.byte	19
+ 395 0172 F1       		.byte	-15
+ 396 0173 29       		.byte	41
+ 397 0174 E9       		.byte	-23
+ 398 0175 C2       		.byte	-62
+ 399 0176 D9       		.byte	-39
+ 400 0177 17       		.byte	23
+ 401 0178 D6       		.byte	-42
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 8
+
+
+ 402 0179 0A       		.byte	10
+ 403 017a FE       		.byte	-2
+ 404 017b 29       		.byte	41
+ 405 017c EB       		.byte	-21
+ 406 017d F3       		.byte	-13
+ 407 017e F3       		.byte	-13
+ 408 017f 19       		.byte	25
+ 409 0180 F7       		.byte	-9
+ 410 0181 0D       		.byte	13
+ 411 0182 D1       		.byte	-47
+ 412 0183 2A       		.byte	42
+ 413 0184 E9       		.byte	-23
+ 414 0185 C2       		.byte	-62
+ 415 0186 E8       		.byte	-24
+ 416 0187 18       		.byte	24
+ 417 0188 D4       		.byte	-44
+ 418 0189 3C       		.byte	60
+ 419 018a EB       		.byte	-21
+ 420 018b 3A       		.byte	58
+ 421 018c EE       		.byte	-18
+ 422 018d FD       		.byte	-3
+ 423 018e CC       		.byte	-52
+ 424 018f 20       		.byte	32
+ 425 0190 EA       		.byte	-22
+ 426 0191 16       		.byte	22
+ 427 0192 DC       		.byte	-36
+ 428 0193 22       		.byte	34
+ 429 0194 B5       		.byte	-75
+ 430 0195 39       		.byte	57
+ 431 0196 10       		.byte	16
+ 432 0197 5A       		.byte	90
+ 433 0198 ED       		.byte	-19
+ 434 0199 03       		.byte	3
+ 435 019a 0A       		.byte	10
+ 436 019b 2D       		.byte	45
+ 437 019c E3       		.byte	-29
+ 438 019d 17       		.byte	23
+ 439 019e DA       		.byte	-38
+ 440 019f 20       		.byte	32
+ 441 01a0 FB       		.byte	-5
+ 442 01a1 C2       		.byte	-62
+ 443 01a2 CD       		.byte	-51
+ 444 01a3 26       		.byte	38
+ 445 01a4 CD       		.byte	-51
+ 446 01a5 28       		.byte	40
+ 447 01a6 EE       		.byte	-18
+ 448 01a7 35       		.byte	53
+ 449 01a8 D6       		.byte	-42
+ 450 01a9 0D       		.byte	13
+ 451 01aa E8       		.byte	-24
+ 452 01ab 20       		.byte	32
+ 453 01ac DE       		.byte	-34
+ 454 01ad 0E       		.byte	14
+ 455 01ae EC       		.byte	-20
+ 456 01af 1E       		.byte	30
+ 457 01b0 C8       		.byte	-56
+ 458 01b1 B5       		.byte	-75
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 9
+
+
+ 459 01b2 E6       		.byte	-26
+ 460 01b3 25       		.byte	37
+ 461 01b4 E6       		.byte	-26
+ 462 01b5 20       		.byte	32
+ 463 01b6 0F       		.byte	15
+ 464 01b7 3B       		.byte	59
+ 465 01b8 E6       		.byte	-26
+ 466 01b9 11       		.byte	17
+ 467 01ba E3       		.byte	-29
+ 468 01bb 1D       		.byte	29
+ 469 01bc F9       		.byte	-7
+ 470 01bd 1C       		.byte	28
+ 471 01be CC       		.byte	-52
+ 472 01bf 35       		.byte	53
+ 473 01c0 F4       		.byte	-12
+ 474 01c1 E2       		.byte	-30
+ 475 01c2 05       		.byte	5
+ 476 01c3 1E       		.byte	30
+ 477 01c4 FB       		.byte	-5
+ 478 01c5 D0       		.byte	-48
+ 479 01c6 FB       		.byte	-5
+ 480 01c7 23       		.byte	35
+ 481 01c8 02       		.byte	2
+ 482 01c9 02       		.byte	2
+ 483 01ca D5       		.byte	-43
+ 484 01cb 28       		.byte	40
+ 485 01cc 15       		.byte	21
+ 486 01cd 10       		.byte	16
+ 487 01ce 10       		.byte	16
+ 488 01cf 4B       		.byte	75
+ 489 01d0 E7       		.byte	-25
+ 490 01d1 D3       		.byte	-45
+ 491 01d2 E0       		.byte	-32
+ 492 01d3 0A       		.byte	10
+ 493 01d4 D5       		.byte	-43
+ 494 01d5 12       		.byte	18
+ 495 01d6 F6       		.byte	-10
+ 496 01d7 2A       		.byte	42
+ 497 01d8 09       		.byte	9
+ 498 01d9 00       		.byte	0
+ 499 01da FF       		.byte	-1
+ 500 01db 34       		.byte	52
+ 501 01dc FF       		.byte	-1
+ 502 01dd 07       		.byte	7
+ 503 01de E2       		.byte	-30
+ 504 01df 24       		.byte	36
+ 505 01e0 13       		.byte	19
+ 506 01e1 D0       		.byte	-48
+ 507 01e2 FC       		.byte	-4
+ 508 01e3 30       		.byte	48
+ 509 01e4 E4       		.byte	-28
+ 510 01e5 19       		.byte	25
+ 511 01e6 E3       		.byte	-29
+ 512 01e7 20       		.byte	32
+ 513 01e8 EA       		.byte	-22
+ 514 01e9 00       		.byte	0
+ 515 01ea E1       		.byte	-31
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 10
+
+
+ 516 01eb 16       		.byte	22
+ 517 01ec E0       		.byte	-32
+ 518 01ed 11       		.byte	17
+ 519 01ee F6       		.byte	-10
+ 520 01ef 24       		.byte	36
+ 521 01f0 C0       		.byte	-64
+ 522 01f1 D7       		.byte	-41
+ 523 01f2 C2       		.byte	-62
+ 524 01f3 24       		.byte	36
+ 525 01f4 CC       		.byte	-52
+ 526 01f5 0F       		.byte	15
+ 527 01f6 10       		.byte	16
+ 528 01f7 3A       		.byte	58
+ 529 01f8 E2       		.byte	-30
+ 530 01f9 EA       		.byte	-22
+ 531 01fa E0       		.byte	-32
+ 532 01fb 06       		.byte	6
+ 533 01fc F9       		.byte	-7
+ 534 01fd 09       		.byte	9
+ 535 01fe DA       		.byte	-38
+ 536 01ff 24       		.byte	36
+ 537              		.text
+ 538              	.Letext0:
+ 539              		.file 1 "STM32F10x_Speex_Lib/libspeex/gain_table.c"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 gain_table.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s:24     .rodata.gain_cdbk_nb:0000000000000000 gain_cdbk_nb
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccbU7JHB.s:21     .rodata.gain_cdbk_nb:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,2243 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"stereo.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.spx_ilog2,"ax",%progbits
+  20              		.align	2
+  21              		.thumb
+  22              		.thumb_func
+  24              	spx_ilog2:
+  25              	.LFB0:
+  26              		.file 1 "STM32F10x_Speex_Lib/libspeex/math_approx.h"
+   1:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* Copyright (C) 2002 Jean-Marc Valin */
+   2:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /**
+   3:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    @file math_approx.h
+   4:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    @brief Various math approximation functions for Speex
+   5:STM32F10x_Speex_Lib/libspeex/math_approx.h **** */
+   6:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /*
+   7:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    modification, are permitted provided that the following conditions
+   9:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    are met:
+  10:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  11:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Redistributions of source code must retain the above copyright
+  12:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    notice, this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  14:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  18:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  19:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    contributors may be used to endorse or promote products derived from
+  20:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    this software without specific prior written permission.
+  21:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  22:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  23:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  24:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  25:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  26:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  27:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  28:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  29:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  30:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  31:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  32:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 2
+
+
+  33:STM32F10x_Speex_Lib/libspeex/math_approx.h **** */
+  34:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  35:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifndef MATH_APPROX_H
+  36:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define MATH_APPROX_H
+  37:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  38:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #include "arch.h"
+  39:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  40:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifndef FIXED_POINT
+  41:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  42:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_sqrt sqrt
+  43:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_acos acos
+  44:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_exp exp
+  45:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_cos_norm(x) (cos((.5f*M_PI)*(x)))
+  46:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_atan atan
+  47:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  48:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /** Generate a pseudo-random number */
+  49:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t speex_rand(spx_word16_t std, spx_int32_t *seed)
+  50:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+  51:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    const unsigned int jflone = 0x3f800000;
+  52:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    const unsigned int jflmsk = 0x007fffff;
+  53:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    union {int i; float f;} ran;
+  54:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    *seed = 1664525 * *seed + 1013904223;
+  55:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ran.i = jflone | (jflmsk & *seed);
+  56:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ran.f -= 1.5;
+  57:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return 3.4642*std*ran.f;
+  58:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+  59:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  60:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  61:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #endif
+  62:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  63:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  64:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_int16_t spx_ilog2(spx_uint32_t x)
+  65:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+  27              		.loc 1 65 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 24
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  66:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int r=0;
+  43              		.loc 1 66 0
+  44 0008 0023     		movs	r3, #0
+  45 000a FB60     		str	r3, [r7, #12]
+  67:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=(spx_int32_t)65536)
+  46              		.loc 1 67 0
+  47 000c 7B68     		ldr	r3, [r7, #4]
+  48 000e B3F5803F 		cmp	r3, #65536
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 3
+
+
+  49 0012 05D3     		bcc	.L2
+  68:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  69:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 16;
+  50              		.loc 1 69 0
+  51 0014 7B68     		ldr	r3, [r7, #4]
+  52 0016 1B0C     		lsrs	r3, r3, #16
+  53 0018 7B60     		str	r3, [r7, #4]
+  70:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 16;
+  54              		.loc 1 70 0
+  55 001a FB68     		ldr	r3, [r7, #12]
+  56 001c 1033     		adds	r3, r3, #16
+  57 001e FB60     		str	r3, [r7, #12]
+  58              	.L2:
+  71:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  72:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=256)
+  59              		.loc 1 72 0
+  60 0020 7B68     		ldr	r3, [r7, #4]
+  61 0022 FF2B     		cmp	r3, #255
+  62 0024 05D9     		bls	.L3
+  73:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  74:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 8;
+  63              		.loc 1 74 0
+  64 0026 7B68     		ldr	r3, [r7, #4]
+  65 0028 1B0A     		lsrs	r3, r3, #8
+  66 002a 7B60     		str	r3, [r7, #4]
+  75:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 8;
+  67              		.loc 1 75 0
+  68 002c FB68     		ldr	r3, [r7, #12]
+  69 002e 0833     		adds	r3, r3, #8
+  70 0030 FB60     		str	r3, [r7, #12]
+  71              	.L3:
+  76:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  77:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=16)
+  72              		.loc 1 77 0
+  73 0032 7B68     		ldr	r3, [r7, #4]
+  74 0034 0F2B     		cmp	r3, #15
+  75 0036 05D9     		bls	.L4
+  78:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  79:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 4;
+  76              		.loc 1 79 0
+  77 0038 7B68     		ldr	r3, [r7, #4]
+  78 003a 1B09     		lsrs	r3, r3, #4
+  79 003c 7B60     		str	r3, [r7, #4]
+  80:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 4;
+  80              		.loc 1 80 0
+  81 003e FB68     		ldr	r3, [r7, #12]
+  82 0040 0433     		adds	r3, r3, #4
+  83 0042 FB60     		str	r3, [r7, #12]
+  84              	.L4:
+  81:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  82:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=4)
+  85              		.loc 1 82 0
+  86 0044 7B68     		ldr	r3, [r7, #4]
+  87 0046 032B     		cmp	r3, #3
+  88 0048 05D9     		bls	.L5
+  83:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  84:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 2;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 4
+
+
+  89              		.loc 1 84 0
+  90 004a 7B68     		ldr	r3, [r7, #4]
+  91 004c 9B08     		lsrs	r3, r3, #2
+  92 004e 7B60     		str	r3, [r7, #4]
+  85:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 2;
+  93              		.loc 1 85 0
+  94 0050 FB68     		ldr	r3, [r7, #12]
+  95 0052 0233     		adds	r3, r3, #2
+  96 0054 FB60     		str	r3, [r7, #12]
+  97              	.L5:
+  86:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  87:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=2)
+  98              		.loc 1 87 0
+  99 0056 7B68     		ldr	r3, [r7, #4]
+ 100 0058 012B     		cmp	r3, #1
+ 101 005a 02D9     		bls	.L6
+  88:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  89:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 1;
+ 102              		.loc 1 89 0
+ 103 005c FB68     		ldr	r3, [r7, #12]
+ 104 005e 0133     		adds	r3, r3, #1
+ 105 0060 FB60     		str	r3, [r7, #12]
+ 106              	.L6:
+  90:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  91:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return r;
+ 107              		.loc 1 91 0
+ 108 0062 FB68     		ldr	r3, [r7, #12]
+ 109 0064 1BB2     		sxth	r3, r3
+  92:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 110              		.loc 1 92 0
+ 111 0066 1846     		mov	r0, r3
+ 112 0068 1437     		adds	r7, r7, #20
+ 113              	.LCFI3:
+ 114              		.cfi_def_cfa_offset 4
+ 115 006a BD46     		mov	sp, r7
+ 116              	.LCFI4:
+ 117              		.cfi_def_cfa_register 13
+ 118              		@ sp needed
+ 119 006c 80BC     		pop	{r7}
+ 120              	.LCFI5:
+ 121              		.cfi_restore 7
+ 122              		.cfi_def_cfa_offset 0
+ 123 006e 7047     		bx	lr
+ 124              		.cfi_endproc
+ 125              	.LFE0:
+ 127              		.section	.text.spx_ilog4,"ax",%progbits
+ 128              		.align	2
+ 129              		.thumb
+ 130              		.thumb_func
+ 132              	spx_ilog4:
+ 133              	.LFB1:
+  93:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  94:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_int16_t spx_ilog4(spx_uint32_t x)
+  95:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 134              		.loc 1 95 0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 16
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 5
+
+
+ 137              		@ frame_needed = 1, uses_anonymous_args = 0
+ 138              		@ link register save eliminated.
+ 139 0000 80B4     		push	{r7}
+ 140              	.LCFI6:
+ 141              		.cfi_def_cfa_offset 4
+ 142              		.cfi_offset 7, -4
+ 143 0002 85B0     		sub	sp, sp, #20
+ 144              	.LCFI7:
+ 145              		.cfi_def_cfa_offset 24
+ 146 0004 00AF     		add	r7, sp, #0
+ 147              	.LCFI8:
+ 148              		.cfi_def_cfa_register 7
+ 149 0006 7860     		str	r0, [r7, #4]
+  96:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int r=0;
+ 150              		.loc 1 96 0
+ 151 0008 0023     		movs	r3, #0
+ 152 000a FB60     		str	r3, [r7, #12]
+  97:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=(spx_int32_t)65536)
+ 153              		.loc 1 97 0
+ 154 000c 7B68     		ldr	r3, [r7, #4]
+ 155 000e B3F5803F 		cmp	r3, #65536
+ 156 0012 05D3     		bcc	.L9
+  98:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  99:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 16;
+ 157              		.loc 1 99 0
+ 158 0014 7B68     		ldr	r3, [r7, #4]
+ 159 0016 1B0C     		lsrs	r3, r3, #16
+ 160 0018 7B60     		str	r3, [r7, #4]
+ 100:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 8;
+ 161              		.loc 1 100 0
+ 162 001a FB68     		ldr	r3, [r7, #12]
+ 163 001c 0833     		adds	r3, r3, #8
+ 164 001e FB60     		str	r3, [r7, #12]
+ 165              	.L9:
+ 101:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 102:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=256)
+ 166              		.loc 1 102 0
+ 167 0020 7B68     		ldr	r3, [r7, #4]
+ 168 0022 FF2B     		cmp	r3, #255
+ 169 0024 05D9     		bls	.L10
+ 103:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 104:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 8;
+ 170              		.loc 1 104 0
+ 171 0026 7B68     		ldr	r3, [r7, #4]
+ 172 0028 1B0A     		lsrs	r3, r3, #8
+ 173 002a 7B60     		str	r3, [r7, #4]
+ 105:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 4;
+ 174              		.loc 1 105 0
+ 175 002c FB68     		ldr	r3, [r7, #12]
+ 176 002e 0433     		adds	r3, r3, #4
+ 177 0030 FB60     		str	r3, [r7, #12]
+ 178              	.L10:
+ 106:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 107:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=16)
+ 179              		.loc 1 107 0
+ 180 0032 7B68     		ldr	r3, [r7, #4]
+ 181 0034 0F2B     		cmp	r3, #15
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 6
+
+
+ 182 0036 05D9     		bls	.L11
+ 108:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 109:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 4;
+ 183              		.loc 1 109 0
+ 184 0038 7B68     		ldr	r3, [r7, #4]
+ 185 003a 1B09     		lsrs	r3, r3, #4
+ 186 003c 7B60     		str	r3, [r7, #4]
+ 110:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 2;
+ 187              		.loc 1 110 0
+ 188 003e FB68     		ldr	r3, [r7, #12]
+ 189 0040 0233     		adds	r3, r3, #2
+ 190 0042 FB60     		str	r3, [r7, #12]
+ 191              	.L11:
+ 111:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 112:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=4)
+ 192              		.loc 1 112 0
+ 193 0044 7B68     		ldr	r3, [r7, #4]
+ 194 0046 032B     		cmp	r3, #3
+ 195 0048 02D9     		bls	.L12
+ 113:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 114:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 1;
+ 196              		.loc 1 114 0
+ 197 004a FB68     		ldr	r3, [r7, #12]
+ 198 004c 0133     		adds	r3, r3, #1
+ 199 004e FB60     		str	r3, [r7, #12]
+ 200              	.L12:
+ 115:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 116:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return r;
+ 201              		.loc 1 116 0
+ 202 0050 FB68     		ldr	r3, [r7, #12]
+ 203 0052 1BB2     		sxth	r3, r3
+ 117:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 204              		.loc 1 117 0
+ 205 0054 1846     		mov	r0, r3
+ 206 0056 1437     		adds	r7, r7, #20
+ 207              	.LCFI9:
+ 208              		.cfi_def_cfa_offset 4
+ 209 0058 BD46     		mov	sp, r7
+ 210              	.LCFI10:
+ 211              		.cfi_def_cfa_register 13
+ 212              		@ sp needed
+ 213 005a 80BC     		pop	{r7}
+ 214              	.LCFI11:
+ 215              		.cfi_restore 7
+ 216              		.cfi_def_cfa_offset 0
+ 217 005c 7047     		bx	lr
+ 218              		.cfi_endproc
+ 219              	.LFE1:
+ 221 005e 00BF     		.section	.text.spx_sqrt,"ax",%progbits
+ 222              		.align	2
+ 223              		.thumb
+ 224              		.thumb_func
+ 226              	spx_sqrt:
+ 227              	.LFB3:
+ 118:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 119:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifdef FIXED_POINT
+ 120:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 7
+
+
+ 121:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /** Generate a pseudo-random number */
+ 122:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t speex_rand(spx_word16_t std, spx_int32_t *seed)
+ 123:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 124:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word32_t res;
+ 125:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    *seed = 1664525 * *seed + 1013904223;
+ 126:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    res = MULT16_16(EXTRACT16(SHR32(*seed,16)),std);
+ 127:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return EXTRACT16(PSHR32(SUB32(res, SHR32(res, 3)),14));
+ 128:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 129:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 130:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* sqrt(x) ~= 0.22178 + 1.29227*x - 0.77070*x^2 + 0.25723*x^3 (for .25 < x < 1) */
+ 131:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /*#define C0 3634
+ 132:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C1 21173
+ 133:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C2 -12627
+ 134:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C3 4215*/
+ 135:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 136:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* sqrt(x) ~= 0.22178 + 1.29227*x - 0.77070*x^2 + 0.25659*x^3 (for .25 < x < 1) */
+ 137:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C0 3634
+ 138:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C1 21173
+ 139:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C2 -12627
+ 140:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C3 4204
+ 141:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 142:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_sqrt(spx_word32_t x)
+ 143:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 228              		.loc 1 143 0
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 16
+ 231              		@ frame_needed = 1, uses_anonymous_args = 0
+ 232 0000 80B5     		push	{r7, lr}
+ 233              	.LCFI12:
+ 234              		.cfi_def_cfa_offset 8
+ 235              		.cfi_offset 7, -8
+ 236              		.cfi_offset 14, -4
+ 237 0002 84B0     		sub	sp, sp, #16
+ 238              	.LCFI13:
+ 239              		.cfi_def_cfa_offset 24
+ 240 0004 00AF     		add	r7, sp, #0
+ 241              	.LCFI14:
+ 242              		.cfi_def_cfa_register 7
+ 243 0006 7860     		str	r0, [r7, #4]
+ 144:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int k;
+ 145:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word32_t rt;
+ 146:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    k = spx_ilog4(x)-6;
+ 244              		.loc 1 146 0
+ 245 0008 7B68     		ldr	r3, [r7, #4]
+ 246 000a 1846     		mov	r0, r3
+ 247 000c FFF7FEFF 		bl	spx_ilog4
+ 248 0010 0346     		mov	r3, r0
+ 249 0012 063B     		subs	r3, r3, #6
+ 250 0014 FB60     		str	r3, [r7, #12]
+ 147:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = VSHR32(x, (k<<1));
+ 251              		.loc 1 147 0
+ 252 0016 FB68     		ldr	r3, [r7, #12]
+ 253 0018 5B00     		lsls	r3, r3, #1
+ 254 001a 002B     		cmp	r3, #0
+ 255 001c 05DD     		ble	.L15
+ 256              		.loc 1 147 0 is_stmt 0 discriminator 1
+ 257 001e FB68     		ldr	r3, [r7, #12]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 8
+
+
+ 258 0020 5B00     		lsls	r3, r3, #1
+ 259 0022 7A68     		ldr	r2, [r7, #4]
+ 260 0024 42FA03F3 		asr	r3, r2, r3
+ 261 0028 05E0     		b	.L16
+ 262              	.L15:
+ 263              		.loc 1 147 0 discriminator 2
+ 264 002a FB68     		ldr	r3, [r7, #12]
+ 265 002c 5B00     		lsls	r3, r3, #1
+ 266 002e 5B42     		negs	r3, r3
+ 267 0030 7A68     		ldr	r2, [r7, #4]
+ 268 0032 02FA03F3 		lsl	r3, r2, r3
+ 269              	.L16:
+ 270              		.loc 1 147 0 discriminator 4
+ 271 0036 7B60     		str	r3, [r7, #4]
+ 148:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    rt = ADD16(C0, MULT16_16_Q14(x, ADD16(C1, MULT16_16_Q14(x, ADD16(C2, MULT16_16_Q14(x, (C3)))))))
+ 272              		.loc 1 148 0 is_stmt 1 discriminator 4
+ 273 0038 7B68     		ldr	r3, [r7, #4]
+ 274 003a 1BB2     		sxth	r3, r3
+ 275 003c 1A46     		mov	r2, r3
+ 276 003e 7B68     		ldr	r3, [r7, #4]
+ 277 0040 1BB2     		sxth	r3, r3
+ 278 0042 1946     		mov	r1, r3
+ 279 0044 7B68     		ldr	r3, [r7, #4]
+ 280 0046 1BB2     		sxth	r3, r3
+ 281 0048 1846     		mov	r0, r3
+ 282 004a 41F26C03 		movw	r3, #4204
+ 283 004e 03FB00F3 		mul	r3, r3, r0
+ 284 0052 9B13     		asrs	r3, r3, #14
+ 285 0054 9BB2     		uxth	r3, r3
+ 286 0056 A3F54553 		sub	r3, r3, #12608
+ 287 005a 133B     		subs	r3, r3, #19
+ 288 005c 9BB2     		uxth	r3, r3
+ 289 005e 1BB2     		sxth	r3, r3
+ 290 0060 03FB01F3 		mul	r3, r3, r1
+ 291 0064 9B13     		asrs	r3, r3, #14
+ 292 0066 9BB2     		uxth	r3, r3
+ 293 0068 03F5A543 		add	r3, r3, #21120
+ 294 006c 3533     		adds	r3, r3, #53
+ 295 006e 9BB2     		uxth	r3, r3
+ 296 0070 1BB2     		sxth	r3, r3
+ 297 0072 03FB02F3 		mul	r3, r3, r2
+ 298 0076 9B13     		asrs	r3, r3, #14
+ 299 0078 9BB2     		uxth	r3, r3
+ 300 007a 03F63263 		addw	r3, r3, #3634
+ 301 007e 9BB2     		uxth	r3, r3
+ 302 0080 1BB2     		sxth	r3, r3
+ 303 0082 BB60     		str	r3, [r7, #8]
+ 149:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    rt = VSHR32(rt,7-k);
+ 304              		.loc 1 149 0 discriminator 4
+ 305 0084 FB68     		ldr	r3, [r7, #12]
+ 306 0086 C3F10703 		rsb	r3, r3, #7
+ 307 008a 002B     		cmp	r3, #0
+ 308 008c 06DD     		ble	.L17
+ 309              		.loc 1 149 0 is_stmt 0 discriminator 1
+ 310 008e FB68     		ldr	r3, [r7, #12]
+ 311 0090 C3F10703 		rsb	r3, r3, #7
+ 312 0094 BA68     		ldr	r2, [r7, #8]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 9
+
+
+ 313 0096 42FA03F3 		asr	r3, r2, r3
+ 314 009a 04E0     		b	.L18
+ 315              	.L17:
+ 316              		.loc 1 149 0 discriminator 2
+ 317 009c FB68     		ldr	r3, [r7, #12]
+ 318 009e 073B     		subs	r3, r3, #7
+ 319 00a0 BA68     		ldr	r2, [r7, #8]
+ 320 00a2 02FA03F3 		lsl	r3, r2, r3
+ 321              	.L18:
+ 322              		.loc 1 149 0 discriminator 4
+ 323 00a6 BB60     		str	r3, [r7, #8]
+ 150:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return rt;
+ 324              		.loc 1 150 0 is_stmt 1 discriminator 4
+ 325 00a8 BB68     		ldr	r3, [r7, #8]
+ 326 00aa 1BB2     		sxth	r3, r3
+ 151:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 327              		.loc 1 151 0 discriminator 4
+ 328 00ac 1846     		mov	r0, r3
+ 329 00ae 1037     		adds	r7, r7, #16
+ 330              	.LCFI15:
+ 331              		.cfi_def_cfa_offset 8
+ 332 00b0 BD46     		mov	sp, r7
+ 333              	.LCFI16:
+ 334              		.cfi_def_cfa_register 13
+ 335              		@ sp needed
+ 336 00b2 80BD     		pop	{r7, pc}
+ 337              		.cfi_endproc
+ 338              	.LFE3:
+ 340              		.section	.text.spx_exp2,"ax",%progbits
+ 341              		.align	2
+ 342              		.thumb
+ 343              		.thumb_func
+ 345              	spx_exp2:
+ 346              	.LFB8:
+ 152:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 153:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* log(x) ~= -2.18151 + 4.20592*x - 2.88938*x^2 + 0.86535*x^3 (for .5 < x < 1) */
+ 154:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 155:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 156:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A1 16469
+ 157:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A2 2242
+ 158:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A3 1486
+ 159:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 160:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_acos(spx_word16_t x)
+ 161:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 162:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int s=0;
+ 163:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t ret;
+ 164:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t sq;
+ 165:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x<0)
+ 166:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 167:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       s=1;
+ 168:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x = NEG16(x);
+ 169:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 170:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = SUB16(16384,x);
+ 171:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+ 172:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = x >> 1;
+ 173:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    sq = MULT16_16_Q13(x, ADD16(A1, MULT16_16_Q13(x, ADD16(A2, MULT16_16_Q13(x, (A3))))));
+ 174:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ret = spx_sqrt(SHL32(EXTEND32(sq),13));
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 10
+
+
+ 175:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+ 176:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    /*ret = spx_sqrt(67108864*(-1.6129e-04 + 2.0104e+00*f + 2.7373e-01*f*f + 1.8136e-01*f*f*f));*/
+ 177:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (s)
+ 178:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       ret = SUB16(25736,ret);
+ 179:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return ret;
+ 180:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 181:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 182:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 183:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K1 8192
+ 184:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K2 -4096
+ 185:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K3 340
+ 186:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K4 -10
+ 187:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 188:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_cos(spx_word16_t x)
+ 189:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 190:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t x2;
+ 191:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 192:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x<12868)
+ 193:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 194:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x2 = MULT16_16_P13(x,x);
+ 195:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return ADD32(K1, MULT16_16_P13(x2, ADD32(K2, MULT16_16_P13(x2, ADD32(K3, MULT16_16_P13(K4, x2
+ 196:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    } else {
+ 197:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x = SUB16(25736,x);
+ 198:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x2 = MULT16_16_P13(x,x);
+ 199:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return SUB32(-K1, MULT16_16_P13(x2, ADD32(K2, MULT16_16_P13(x2, ADD32(K3, MULT16_16_P13(K4, x
+ 200:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 201:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 202:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 203:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define L1 32767
+ 204:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define L2 -7651
+ 205:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define L3 8277
+ 206:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define L4 -626
+ 207:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 208:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t _spx_cos_pi_2(spx_word16_t x)
+ 209:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 210:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t x2;
+ 211:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+ 212:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x2 = MULT16_16_P15(x,x);
+ 213:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return ADD16(1,MIN16(32766,ADD32(SUB16(L1,x2), MULT16_16_P15(x2, ADD32(L2, MULT16_16_P15(x2, ADD
+ 214:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 215:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 216:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_cos_norm(spx_word32_t x)
+ 217:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 218:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = x&0x0001ffff;
+ 219:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>SHL32(EXTEND32(1), 16))
+ 220:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x = SUB32(SHL32(EXTEND32(1), 17),x);
+ 221:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x&0x00007fff)
+ 222:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 223:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       if (x<SHL32(EXTEND32(1), 15))
+ 224:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       {
+ 225:STM32F10x_Speex_Lib/libspeex/math_approx.h ****          return _spx_cos_pi_2(EXTRACT16(x));
+ 226:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       } else {
+ 227:STM32F10x_Speex_Lib/libspeex/math_approx.h ****          return NEG32(_spx_cos_pi_2(EXTRACT16(65536-x)));
+ 228:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       }
+ 229:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    } else {
+ 230:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       if (x&0x0000ffff)
+ 231:STM32F10x_Speex_Lib/libspeex/math_approx.h ****          return 0;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 11
+
+
+ 232:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       else if (x&0x0001ffff)
+ 233:STM32F10x_Speex_Lib/libspeex/math_approx.h ****          return -32767;
+ 234:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       else
+ 235:STM32F10x_Speex_Lib/libspeex/math_approx.h ****          return 32767;
+ 236:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 237:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 238:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 239:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /*
+ 240:STM32F10x_Speex_Lib/libspeex/math_approx.h ****  K0 = 1
+ 241:STM32F10x_Speex_Lib/libspeex/math_approx.h ****  K1 = log(2)
+ 242:STM32F10x_Speex_Lib/libspeex/math_approx.h ****  K2 = 3-4*log(2)
+ 243:STM32F10x_Speex_Lib/libspeex/math_approx.h ****  K3 = 3*log(2) - 2
+ 244:STM32F10x_Speex_Lib/libspeex/math_approx.h **** */
+ 245:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define D0 16384
+ 246:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define D1 11356
+ 247:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define D2 3726
+ 248:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define D3 1301
+ 249:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* Input in Q11 format, output in Q16 */
+ 250:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word32_t spx_exp2(spx_word16_t x)
+ 251:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 347              		.loc 1 251 0
+ 348              		.cfi_startproc
+ 349              		@ args = 0, pretend = 0, frame = 16
+ 350              		@ frame_needed = 1, uses_anonymous_args = 0
+ 351              		@ link register save eliminated.
+ 352 0000 80B4     		push	{r7}
+ 353              	.LCFI17:
+ 354              		.cfi_def_cfa_offset 4
+ 355              		.cfi_offset 7, -4
+ 356 0002 85B0     		sub	sp, sp, #20
+ 357              	.LCFI18:
+ 358              		.cfi_def_cfa_offset 24
+ 359 0004 00AF     		add	r7, sp, #0
+ 360              	.LCFI19:
+ 361              		.cfi_def_cfa_register 7
+ 362 0006 0346     		mov	r3, r0
+ 363 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 252:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int integer;
+ 253:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t frac;
+ 254:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    integer = SHR16(x,11);
+ 364              		.loc 1 254 0
+ 365 000a B7F90630 		ldrsh	r3, [r7, #6]
+ 366 000e DB12     		asrs	r3, r3, #11
+ 367 0010 1BB2     		sxth	r3, r3
+ 368 0012 FB60     		str	r3, [r7, #12]
+ 255:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (integer>14)
+ 369              		.loc 1 255 0
+ 370 0014 FB68     		ldr	r3, [r7, #12]
+ 371 0016 0E2B     		cmp	r3, #14
+ 372 0018 02DD     		ble	.L21
+ 256:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return 0x7fffffff;
+ 373              		.loc 1 256 0
+ 374 001a 6FF00043 		mvn	r3, #-2147483648
+ 375 001e 43E0     		b	.L22
+ 376              	.L21:
+ 257:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    else if (integer < -15)
+ 377              		.loc 1 257 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 12
+
+
+ 378 0020 FB68     		ldr	r3, [r7, #12]
+ 379 0022 13F10F0F 		cmn	r3, #15
+ 380 0026 01DA     		bge	.L23
+ 258:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return 0;
+ 381              		.loc 1 258 0
+ 382 0028 0023     		movs	r3, #0
+ 383 002a 3DE0     		b	.L22
+ 384              	.L23:
+ 259:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    frac = SHL16(x-SHL16(integer,11),3);
+ 385              		.loc 1 259 0
+ 386 002c B7F90620 		ldrsh	r2, [r7, #6]
+ 387 0030 FB68     		ldr	r3, [r7, #12]
+ 388 0032 DB02     		lsls	r3, r3, #11
+ 389 0034 D31A     		subs	r3, r2, r3
+ 390 0036 DB00     		lsls	r3, r3, #3
+ 391 0038 7B81     		strh	r3, [r7, #10]	@ movhi
+ 260:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    frac = ADD16(D0, MULT16_16_Q14(frac, ADD16(D1, MULT16_16_Q14(frac, ADD16(D2 , MULT16_16_Q14(D3,f
+ 392              		.loc 1 260 0
+ 393 003a B7F90A20 		ldrsh	r2, [r7, #10]
+ 394 003e B7F90A30 		ldrsh	r3, [r7, #10]
+ 395 0042 B7F90A10 		ldrsh	r1, [r7, #10]
+ 396 0046 40F21550 		movw	r0, #1301
+ 397 004a 00FB01F1 		mul	r1, r0, r1
+ 398 004e 8913     		asrs	r1, r1, #14
+ 399 0050 89B2     		uxth	r1, r1
+ 400 0052 01F68E61 		addw	r1, r1, #3726
+ 401 0056 89B2     		uxth	r1, r1
+ 402 0058 09B2     		sxth	r1, r1
+ 403 005a 01FB03F3 		mul	r3, r1, r3
+ 404 005e 9B13     		asrs	r3, r3, #14
+ 405 0060 9BB2     		uxth	r3, r3
+ 406 0062 03F53153 		add	r3, r3, #11328
+ 407 0066 1C33     		adds	r3, r3, #28
+ 408 0068 9BB2     		uxth	r3, r3
+ 409 006a 1BB2     		sxth	r3, r3
+ 410 006c 03FB02F3 		mul	r3, r3, r2
+ 411 0070 9B13     		asrs	r3, r3, #14
+ 412 0072 9BB2     		uxth	r3, r3
+ 413 0074 03F58043 		add	r3, r3, #16384
+ 414 0078 9BB2     		uxth	r3, r3
+ 415 007a 7B81     		strh	r3, [r7, #10]	@ movhi
+ 261:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return VSHR32(EXTEND32(frac), -integer-2);
+ 416              		.loc 1 261 0
+ 417 007c FA68     		ldr	r2, [r7, #12]
+ 418 007e 6FF00103 		mvn	r3, #1
+ 419 0082 9B1A     		subs	r3, r3, r2
+ 420 0084 002B     		cmp	r3, #0
+ 421 0086 08DD     		ble	.L24
+ 422              		.loc 1 261 0 is_stmt 0 discriminator 1
+ 423 0088 B7F90A20 		ldrsh	r2, [r7, #10]
+ 424 008c F968     		ldr	r1, [r7, #12]
+ 425 008e 6FF00103 		mvn	r3, #1
+ 426 0092 5B1A     		subs	r3, r3, r1
+ 427 0094 42FA03F3 		asr	r3, r2, r3
+ 428 0098 05E0     		b	.L26
+ 429              	.L24:
+ 430              		.loc 1 261 0 discriminator 2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 13
+
+
+ 431 009a B7F90A20 		ldrsh	r2, [r7, #10]
+ 432 009e FB68     		ldr	r3, [r7, #12]
+ 433 00a0 0233     		adds	r3, r3, #2
+ 434 00a2 02FA03F3 		lsl	r3, r2, r3
+ 435              	.L26:
+ 436              		.loc 1 261 0
+ 437 00a6 00BF     		nop
+ 438              	.L22:
+ 262:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 439              		.loc 1 262 0 is_stmt 1
+ 440 00a8 1846     		mov	r0, r3
+ 441 00aa 1437     		adds	r7, r7, #20
+ 442              	.LCFI20:
+ 443              		.cfi_def_cfa_offset 4
+ 444 00ac BD46     		mov	sp, r7
+ 445              	.LCFI21:
+ 446              		.cfi_def_cfa_register 13
+ 447              		@ sp needed
+ 448 00ae 80BC     		pop	{r7}
+ 449              	.LCFI22:
+ 450              		.cfi_restore 7
+ 451              		.cfi_def_cfa_offset 0
+ 452 00b0 7047     		bx	lr
+ 453              		.cfi_endproc
+ 454              	.LFE8:
+ 456 00b2 00BF     		.section	.text.spx_exp,"ax",%progbits
+ 457              		.align	2
+ 458              		.thumb
+ 459              		.thumb_func
+ 461              	spx_exp:
+ 462              	.LFB9:
+ 263:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 264:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* Input in Q11 format, output in Q16 */
+ 265:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word32_t spx_exp(spx_word16_t x)
+ 266:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 463              		.loc 1 266 0
+ 464              		.cfi_startproc
+ 465              		@ args = 0, pretend = 0, frame = 8
+ 466              		@ frame_needed = 1, uses_anonymous_args = 0
+ 467 0000 80B5     		push	{r7, lr}
+ 468              	.LCFI23:
+ 469              		.cfi_def_cfa_offset 8
+ 470              		.cfi_offset 7, -8
+ 471              		.cfi_offset 14, -4
+ 472 0002 82B0     		sub	sp, sp, #8
+ 473              	.LCFI24:
+ 474              		.cfi_def_cfa_offset 16
+ 475 0004 00AF     		add	r7, sp, #0
+ 476              	.LCFI25:
+ 477              		.cfi_def_cfa_register 7
+ 478 0006 0346     		mov	r3, r0
+ 479 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 267:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>21290)
+ 480              		.loc 1 267 0
+ 481 000a B7F90630 		ldrsh	r3, [r7, #6]
+ 482 000e 45F22A32 		movw	r2, #21290
+ 483 0012 9342     		cmp	r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 14
+
+
+ 484 0014 02DD     		ble	.L28
+ 268:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return 0x7fffffff;
+ 485              		.loc 1 268 0
+ 486 0016 6FF00043 		mvn	r3, #-2147483648
+ 487 001a 14E0     		b	.L29
+ 488              	.L28:
+ 269:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    else if (x<-21290)
+ 489              		.loc 1 269 0
+ 490 001c B7F90630 		ldrsh	r3, [r7, #6]
+ 491 0020 0B4A     		ldr	r2, .L31
+ 492 0022 9342     		cmp	r3, r2
+ 493 0024 01DA     		bge	.L30
+ 270:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return 0;
+ 494              		.loc 1 270 0
+ 495 0026 0023     		movs	r3, #0
+ 496 0028 0DE0     		b	.L29
+ 497              	.L30:
+ 271:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    else
+ 272:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return spx_exp2(MULT16_16_P14(23637,x));
+ 498              		.loc 1 272 0
+ 499 002a B7F90630 		ldrsh	r3, [r7, #6]
+ 500 002e 45F65542 		movw	r2, #23637
+ 501 0032 02FB03F3 		mul	r3, r2, r3
+ 502 0036 03F50053 		add	r3, r3, #8192
+ 503 003a 9B13     		asrs	r3, r3, #14
+ 504 003c 1BB2     		sxth	r3, r3
+ 505 003e 1846     		mov	r0, r3
+ 506 0040 FFF7FEFF 		bl	spx_exp2
+ 507 0044 0346     		mov	r3, r0
+ 508              	.L29:
+ 273:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 509              		.loc 1 273 0
+ 510 0046 1846     		mov	r0, r3
+ 511 0048 0837     		adds	r7, r7, #8
+ 512              	.LCFI26:
+ 513              		.cfi_def_cfa_offset 8
+ 514 004a BD46     		mov	sp, r7
+ 515              	.LCFI27:
+ 516              		.cfi_def_cfa_register 13
+ 517              		@ sp needed
+ 518 004c 80BD     		pop	{r7, pc}
+ 519              	.L32:
+ 520 004e 00BF     		.align	2
+ 521              	.L31:
+ 522 0050 D6ACFFFF 		.word	-21290
+ 523              		.cfi_endproc
+ 524              	.LFE9:
+ 526              		.section	.text.speex_alloc,"ax",%progbits
+ 527              		.align	2
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	speex_alloc:
+ 532              	.LFB13:
+ 533              		.file 2 "STM32F10x_Speex_Lib/libspeex/os_support.h"
+   1:STM32F10x_Speex_Lib/libspeex/os_support.h **** /* Copyright (C) 2007 Jean-Marc Valin
+   2:STM32F10x_Speex_Lib/libspeex/os_support.h ****       
+   3:STM32F10x_Speex_Lib/libspeex/os_support.h ****    File: os_support.h
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 15
+
+
+   4:STM32F10x_Speex_Lib/libspeex/os_support.h ****    This is the (tiny) OS abstraction layer. Aside from math.h, this is the
+   5:STM32F10x_Speex_Lib/libspeex/os_support.h ****    only place where system headers are allowed.
+   6:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+   7:STM32F10x_Speex_Lib/libspeex/os_support.h ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/os_support.h ****    modification, are permitted provided that the following conditions are
+   9:STM32F10x_Speex_Lib/libspeex/os_support.h ****    met:
+  10:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  11:STM32F10x_Speex_Lib/libspeex/os_support.h ****    1. Redistributions of source code must retain the above copyright notice,
+  12:STM32F10x_Speex_Lib/libspeex/os_support.h ****    this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  14:STM32F10x_Speex_Lib/libspeex/os_support.h ****    2. Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/os_support.h ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/os_support.h ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  18:STM32F10x_Speex_Lib/libspeex/os_support.h ****    3. The name of the author may not be used to endorse or promote products
+  19:STM32F10x_Speex_Lib/libspeex/os_support.h ****    derived from this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  21:STM32F10x_Speex_Lib/libspeex/os_support.h ****    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  22:STM32F10x_Speex_Lib/libspeex/os_support.h ****    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  23:STM32F10x_Speex_Lib/libspeex/os_support.h ****    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  24:STM32F10x_Speex_Lib/libspeex/os_support.h ****    DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+  25:STM32F10x_Speex_Lib/libspeex/os_support.h ****    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  26:STM32F10x_Speex_Lib/libspeex/os_support.h ****    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  27:STM32F10x_Speex_Lib/libspeex/os_support.h ****    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  28:STM32F10x_Speex_Lib/libspeex/os_support.h ****    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  29:STM32F10x_Speex_Lib/libspeex/os_support.h ****    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  30:STM32F10x_Speex_Lib/libspeex/os_support.h ****    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:STM32F10x_Speex_Lib/libspeex/os_support.h ****    POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/libspeex/os_support.h **** */
+  33:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  34:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OS_SUPPORT_H
+  35:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define OS_SUPPORT_H
+  36:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  37:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <string.h>
+  38:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdio.h>
+  39:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdlib.h>
+  40:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  41:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #ifdef HAVE_CONFIG_H
+  42:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "config.h"
+  43:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #endif
+  44:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifdef OS_SUPPORT_CUSTOM
+  45:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "os_support_custom.h"
+  46:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  47:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  48:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+  49:STM32F10x_Speex_Lib/libspeex/os_support.h ****     NOTE: speex_alloc needs to CLEAR THE MEMORY */
+  50:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC
+  51:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc (int size)
+  52:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+ 534              		.loc 2 52 0
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 8
+ 537              		@ frame_needed = 1, uses_anonymous_args = 0
+ 538 0000 80B5     		push	{r7, lr}
+ 539              	.LCFI28:
+ 540              		.cfi_def_cfa_offset 8
+ 541              		.cfi_offset 7, -8
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 16
+
+
+ 542              		.cfi_offset 14, -4
+ 543 0002 82B0     		sub	sp, sp, #8
+ 544              	.LCFI29:
+ 545              		.cfi_def_cfa_offset 16
+ 546 0004 00AF     		add	r7, sp, #0
+ 547              	.LCFI30:
+ 548              		.cfi_def_cfa_register 7
+ 549 0006 7860     		str	r0, [r7, #4]
+  53:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* WARNING: this is not equivalent to malloc(). If you want to use malloc() 
+  54:STM32F10x_Speex_Lib/libspeex/os_support.h ****       or your own allocator, YOU NEED TO CLEAR THE MEMORY ALLOCATED. Otherwise
+  55:STM32F10x_Speex_Lib/libspeex/os_support.h ****       you will experience strange bugs */
+  56:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+ 550              		.loc 2 56 0
+ 551 0008 7B68     		ldr	r3, [r7, #4]
+ 552 000a 0121     		movs	r1, #1
+ 553 000c 1846     		mov	r0, r3
+ 554 000e FFF7FEFF 		bl	calloc
+ 555 0012 0346     		mov	r3, r0
+  57:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+ 556              		.loc 2 57 0
+ 557 0014 1846     		mov	r0, r3
+ 558 0016 0837     		adds	r7, r7, #8
+ 559              	.LCFI31:
+ 560              		.cfi_def_cfa_offset 8
+ 561 0018 BD46     		mov	sp, r7
+ 562              	.LCFI32:
+ 563              		.cfi_def_cfa_register 13
+ 564              		@ sp needed
+ 565 001a 80BD     		pop	{r7, pc}
+ 566              		.cfi_endproc
+ 567              	.LFE13:
+ 569              		.section	.text.speex_free,"ax",%progbits
+ 570              		.align	2
+ 571              		.thumb
+ 572              		.thumb_func
+ 574              	speex_free:
+ 575              	.LFB16:
+  58:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  59:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  60:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Same as speex_alloc, except that the area is only needed inside a Speex call (might cause probl
+  61:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC_SCRATCH
+  62:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc_scratch (int size)
+  63:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  64:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* Scratch space doesn't need to be cleared */
+  65:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+  66:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  67:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  68:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  69:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for realloc. To do your own dynamic allocation, all you need to do is replace thi
+  70:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_REALLOC
+  71:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_realloc (void *ptr, int size)
+  72:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  73:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return realloc(ptr, size);
+  74:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  75:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  76:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  77:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 17
+
+
+  78:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_FREE
+  79:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_free (void *ptr)
+  80:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+ 576              		.loc 2 80 0
+ 577              		.cfi_startproc
+ 578              		@ args = 0, pretend = 0, frame = 8
+ 579              		@ frame_needed = 1, uses_anonymous_args = 0
+ 580 0000 80B5     		push	{r7, lr}
+ 581              	.LCFI33:
+ 582              		.cfi_def_cfa_offset 8
+ 583              		.cfi_offset 7, -8
+ 584              		.cfi_offset 14, -4
+ 585 0002 82B0     		sub	sp, sp, #8
+ 586              	.LCFI34:
+ 587              		.cfi_def_cfa_offset 16
+ 588 0004 00AF     		add	r7, sp, #0
+ 589              	.LCFI35:
+ 590              		.cfi_def_cfa_register 7
+ 591 0006 7860     		str	r0, [r7, #4]
+  81:STM32F10x_Speex_Lib/libspeex/os_support.h ****    free(ptr);
+ 592              		.loc 2 81 0
+ 593 0008 7868     		ldr	r0, [r7, #4]
+ 594 000a FFF7FEFF 		bl	free
+  82:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+ 595              		.loc 2 82 0
+ 596 000e 00BF     		nop
+ 597 0010 0837     		adds	r7, r7, #8
+ 598              	.LCFI36:
+ 599              		.cfi_def_cfa_offset 8
+ 600 0012 BD46     		mov	sp, r7
+ 601              	.LCFI37:
+ 602              		.cfi_def_cfa_register 13
+ 603              		@ sp needed
+ 604 0014 80BD     		pop	{r7, pc}
+ 605              		.cfi_endproc
+ 606              	.LFE16:
+ 608 0016 00BF     		.section	.rodata.e_ratio_quant,"a",%progbits
+ 609              		.align	2
+ 612              	e_ratio_quant:
+ 613 0000 0020     		.short	8192
+ 614 0002 5C28     		.short	10332
+ 615 0004 D132     		.short	13009
+ 616 0006 0040     		.short	16384
+ 617              		.section	.rodata.e_ratio_quant_bounds,"a",%progbits
+ 618              		.align	2
+ 621              	e_ratio_quant_bounds:
+ 622 0000 2924     		.short	9257
+ 623 0002 912D     		.short	11665
+ 624 0004 6839     		.short	14696
+ 625              		.section	.rodata.balance_bounds,"a",%progbits
+ 626              		.align	2
+ 629              	balance_bounds:
+ 630 0000 1200     		.short	18
+ 631 0002 1700     		.short	23
+ 632 0004 1E00     		.short	30
+ 633 0006 2600     		.short	38
+ 634 0008 3100     		.short	49
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 18
+
+
+ 635 000a 3F00     		.short	63
+ 636 000c 5100     		.short	81
+ 637 000e 6800     		.short	104
+ 638 0010 8600     		.short	134
+ 639 0012 AC00     		.short	172
+ 640 0014 DD00     		.short	221
+ 641 0016 1C01     		.short	284
+ 642 0018 6C01     		.short	364
+ 643 001a D401     		.short	468
+ 644 001c 5802     		.short	600
+ 645 001e 0303     		.short	771
+ 646 0020 DE03     		.short	990
+ 647 0022 F704     		.short	1271
+ 648 0024 6006     		.short	1632
+ 649 0026 3008     		.short	2096
+ 650 0028 830A     		.short	2691
+ 651 002a 7F0D     		.short	3455
+ 652 002c 5411     		.short	4436
+ 653 002e 4016     		.short	5696
+ 654 0030 921C     		.short	7314
+ 655 0032 B024     		.short	9392
+ 656 0034 1B2F     		.short	12059
+ 657 0036 7C3C     		.short	15484
+ 658 0038 AA4D     		.short	19882
+ 659 003a B963     		.short	25529
+ 660 003c FE7F     		.short	32766
+ 661              		.section	.text.speex_stereo_state_init,"ax",%progbits
+ 662              		.align	2
+ 663              		.global	speex_stereo_state_init
+ 664              		.thumb
+ 665              		.thumb_func
+ 667              	speex_stereo_state_init:
+ 668              	.LFB21:
+ 669              		.file 3 "STM32F10x_Speex_Lib/libspeex/stereo.c"
+   1:STM32F10x_Speex_Lib/libspeex/stereo.c **** /* Copyright (C) 2002 Jean-Marc Valin 
+   2:STM32F10x_Speex_Lib/libspeex/stereo.c ****    File: stereo.c
+   3:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+   4:STM32F10x_Speex_Lib/libspeex/stereo.c ****    Redistribution and use in source and binary forms, with or without
+   5:STM32F10x_Speex_Lib/libspeex/stereo.c ****    modification, are permitted provided that the following conditions
+   6:STM32F10x_Speex_Lib/libspeex/stereo.c ****    are met:
+   7:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+   8:STM32F10x_Speex_Lib/libspeex/stereo.c ****    - Redistributions of source code must retain the above copyright
+   9:STM32F10x_Speex_Lib/libspeex/stereo.c ****    notice, this list of conditions and the following disclaimer.
+  10:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+  11:STM32F10x_Speex_Lib/libspeex/stereo.c ****    - Redistributions in binary form must reproduce the above copyright
+  12:STM32F10x_Speex_Lib/libspeex/stereo.c ****    notice, this list of conditions and the following disclaimer in the
+  13:STM32F10x_Speex_Lib/libspeex/stereo.c ****    documentation and/or other materials provided with the distribution.
+  14:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+  15:STM32F10x_Speex_Lib/libspeex/stereo.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  16:STM32F10x_Speex_Lib/libspeex/stereo.c ****    contributors may be used to endorse or promote products derived from
+  17:STM32F10x_Speex_Lib/libspeex/stereo.c ****    this software without specific prior written permission.
+  18:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+  19:STM32F10x_Speex_Lib/libspeex/stereo.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  20:STM32F10x_Speex_Lib/libspeex/stereo.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  21:STM32F10x_Speex_Lib/libspeex/stereo.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  22:STM32F10x_Speex_Lib/libspeex/stereo.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  23:STM32F10x_Speex_Lib/libspeex/stereo.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 19
+
+
+  24:STM32F10x_Speex_Lib/libspeex/stereo.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  25:STM32F10x_Speex_Lib/libspeex/stereo.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  26:STM32F10x_Speex_Lib/libspeex/stereo.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  27:STM32F10x_Speex_Lib/libspeex/stereo.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  28:STM32F10x_Speex_Lib/libspeex/stereo.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  29:STM32F10x_Speex_Lib/libspeex/stereo.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  30:STM32F10x_Speex_Lib/libspeex/stereo.c **** */
+  31:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  32:STM32F10x_Speex_Lib/libspeex/stereo.c **** // #ifdef HAVE_CONFIG_H
+  33:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include "config.h"
+  34:STM32F10x_Speex_Lib/libspeex/stereo.c **** // #endif
+  35:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  36:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include <speex/speex_stereo.h>
+  37:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include <speex/speex_callbacks.h>
+  38:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include "math_approx.h"
+  39:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include "vq.h"
+  40:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include <math.h>
+  41:STM32F10x_Speex_Lib/libspeex/stereo.c **** #include "os_support.h"
+  42:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  43:STM32F10x_Speex_Lib/libspeex/stereo.c **** typedef struct RealSpeexStereoState {
+  44:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t balance;      /**< Left/right balance info */
+  45:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t e_ratio;      /**< Ratio of energies: E(left+right)/[E(left)+E(right)]  */
+  46:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t smooth_left;  /**< Smoothed left channel gain */
+  47:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t smooth_right; /**< Smoothed right channel gain */
+  48:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_uint32_t reserved1;     /**< Reserved for future use */
+  49:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_int32_t reserved2;     /**< Reserved for future use */
+  50:STM32F10x_Speex_Lib/libspeex/stereo.c **** } RealSpeexStereoState;
+  51:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  52:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  53:STM32F10x_Speex_Lib/libspeex/stereo.c **** /*float e_ratio_quant[4] = {1, 1.26, 1.587, 2};*/
+  54:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifndef FIXED_POINT
+  55:STM32F10x_Speex_Lib/libspeex/stereo.c **** static const float e_ratio_quant[4] = {.25f, .315f, .397f, .5f};
+  56:STM32F10x_Speex_Lib/libspeex/stereo.c **** static const float e_ratio_quant_bounds[3] = {0.2825f, 0.356f, 0.4485f};
+  57:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+  58:STM32F10x_Speex_Lib/libspeex/stereo.c **** static const spx_word16_t e_ratio_quant[4] = {8192, 10332, 13009, 16384};
+  59:STM32F10x_Speex_Lib/libspeex/stereo.c **** static const spx_word16_t e_ratio_quant_bounds[3] = {9257, 11665, 14696};
+  60:STM32F10x_Speex_Lib/libspeex/stereo.c **** static const spx_word16_t balance_bounds[31] = {18, 23, 30, 38, 49, 63,  81, 104,
+  61:STM32F10x_Speex_Lib/libspeex/stereo.c ****    134, 172, 221,  284, 364, 468, 600, 771,
+  62:STM32F10x_Speex_Lib/libspeex/stereo.c ****    990, 1271, 1632, 2096, 2691, 3455, 4436, 5696,
+  63:STM32F10x_Speex_Lib/libspeex/stereo.c ****    7314, 9392, 12059, 15484, 19882, 25529, 32766};
+  64:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+  65:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  66:STM32F10x_Speex_Lib/libspeex/stereo.c **** /* This is an ugly compatibility hack that properly resets the stereo state
+  67:STM32F10x_Speex_Lib/libspeex/stereo.c ****    In case it it compiled in fixed-point, but initialised with the deprecated
+  68:STM32F10x_Speex_Lib/libspeex/stereo.c ****    floating point static initialiser */
+  69:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+  70:STM32F10x_Speex_Lib/libspeex/stereo.c **** #define COMPATIBILITY_HACK(s) do {if ((s)->reserved1 != 0xdeadbeef) speex_stereo_state_reset((Speex
+  71:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+  72:STM32F10x_Speex_Lib/libspeex/stereo.c **** #define COMPATIBILITY_HACK(s) 
+  73:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+  74:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  75:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT SpeexStereoState *speex_stereo_state_init()
+  76:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 670              		.loc 3 76 0
+ 671              		.cfi_startproc
+ 672              		@ args = 0, pretend = 0, frame = 8
+ 673              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 20
+
+
+ 674 0000 80B5     		push	{r7, lr}
+ 675              	.LCFI38:
+ 676              		.cfi_def_cfa_offset 8
+ 677              		.cfi_offset 7, -8
+ 678              		.cfi_offset 14, -4
+ 679 0002 82B0     		sub	sp, sp, #8
+ 680              	.LCFI39:
+ 681              		.cfi_def_cfa_offset 16
+ 682 0004 00AF     		add	r7, sp, #0
+ 683              	.LCFI40:
+ 684              		.cfi_def_cfa_register 7
+  77:STM32F10x_Speex_Lib/libspeex/stereo.c ****    SpeexStereoState *stereo = speex_alloc(sizeof(SpeexStereoState));
+ 685              		.loc 3 77 0
+ 686 0006 1820     		movs	r0, #24
+ 687 0008 FFF7FEFF 		bl	speex_alloc
+ 688 000c 7860     		str	r0, [r7, #4]
+  78:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_stereo_state_reset(stereo);
+ 689              		.loc 3 78 0
+ 690 000e 7868     		ldr	r0, [r7, #4]
+ 691 0010 FFF7FEFF 		bl	speex_stereo_state_reset
+  79:STM32F10x_Speex_Lib/libspeex/stereo.c ****    return stereo;
+ 692              		.loc 3 79 0
+ 693 0014 7B68     		ldr	r3, [r7, #4]
+  80:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 694              		.loc 3 80 0
+ 695 0016 1846     		mov	r0, r3
+ 696 0018 0837     		adds	r7, r7, #8
+ 697              	.LCFI41:
+ 698              		.cfi_def_cfa_offset 8
+ 699 001a BD46     		mov	sp, r7
+ 700              	.LCFI42:
+ 701              		.cfi_def_cfa_register 13
+ 702              		@ sp needed
+ 703 001c 80BD     		pop	{r7, pc}
+ 704              		.cfi_endproc
+ 705              	.LFE21:
+ 707 001e 00BF     		.section	.text.speex_stereo_state_reset,"ax",%progbits
+ 708              		.align	2
+ 709              		.global	speex_stereo_state_reset
+ 710              		.thumb
+ 711              		.thumb_func
+ 713              	speex_stereo_state_reset:
+ 714              	.LFB22:
+  81:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+  82:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_stereo_state_reset(SpeexStereoState *_stereo)
+  83:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 715              		.loc 3 83 0
+ 716              		.cfi_startproc
+ 717              		@ args = 0, pretend = 0, frame = 16
+ 718              		@ frame_needed = 1, uses_anonymous_args = 0
+ 719              		@ link register save eliminated.
+ 720 0000 80B4     		push	{r7}
+ 721              	.LCFI43:
+ 722              		.cfi_def_cfa_offset 4
+ 723              		.cfi_offset 7, -4
+ 724 0002 85B0     		sub	sp, sp, #20
+ 725              	.LCFI44:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 21
+
+
+ 726              		.cfi_def_cfa_offset 24
+ 727 0004 00AF     		add	r7, sp, #0
+ 728              	.LCFI45:
+ 729              		.cfi_def_cfa_register 7
+ 730 0006 7860     		str	r0, [r7, #4]
+  84:STM32F10x_Speex_Lib/libspeex/stereo.c ****    RealSpeexStereoState *stereo = (RealSpeexStereoState*)_stereo;
+ 731              		.loc 3 84 0
+ 732 0008 7B68     		ldr	r3, [r7, #4]
+ 733 000a FB60     		str	r3, [r7, #12]
+  85:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+  86:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->balance = 65536;
+ 734              		.loc 3 86 0
+ 735 000c FB68     		ldr	r3, [r7, #12]
+ 736 000e 4FF48032 		mov	r2, #65536
+ 737 0012 1A60     		str	r2, [r3]
+  87:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->e_ratio = 16384;
+ 738              		.loc 3 87 0
+ 739 0014 FB68     		ldr	r3, [r7, #12]
+ 740 0016 4FF48042 		mov	r2, #16384
+ 741 001a 5A60     		str	r2, [r3, #4]
+  88:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->smooth_left = 16384;
+ 742              		.loc 3 88 0
+ 743 001c FB68     		ldr	r3, [r7, #12]
+ 744 001e 4FF48042 		mov	r2, #16384
+ 745 0022 9A60     		str	r2, [r3, #8]
+  89:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->smooth_right = 16384;
+ 746              		.loc 3 89 0
+ 747 0024 FB68     		ldr	r3, [r7, #12]
+ 748 0026 4FF48042 		mov	r2, #16384
+ 749 002a DA60     		str	r2, [r3, #12]
+  90:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->reserved1 = 0xdeadbeef;
+ 750              		.loc 3 90 0
+ 751 002c FB68     		ldr	r3, [r7, #12]
+ 752 002e 054A     		ldr	r2, .L39
+ 753 0030 1A61     		str	r2, [r3, #16]
+  91:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->reserved2 = 0;
+ 754              		.loc 3 91 0
+ 755 0032 FB68     		ldr	r3, [r7, #12]
+ 756 0034 0022     		movs	r2, #0
+ 757 0036 5A61     		str	r2, [r3, #20]
+  92:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+  93:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->balance = 1.0f;
+  94:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->e_ratio = .5f;
+  95:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->smooth_left = 1.f;
+  96:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->smooth_right = 1.f;
+  97:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->reserved1 = 0;
+  98:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->reserved2 = 0;
+  99:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif   
+ 100:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 758              		.loc 3 100 0
+ 759 0038 00BF     		nop
+ 760 003a 1437     		adds	r7, r7, #20
+ 761              	.LCFI46:
+ 762              		.cfi_def_cfa_offset 4
+ 763 003c BD46     		mov	sp, r7
+ 764              	.LCFI47:
+ 765              		.cfi_def_cfa_register 13
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 22
+
+
+ 766              		@ sp needed
+ 767 003e 80BC     		pop	{r7}
+ 768              	.LCFI48:
+ 769              		.cfi_restore 7
+ 770              		.cfi_def_cfa_offset 0
+ 771 0040 7047     		bx	lr
+ 772              	.L40:
+ 773 0042 00BF     		.align	2
+ 774              	.L39:
+ 775 0044 EFBEADDE 		.word	-559038737
+ 776              		.cfi_endproc
+ 777              	.LFE22:
+ 779              		.section	.text.speex_stereo_state_destroy,"ax",%progbits
+ 780              		.align	2
+ 781              		.global	speex_stereo_state_destroy
+ 782              		.thumb
+ 783              		.thumb_func
+ 785              	speex_stereo_state_destroy:
+ 786              	.LFB23:
+ 101:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 102:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_stereo_state_destroy(SpeexStereoState *stereo)
+ 103:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 787              		.loc 3 103 0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 8
+ 790              		@ frame_needed = 1, uses_anonymous_args = 0
+ 791 0000 80B5     		push	{r7, lr}
+ 792              	.LCFI49:
+ 793              		.cfi_def_cfa_offset 8
+ 794              		.cfi_offset 7, -8
+ 795              		.cfi_offset 14, -4
+ 796 0002 82B0     		sub	sp, sp, #8
+ 797              	.LCFI50:
+ 798              		.cfi_def_cfa_offset 16
+ 799 0004 00AF     		add	r7, sp, #0
+ 800              	.LCFI51:
+ 801              		.cfi_def_cfa_register 7
+ 802 0006 7860     		str	r0, [r7, #4]
+ 104:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_free(stereo);
+ 803              		.loc 3 104 0
+ 804 0008 7868     		ldr	r0, [r7, #4]
+ 805 000a FFF7FEFF 		bl	speex_free
+ 105:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 806              		.loc 3 105 0
+ 807 000e 00BF     		nop
+ 808 0010 0837     		adds	r7, r7, #8
+ 809              	.LCFI52:
+ 810              		.cfi_def_cfa_offset 8
+ 811 0012 BD46     		mov	sp, r7
+ 812              	.LCFI53:
+ 813              		.cfi_def_cfa_register 13
+ 814              		@ sp needed
+ 815 0014 80BD     		pop	{r7, pc}
+ 816              		.cfi_endproc
+ 817              	.LFE23:
+ 819              		.section	.text.speex_encode_stereo_int,"ax",%progbits
+ 820              		.align	2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 23
+
+
+ 821              		.global	speex_encode_stereo_int
+ 822              		.thumb
+ 823              		.thumb_func
+ 825              	speex_encode_stereo_int:
+ 826              	.LFB24:
+ 106:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 107:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifndef DISABLE_FLOAT_API
+ 108:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_encode_stereo(float *data, int frame_size, SpeexBits *bits)
+ 109:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 110:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int i, tmp;
+ 111:STM32F10x_Speex_Lib/libspeex/stereo.c ****    float e_left=0, e_right=0, e_tot=0;
+ 112:STM32F10x_Speex_Lib/libspeex/stereo.c ****    float balance, e_ratio;
+ 113:STM32F10x_Speex_Lib/libspeex/stereo.c ****    for (i=0;i<frame_size;i++)
+ 114:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 115:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_left  += ((float)data[2*i])*data[2*i];
+ 116:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_right += ((float)data[2*i+1])*data[2*i+1];
+ 117:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[i] =  .5*(((float)data[2*i])+data[2*i+1]);
+ 118:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_tot   += ((float)data[i])*data[i];
+ 119:STM32F10x_Speex_Lib/libspeex/stereo.c ****    }
+ 120:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=(e_left+1)/(e_right+1);
+ 121:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_ratio = e_tot/(1+e_left+e_right);
+ 122:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 123:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /*Quantization*/
+ 124:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, 14, 5);
+ 125:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, SPEEX_INBAND_STEREO, 4);
+ 126:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 127:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=4*log(balance);
+ 128:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 129:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /*Pack sign*/
+ 130:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (balance>0)
+ 131:STM32F10x_Speex_Lib/libspeex/stereo.c ****       speex_bits_pack(bits, 0, 1);
+ 132:STM32F10x_Speex_Lib/libspeex/stereo.c ****    else
+ 133:STM32F10x_Speex_Lib/libspeex/stereo.c ****       speex_bits_pack(bits, 1, 1);
+ 134:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=floor(.5+fabs(balance));
+ 135:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (balance>30)
+ 136:STM32F10x_Speex_Lib/libspeex/stereo.c ****       balance=31;
+ 137:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 138:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, (int)balance, 5);
+ 139:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 140:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* FIXME: this is a hack */
+ 141:STM32F10x_Speex_Lib/libspeex/stereo.c ****    tmp=scal_quant(e_ratio*Q15_ONE, e_ratio_quant_bounds, 4);
+ 142:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, tmp, 2);
+ 143:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 144:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif /* #ifndef DISABLE_FLOAT_API */
+ 145:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 146:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_encode_stereo_int(spx_int16_t *data, int frame_size, SpeexBits *bits)
+ 147:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 827              		.loc 3 147 0
+ 828              		.cfi_startproc
+ 829              		@ args = 0, pretend = 0, frame = 64
+ 830              		@ frame_needed = 1, uses_anonymous_args = 0
+ 831 0000 80B5     		push	{r7, lr}
+ 832              	.LCFI54:
+ 833              		.cfi_def_cfa_offset 8
+ 834              		.cfi_offset 7, -8
+ 835              		.cfi_offset 14, -4
+ 836 0002 90B0     		sub	sp, sp, #64
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 24
+
+
+ 837              	.LCFI55:
+ 838              		.cfi_def_cfa_offset 72
+ 839 0004 00AF     		add	r7, sp, #0
+ 840              	.LCFI56:
+ 841              		.cfi_def_cfa_register 7
+ 842 0006 F860     		str	r0, [r7, #12]
+ 843 0008 B960     		str	r1, [r7, #8]
+ 844 000a 7A60     		str	r2, [r7, #4]
+ 148:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int i, tmp;
+ 149:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t e_left=0, e_right=0, e_tot=0;
+ 845              		.loc 3 149 0
+ 846 000c 0023     		movs	r3, #0
+ 847 000e BB63     		str	r3, [r7, #56]
+ 848 0010 0023     		movs	r3, #0
+ 849 0012 7B63     		str	r3, [r7, #52]
+ 850 0014 0023     		movs	r3, #0
+ 851 0016 3B63     		str	r3, [r7, #48]
+ 150:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t balance, e_ratio;
+ 151:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t largest, smallest;
+ 152:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int balance_id;
+ 153:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+ 154:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int shift;
+ 155:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+ 156:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 157:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* In band marker */
+ 158:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, 14, 5);
+ 852              		.loc 3 158 0
+ 853 0018 0522     		movs	r2, #5
+ 854 001a 0E21     		movs	r1, #14
+ 855 001c 7868     		ldr	r0, [r7, #4]
+ 856 001e FFF7FEFF 		bl	speex_bits_pack
+ 159:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* Stereo marker */
+ 160:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, SPEEX_INBAND_STEREO, 4);
+ 857              		.loc 3 160 0
+ 858 0022 0422     		movs	r2, #4
+ 859 0024 0921     		movs	r1, #9
+ 860 0026 7868     		ldr	r0, [r7, #4]
+ 861 0028 FFF7FEFF 		bl	speex_bits_pack
+ 161:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 162:STM32F10x_Speex_Lib/libspeex/stereo.c ****    for (i=0;i<frame_size;i++)
+ 862              		.loc 3 162 0
+ 863 002c 0023     		movs	r3, #0
+ 864 002e FB63     		str	r3, [r7, #60]
+ 865 0030 5BE0     		b	.L43
+ 866              	.L44:
+ 163:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 164:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_left  += SHR32(MULT16_16(data[2*i],data[2*i]),8);
+ 867              		.loc 3 164 0 discriminator 3
+ 868 0032 FB6B     		ldr	r3, [r7, #60]
+ 869 0034 9B00     		lsls	r3, r3, #2
+ 870 0036 1A46     		mov	r2, r3
+ 871 0038 FB68     		ldr	r3, [r7, #12]
+ 872 003a 1344     		add	r3, r3, r2
+ 873 003c B3F90030 		ldrsh	r3, [r3]
+ 874 0040 1A46     		mov	r2, r3
+ 875 0042 FB6B     		ldr	r3, [r7, #60]
+ 876 0044 9B00     		lsls	r3, r3, #2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 25
+
+
+ 877 0046 1946     		mov	r1, r3
+ 878 0048 FB68     		ldr	r3, [r7, #12]
+ 879 004a 0B44     		add	r3, r3, r1
+ 880 004c B3F90030 		ldrsh	r3, [r3]
+ 881 0050 03FB02F3 		mul	r3, r3, r2
+ 882 0054 1B12     		asrs	r3, r3, #8
+ 883 0056 BA6B     		ldr	r2, [r7, #56]
+ 884 0058 1344     		add	r3, r3, r2
+ 885 005a BB63     		str	r3, [r7, #56]
+ 165:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_right += SHR32(MULT16_16(data[2*i+1],data[2*i+1]),8);
+ 886              		.loc 3 165 0 discriminator 3
+ 887 005c FB6B     		ldr	r3, [r7, #60]
+ 888 005e 9B00     		lsls	r3, r3, #2
+ 889 0060 0233     		adds	r3, r3, #2
+ 890 0062 FA68     		ldr	r2, [r7, #12]
+ 891 0064 1344     		add	r3, r3, r2
+ 892 0066 B3F90030 		ldrsh	r3, [r3]
+ 893 006a 1946     		mov	r1, r3
+ 894 006c FB6B     		ldr	r3, [r7, #60]
+ 895 006e 9B00     		lsls	r3, r3, #2
+ 896 0070 0233     		adds	r3, r3, #2
+ 897 0072 FA68     		ldr	r2, [r7, #12]
+ 898 0074 1344     		add	r3, r3, r2
+ 899 0076 B3F90030 		ldrsh	r3, [r3]
+ 900 007a 03FB01F3 		mul	r3, r3, r1
+ 901 007e 1B12     		asrs	r3, r3, #8
+ 902 0080 7A6B     		ldr	r2, [r7, #52]
+ 903 0082 1344     		add	r3, r3, r2
+ 904 0084 7B63     		str	r3, [r7, #52]
+ 166:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+ 167:STM32F10x_Speex_Lib/libspeex/stereo.c ****       /* I think this is actually unbiased */
+ 168:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[i] =  SHR16(data[2*i],1)+PSHR16(data[2*i+1],1);
+ 905              		.loc 3 168 0 discriminator 3
+ 906 0086 FB6B     		ldr	r3, [r7, #60]
+ 907 0088 5B00     		lsls	r3, r3, #1
+ 908 008a FA68     		ldr	r2, [r7, #12]
+ 909 008c 1344     		add	r3, r3, r2
+ 910 008e FA6B     		ldr	r2, [r7, #60]
+ 911 0090 9200     		lsls	r2, r2, #2
+ 912 0092 1146     		mov	r1, r2
+ 913 0094 FA68     		ldr	r2, [r7, #12]
+ 914 0096 0A44     		add	r2, r2, r1
+ 915 0098 B2F90020 		ldrsh	r2, [r2]
+ 916 009c 5210     		asrs	r2, r2, #1
+ 917 009e 12B2     		sxth	r2, r2
+ 918 00a0 91B2     		uxth	r1, r2
+ 919 00a2 FA6B     		ldr	r2, [r7, #60]
+ 920 00a4 9200     		lsls	r2, r2, #2
+ 921 00a6 0232     		adds	r2, r2, #2
+ 922 00a8 F868     		ldr	r0, [r7, #12]
+ 923 00aa 0244     		add	r2, r2, r0
+ 924 00ac B2F90020 		ldrsh	r2, [r2]
+ 925 00b0 0132     		adds	r2, r2, #1
+ 926 00b2 5210     		asrs	r2, r2, #1
+ 927 00b4 92B2     		uxth	r2, r2
+ 928 00b6 0A44     		add	r2, r2, r1
+ 929 00b8 92B2     		uxth	r2, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 26
+
+
+ 930 00ba 12B2     		sxth	r2, r2
+ 931 00bc 1A80     		strh	r2, [r3]	@ movhi
+ 169:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+ 170:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[i] =  .5*(((float)data[2*i])+data[2*i+1]);
+ 171:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+ 172:STM32F10x_Speex_Lib/libspeex/stereo.c ****       e_tot   += SHR32(MULT16_16(data[i],data[i]),8);
+ 932              		.loc 3 172 0 discriminator 3
+ 933 00be FB6B     		ldr	r3, [r7, #60]
+ 934 00c0 5B00     		lsls	r3, r3, #1
+ 935 00c2 FA68     		ldr	r2, [r7, #12]
+ 936 00c4 1344     		add	r3, r3, r2
+ 937 00c6 B3F90030 		ldrsh	r3, [r3]
+ 938 00ca 1946     		mov	r1, r3
+ 939 00cc FB6B     		ldr	r3, [r7, #60]
+ 940 00ce 5B00     		lsls	r3, r3, #1
+ 941 00d0 FA68     		ldr	r2, [r7, #12]
+ 942 00d2 1344     		add	r3, r3, r2
+ 943 00d4 B3F90030 		ldrsh	r3, [r3]
+ 944 00d8 03FB01F3 		mul	r3, r3, r1
+ 945 00dc 1B12     		asrs	r3, r3, #8
+ 946 00de 3A6B     		ldr	r2, [r7, #48]
+ 947 00e0 1344     		add	r3, r3, r2
+ 948 00e2 3B63     		str	r3, [r7, #48]
+ 162:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 949              		.loc 3 162 0 discriminator 3
+ 950 00e4 FB6B     		ldr	r3, [r7, #60]
+ 951 00e6 0133     		adds	r3, r3, #1
+ 952 00e8 FB63     		str	r3, [r7, #60]
+ 953              	.L43:
+ 162:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 954              		.loc 3 162 0 is_stmt 0 discriminator 1
+ 955 00ea FA6B     		ldr	r2, [r7, #60]
+ 956 00ec BB68     		ldr	r3, [r7, #8]
+ 957 00ee 9A42     		cmp	r2, r3
+ 958 00f0 9FDB     		blt	.L44
+ 173:STM32F10x_Speex_Lib/libspeex/stereo.c ****    }
+ 174:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (e_left > e_right)
+ 959              		.loc 3 174 0 is_stmt 1
+ 960 00f2 BA6B     		ldr	r2, [r7, #56]
+ 961 00f4 7B6B     		ldr	r3, [r7, #52]
+ 962 00f6 9A42     		cmp	r2, r3
+ 963 00f8 09DD     		ble	.L45
+ 175:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 176:STM32F10x_Speex_Lib/libspeex/stereo.c ****       speex_bits_pack(bits, 0, 1);
+ 964              		.loc 3 176 0
+ 965 00fa 0122     		movs	r2, #1
+ 966 00fc 0021     		movs	r1, #0
+ 967 00fe 7868     		ldr	r0, [r7, #4]
+ 968 0100 FFF7FEFF 		bl	speex_bits_pack
+ 177:STM32F10x_Speex_Lib/libspeex/stereo.c ****       largest = e_left;
+ 969              		.loc 3 177 0
+ 970 0104 BB6B     		ldr	r3, [r7, #56]
+ 971 0106 BB62     		str	r3, [r7, #40]
+ 178:STM32F10x_Speex_Lib/libspeex/stereo.c ****       smallest = e_right;
+ 972              		.loc 3 178 0
+ 973 0108 7B6B     		ldr	r3, [r7, #52]
+ 974 010a 7B62     		str	r3, [r7, #36]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 27
+
+
+ 975 010c 08E0     		b	.L46
+ 976              	.L45:
+ 179:STM32F10x_Speex_Lib/libspeex/stereo.c ****    } else {
+ 180:STM32F10x_Speex_Lib/libspeex/stereo.c ****       speex_bits_pack(bits, 1, 1);
+ 977              		.loc 3 180 0
+ 978 010e 0122     		movs	r2, #1
+ 979 0110 0121     		movs	r1, #1
+ 980 0112 7868     		ldr	r0, [r7, #4]
+ 981 0114 FFF7FEFF 		bl	speex_bits_pack
+ 181:STM32F10x_Speex_Lib/libspeex/stereo.c ****       largest = e_right;
+ 982              		.loc 3 181 0
+ 983 0118 7B6B     		ldr	r3, [r7, #52]
+ 984 011a BB62     		str	r3, [r7, #40]
+ 182:STM32F10x_Speex_Lib/libspeex/stereo.c ****       smallest = e_left;
+ 985              		.loc 3 182 0
+ 986 011c BB6B     		ldr	r3, [r7, #56]
+ 987 011e 7B62     		str	r3, [r7, #36]
+ 988              	.L46:
+ 183:STM32F10x_Speex_Lib/libspeex/stereo.c ****    }
+ 184:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 185:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* Balance quantization */
+ 186:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+ 187:STM32F10x_Speex_Lib/libspeex/stereo.c ****    shift = spx_ilog2(largest)-15;
+ 989              		.loc 3 187 0
+ 990 0120 BB6A     		ldr	r3, [r7, #40]
+ 991 0122 1846     		mov	r0, r3
+ 992 0124 FFF7FEFF 		bl	spx_ilog2
+ 993 0128 0346     		mov	r3, r0
+ 994 012a 0F3B     		subs	r3, r3, #15
+ 995 012c 3B62     		str	r3, [r7, #32]
+ 188:STM32F10x_Speex_Lib/libspeex/stereo.c ****    largest = VSHR32(largest, shift-4);
+ 996              		.loc 3 188 0
+ 997 012e 3B6A     		ldr	r3, [r7, #32]
+ 998 0130 043B     		subs	r3, r3, #4
+ 999 0132 002B     		cmp	r3, #0
+ 1000 0134 05DD     		ble	.L47
+ 1001              		.loc 3 188 0 is_stmt 0 discriminator 1
+ 1002 0136 3B6A     		ldr	r3, [r7, #32]
+ 1003 0138 043B     		subs	r3, r3, #4
+ 1004 013a BA6A     		ldr	r2, [r7, #40]
+ 1005 013c 42FA03F3 		asr	r3, r2, r3
+ 1006 0140 05E0     		b	.L48
+ 1007              	.L47:
+ 1008              		.loc 3 188 0 discriminator 2
+ 1009 0142 3B6A     		ldr	r3, [r7, #32]
+ 1010 0144 C3F10403 		rsb	r3, r3, #4
+ 1011 0148 BA6A     		ldr	r2, [r7, #40]
+ 1012 014a 02FA03F3 		lsl	r3, r2, r3
+ 1013              	.L48:
+ 1014              		.loc 3 188 0 discriminator 4
+ 1015 014e BB62     		str	r3, [r7, #40]
+ 189:STM32F10x_Speex_Lib/libspeex/stereo.c ****    smallest = VSHR32(smallest, shift);
+ 1016              		.loc 3 189 0 is_stmt 1 discriminator 4
+ 1017 0150 3B6A     		ldr	r3, [r7, #32]
+ 1018 0152 002B     		cmp	r3, #0
+ 1019 0154 04DD     		ble	.L49
+ 1020              		.loc 3 189 0 is_stmt 0 discriminator 1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 28
+
+
+ 1021 0156 7A6A     		ldr	r2, [r7, #36]
+ 1022 0158 3B6A     		ldr	r3, [r7, #32]
+ 1023 015a 42FA03F3 		asr	r3, r2, r3
+ 1024 015e 04E0     		b	.L50
+ 1025              	.L49:
+ 1026              		.loc 3 189 0 discriminator 2
+ 1027 0160 3B6A     		ldr	r3, [r7, #32]
+ 1028 0162 5B42     		negs	r3, r3
+ 1029 0164 7A6A     		ldr	r2, [r7, #36]
+ 1030 0166 02FA03F3 		lsl	r3, r2, r3
+ 1031              	.L50:
+ 1032              		.loc 3 189 0 discriminator 4
+ 1033 016a 7B62     		str	r3, [r7, #36]
+ 190:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance = DIV32(largest, ADD32(smallest, 1));
+ 1034              		.loc 3 190 0 is_stmt 1 discriminator 4
+ 1035 016c 7B6A     		ldr	r3, [r7, #36]
+ 1036 016e 0133     		adds	r3, r3, #1
+ 1037 0170 BA6A     		ldr	r2, [r7, #40]
+ 1038 0172 92FBF3F3 		sdiv	r3, r2, r3
+ 1039 0176 FB62     		str	r3, [r7, #44]
+ 191:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (balance > 32767)
+ 1040              		.loc 3 191 0 discriminator 4
+ 1041 0178 FB6A     		ldr	r3, [r7, #44]
+ 1042 017a B3F5004F 		cmp	r3, #32768
+ 1043 017e 02DB     		blt	.L51
+ 192:STM32F10x_Speex_Lib/libspeex/stereo.c ****       balance = 32767;
+ 1044              		.loc 3 192 0
+ 1045 0180 47F6FF73 		movw	r3, #32767
+ 1046 0184 FB62     		str	r3, [r7, #44]
+ 1047              	.L51:
+ 193:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance_id = scal_quant(EXTRACT16(balance), balance_bounds, 32);
+ 1048              		.loc 3 193 0
+ 1049 0186 FB6A     		ldr	r3, [r7, #44]
+ 1050 0188 1BB2     		sxth	r3, r3
+ 1051 018a 2022     		movs	r2, #32
+ 1052 018c 2D49     		ldr	r1, .L58
+ 1053 018e 1846     		mov	r0, r3
+ 1054 0190 FFF7FEFF 		bl	scal_quant
+ 1055 0194 F861     		str	r0, [r7, #28]
+ 194:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+ 195:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=(largest+1.)/(smallest+1.);
+ 196:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=4*log(balance);
+ 197:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance_id=floor(.5+fabs(balance));
+ 198:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (balance_id>30)
+ 199:STM32F10x_Speex_Lib/libspeex/stereo.c ****       balance_id=31;
+ 200:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+ 201:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 202:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, balance_id, 5);
+ 1056              		.loc 3 202 0
+ 1057 0196 0522     		movs	r2, #5
+ 1058 0198 F969     		ldr	r1, [r7, #28]
+ 1059 019a 7868     		ldr	r0, [r7, #4]
+ 1060 019c FFF7FEFF 		bl	speex_bits_pack
+ 203:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 204:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* "coherence" quantisation */
+ 205:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifdef FIXED_POINT
+ 206:STM32F10x_Speex_Lib/libspeex/stereo.c ****    shift = spx_ilog2(e_tot);
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 29
+
+
+ 1061              		.loc 3 206 0
+ 1062 01a0 3B6B     		ldr	r3, [r7, #48]
+ 1063 01a2 1846     		mov	r0, r3
+ 1064 01a4 FFF7FEFF 		bl	spx_ilog2
+ 1065 01a8 0346     		mov	r3, r0
+ 1066 01aa 3B62     		str	r3, [r7, #32]
+ 207:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_tot = VSHR32(e_tot, shift-25);
+ 1067              		.loc 3 207 0
+ 1068 01ac 3B6A     		ldr	r3, [r7, #32]
+ 1069 01ae 193B     		subs	r3, r3, #25
+ 1070 01b0 002B     		cmp	r3, #0
+ 1071 01b2 05DD     		ble	.L52
+ 1072              		.loc 3 207 0 is_stmt 0 discriminator 1
+ 1073 01b4 3B6A     		ldr	r3, [r7, #32]
+ 1074 01b6 193B     		subs	r3, r3, #25
+ 1075 01b8 3A6B     		ldr	r2, [r7, #48]
+ 1076 01ba 42FA03F3 		asr	r3, r2, r3
+ 1077 01be 05E0     		b	.L53
+ 1078              	.L52:
+ 1079              		.loc 3 207 0 discriminator 2
+ 1080 01c0 3B6A     		ldr	r3, [r7, #32]
+ 1081 01c2 C3F11903 		rsb	r3, r3, #25
+ 1082 01c6 3A6B     		ldr	r2, [r7, #48]
+ 1083 01c8 02FA03F3 		lsl	r3, r2, r3
+ 1084              	.L53:
+ 1085              		.loc 3 207 0 discriminator 4
+ 1086 01cc 3B63     		str	r3, [r7, #48]
+ 208:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_left = VSHR32(e_left, shift-10);
+ 1087              		.loc 3 208 0 is_stmt 1 discriminator 4
+ 1088 01ce 3B6A     		ldr	r3, [r7, #32]
+ 1089 01d0 0A3B     		subs	r3, r3, #10
+ 1090 01d2 002B     		cmp	r3, #0
+ 1091 01d4 05DD     		ble	.L54
+ 1092              		.loc 3 208 0 is_stmt 0 discriminator 1
+ 1093 01d6 3B6A     		ldr	r3, [r7, #32]
+ 1094 01d8 0A3B     		subs	r3, r3, #10
+ 1095 01da BA6B     		ldr	r2, [r7, #56]
+ 1096 01dc 42FA03F3 		asr	r3, r2, r3
+ 1097 01e0 05E0     		b	.L55
+ 1098              	.L54:
+ 1099              		.loc 3 208 0 discriminator 2
+ 1100 01e2 3B6A     		ldr	r3, [r7, #32]
+ 1101 01e4 C3F10A03 		rsb	r3, r3, #10
+ 1102 01e8 BA6B     		ldr	r2, [r7, #56]
+ 1103 01ea 02FA03F3 		lsl	r3, r2, r3
+ 1104              	.L55:
+ 1105              		.loc 3 208 0 discriminator 4
+ 1106 01ee BB63     		str	r3, [r7, #56]
+ 209:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_right = VSHR32(e_right, shift-10);
+ 1107              		.loc 3 209 0 is_stmt 1 discriminator 4
+ 1108 01f0 3B6A     		ldr	r3, [r7, #32]
+ 1109 01f2 0A3B     		subs	r3, r3, #10
+ 1110 01f4 002B     		cmp	r3, #0
+ 1111 01f6 05DD     		ble	.L56
+ 1112              		.loc 3 209 0 is_stmt 0 discriminator 1
+ 1113 01f8 3B6A     		ldr	r3, [r7, #32]
+ 1114 01fa 0A3B     		subs	r3, r3, #10
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 30
+
+
+ 1115 01fc 7A6B     		ldr	r2, [r7, #52]
+ 1116 01fe 42FA03F3 		asr	r3, r2, r3
+ 1117 0202 05E0     		b	.L57
+ 1118              	.L56:
+ 1119              		.loc 3 209 0 discriminator 2
+ 1120 0204 3B6A     		ldr	r3, [r7, #32]
+ 1121 0206 C3F10A03 		rsb	r3, r3, #10
+ 1122 020a 7A6B     		ldr	r2, [r7, #52]
+ 1123 020c 02FA03F3 		lsl	r3, r2, r3
+ 1124              	.L57:
+ 1125              		.loc 3 209 0 discriminator 4
+ 1126 0210 7B63     		str	r3, [r7, #52]
+ 210:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_ratio = DIV32(e_tot, e_left+e_right+1);
+ 1127              		.loc 3 210 0 is_stmt 1 discriminator 4
+ 1128 0212 BA6B     		ldr	r2, [r7, #56]
+ 1129 0214 7B6B     		ldr	r3, [r7, #52]
+ 1130 0216 1344     		add	r3, r3, r2
+ 1131 0218 0133     		adds	r3, r3, #1
+ 1132 021a 3A6B     		ldr	r2, [r7, #48]
+ 1133 021c 92FBF3F3 		sdiv	r3, r2, r3
+ 1134 0220 BB61     		str	r3, [r7, #24]
+ 211:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+ 212:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_ratio = e_tot/(1.+e_left+e_right);
+ 213:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+ 214:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 215:STM32F10x_Speex_Lib/libspeex/stereo.c ****    tmp=scal_quant(EXTRACT16(e_ratio), e_ratio_quant_bounds, 4);
+ 1135              		.loc 3 215 0 discriminator 4
+ 1136 0222 BB69     		ldr	r3, [r7, #24]
+ 1137 0224 1BB2     		sxth	r3, r3
+ 1138 0226 0422     		movs	r2, #4
+ 1139 0228 0749     		ldr	r1, .L58+4
+ 1140 022a 1846     		mov	r0, r3
+ 1141 022c FFF7FEFF 		bl	scal_quant
+ 1142 0230 7861     		str	r0, [r7, #20]
+ 216:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /*fprintf (stderr, "%d %d %d %d\n", largest, smallest, balance_id, e_ratio);*/
+ 217:STM32F10x_Speex_Lib/libspeex/stereo.c ****    speex_bits_pack(bits, tmp, 2);
+ 1143              		.loc 3 217 0 discriminator 4
+ 1144 0232 0222     		movs	r2, #2
+ 1145 0234 7969     		ldr	r1, [r7, #20]
+ 1146 0236 7868     		ldr	r0, [r7, #4]
+ 1147 0238 FFF7FEFF 		bl	speex_bits_pack
+ 218:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 1148              		.loc 3 218 0 discriminator 4
+ 1149 023c 00BF     		nop
+ 1150 023e 4037     		adds	r7, r7, #64
+ 1151              	.LCFI57:
+ 1152              		.cfi_def_cfa_offset 8
+ 1153 0240 BD46     		mov	sp, r7
+ 1154              	.LCFI58:
+ 1155              		.cfi_def_cfa_register 13
+ 1156              		@ sp needed
+ 1157 0242 80BD     		pop	{r7, pc}
+ 1158              	.L59:
+ 1159              		.align	2
+ 1160              	.L58:
+ 1161 0244 00000000 		.word	balance_bounds
+ 1162 0248 00000000 		.word	e_ratio_quant_bounds
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 31
+
+
+ 1163              		.cfi_endproc
+ 1164              	.LFE24:
+ 1166              		.section	.text.speex_decode_stereo_int,"ax",%progbits
+ 1167              		.align	2
+ 1168              		.global	speex_decode_stereo_int
+ 1169              		.thumb
+ 1170              		.thumb_func
+ 1172              	speex_decode_stereo_int:
+ 1173              	.LFB25:
+ 219:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 220:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifndef DISABLE_FLOAT_API
+ 221:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_decode_stereo(float *data, int frame_size, SpeexStereoState *_stereo)
+ 222:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 223:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int i;
+ 224:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t balance;
+ 225:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word16_t e_left, e_right, e_ratio;
+ 226:STM32F10x_Speex_Lib/libspeex/stereo.c ****    RealSpeexStereoState *stereo = (RealSpeexStereoState*)_stereo;
+ 227:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 228:STM32F10x_Speex_Lib/libspeex/stereo.c ****    COMPATIBILITY_HACK(stereo);
+ 229:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 230:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=stereo->balance;
+ 231:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_ratio=stereo->e_ratio;
+ 232:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 233:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* These two are Q14, with max value just below 2. */
+ 234:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_right = DIV32(QCONST32(1., 22), spx_sqrt(MULT16_32_Q15(e_ratio, ADD32(QCONST32(1., 16), balanc
+ 235:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_left = SHR32(MULT16_16(spx_sqrt(balance), e_right), 8);
+ 236:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 237:STM32F10x_Speex_Lib/libspeex/stereo.c ****    for (i=frame_size-1;i>=0;i--)
+ 238:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 239:STM32F10x_Speex_Lib/libspeex/stereo.c ****       spx_word16_t tmp=data[i];
+ 240:STM32F10x_Speex_Lib/libspeex/stereo.c ****       stereo->smooth_left = EXTRACT16(PSHR32(MAC16_16(MULT16_16(stereo->smooth_left, QCONST16(0.98,
+ 241:STM32F10x_Speex_Lib/libspeex/stereo.c ****       stereo->smooth_right = EXTRACT16(PSHR32(MAC16_16(MULT16_16(stereo->smooth_right, QCONST16(0.9
+ 242:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[2*i] = (float)MULT16_16_P14(stereo->smooth_left, tmp);
+ 243:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[2*i+1] = (float)MULT16_16_P14(stereo->smooth_right, tmp);
+ 244:STM32F10x_Speex_Lib/libspeex/stereo.c ****    }
+ 245:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 246:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif /* #ifndef DISABLE_FLOAT_API */
+ 247:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 248:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT void speex_decode_stereo_int(spx_int16_t *data, int frame_size, SpeexStereoState *_stereo)
+ 249:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 1174              		.loc 3 249 0
+ 1175              		.cfi_startproc
+ 1176              		@ args = 0, pretend = 0, frame = 40
+ 1177              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1178 0000 80B5     		push	{r7, lr}
+ 1179              	.LCFI59:
+ 1180              		.cfi_def_cfa_offset 8
+ 1181              		.cfi_offset 7, -8
+ 1182              		.cfi_offset 14, -4
+ 1183 0002 8AB0     		sub	sp, sp, #40
+ 1184              	.LCFI60:
+ 1185              		.cfi_def_cfa_offset 48
+ 1186 0004 00AF     		add	r7, sp, #0
+ 1187              	.LCFI61:
+ 1188              		.cfi_def_cfa_register 7
+ 1189 0006 F860     		str	r0, [r7, #12]
+ 1190 0008 B960     		str	r1, [r7, #8]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 32
+
+
+ 1191 000a 7A60     		str	r2, [r7, #4]
+ 250:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int i;
+ 251:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word32_t balance;
+ 252:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word16_t e_left, e_right, e_ratio;
+ 253:STM32F10x_Speex_Lib/libspeex/stereo.c ****    RealSpeexStereoState *stereo = (RealSpeexStereoState*)_stereo;
+ 1192              		.loc 3 253 0
+ 1193 000c 7B68     		ldr	r3, [r7, #4]
+ 1194 000e 3B62     		str	r3, [r7, #32]
+ 254:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 255:STM32F10x_Speex_Lib/libspeex/stereo.c ****    COMPATIBILITY_HACK(stereo);
+ 1195              		.loc 3 255 0
+ 1196 0010 3B6A     		ldr	r3, [r7, #32]
+ 1197 0012 1B69     		ldr	r3, [r3, #16]
+ 1198 0014 4B4A     		ldr	r2, .L64
+ 1199 0016 9342     		cmp	r3, r2
+ 1200 0018 02D0     		beq	.L61
+ 1201              		.loc 3 255 0 is_stmt 0 discriminator 1
+ 1202 001a 386A     		ldr	r0, [r7, #32]
+ 1203 001c FFF7FEFF 		bl	speex_stereo_state_reset
+ 1204              	.L61:
+ 256:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 257:STM32F10x_Speex_Lib/libspeex/stereo.c ****    balance=stereo->balance;
+ 1205              		.loc 3 257 0 is_stmt 1
+ 1206 0020 3B6A     		ldr	r3, [r7, #32]
+ 1207 0022 1B68     		ldr	r3, [r3]
+ 1208 0024 FB61     		str	r3, [r7, #28]
+ 258:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_ratio=stereo->e_ratio;
+ 1209              		.loc 3 258 0
+ 1210 0026 3B6A     		ldr	r3, [r7, #32]
+ 1211 0028 5B68     		ldr	r3, [r3, #4]
+ 1212 002a 7B83     		strh	r3, [r7, #26]	@ movhi
+ 259:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 260:STM32F10x_Speex_Lib/libspeex/stereo.c ****    /* These two are Q14, with max value just below 2. */
+ 261:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_right = DIV32(QCONST32(1., 22), spx_sqrt(MULT16_32_Q15(e_ratio, ADD32(QCONST32(1., 16), balanc
+ 1213              		.loc 3 261 0
+ 1214 002c B7F91A30 		ldrsh	r3, [r7, #26]
+ 1215 0030 FA69     		ldr	r2, [r7, #28]
+ 1216 0032 02F58032 		add	r2, r2, #65536
+ 1217 0036 D213     		asrs	r2, r2, #15
+ 1218 0038 12B2     		sxth	r2, r2
+ 1219 003a 02FB03F2 		mul	r2, r2, r3
+ 1220 003e B7F91A30 		ldrsh	r3, [r7, #26]
+ 1221 0042 F969     		ldr	r1, [r7, #28]
+ 1222 0044 C1F30E01 		ubfx	r1, r1, #0, #15
+ 1223 0048 01FB03F3 		mul	r3, r1, r3
+ 1224 004c DB13     		asrs	r3, r3, #15
+ 1225 004e 1344     		add	r3, r3, r2
+ 1226 0050 1846     		mov	r0, r3
+ 1227 0052 FFF7FEFF 		bl	spx_sqrt
+ 1228 0056 0346     		mov	r3, r0
+ 1229 0058 1A46     		mov	r2, r3
+ 1230 005a 4FF48003 		mov	r3, #4194304
+ 1231 005e 93FBF2F3 		sdiv	r3, r3, r2
+ 1232 0062 3B83     		strh	r3, [r7, #24]	@ movhi
+ 262:STM32F10x_Speex_Lib/libspeex/stereo.c ****    e_left = SHR32(MULT16_16(spx_sqrt(balance), e_right), 8);
+ 1233              		.loc 3 262 0
+ 1234 0064 F869     		ldr	r0, [r7, #28]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 33
+
+
+ 1235 0066 FFF7FEFF 		bl	spx_sqrt
+ 1236 006a 0346     		mov	r3, r0
+ 1237 006c 1A46     		mov	r2, r3
+ 1238 006e B7F91830 		ldrsh	r3, [r7, #24]
+ 1239 0072 03FB02F3 		mul	r3, r3, r2
+ 1240 0076 1B12     		asrs	r3, r3, #8
+ 1241 0078 FB82     		strh	r3, [r7, #22]	@ movhi
+ 263:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 264:STM32F10x_Speex_Lib/libspeex/stereo.c ****    for (i=frame_size-1;i>=0;i--)
+ 1242              		.loc 3 264 0
+ 1243 007a BB68     		ldr	r3, [r7, #8]
+ 1244 007c 013B     		subs	r3, r3, #1
+ 1245 007e 7B62     		str	r3, [r7, #36]
+ 1246 0080 58E0     		b	.L62
+ 1247              	.L63:
+ 1248              	.LBB2:
+ 265:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 266:STM32F10x_Speex_Lib/libspeex/stereo.c ****       spx_int16_t tmp=data[i];
+ 1249              		.loc 3 266 0 discriminator 3
+ 1250 0082 7B6A     		ldr	r3, [r7, #36]
+ 1251 0084 5B00     		lsls	r3, r3, #1
+ 1252 0086 FA68     		ldr	r2, [r7, #12]
+ 1253 0088 1344     		add	r3, r3, r2
+ 1254 008a 1B88     		ldrh	r3, [r3]	@ movhi
+ 1255 008c BB82     		strh	r3, [r7, #20]	@ movhi
+ 267:STM32F10x_Speex_Lib/libspeex/stereo.c ****       stereo->smooth_left = EXTRACT16(PSHR32(MAC16_16(MULT16_16(stereo->smooth_left, QCONST16(0.98,
+ 1256              		.loc 3 267 0 discriminator 3
+ 1257 008e 3B6A     		ldr	r3, [r7, #32]
+ 1258 0090 9B68     		ldr	r3, [r3, #8]
+ 1259 0092 1BB2     		sxth	r3, r3
+ 1260 0094 1A46     		mov	r2, r3
+ 1261 0096 47F67153 		movw	r3, #32113
+ 1262 009a 03FB02F2 		mul	r2, r3, r2
+ 1263 009e B7F91630 		ldrsh	r3, [r7, #22]
+ 1264 00a2 40F28F21 		movw	r1, #655
+ 1265 00a6 01FB03F3 		mul	r3, r1, r3
+ 1266 00aa 1344     		add	r3, r3, r2
+ 1267 00ac 03F58043 		add	r3, r3, #16384
+ 1268 00b0 DB13     		asrs	r3, r3, #15
+ 1269 00b2 1BB2     		sxth	r3, r3
+ 1270 00b4 1A46     		mov	r2, r3
+ 1271 00b6 3B6A     		ldr	r3, [r7, #32]
+ 1272 00b8 9A60     		str	r2, [r3, #8]
+ 268:STM32F10x_Speex_Lib/libspeex/stereo.c ****       stereo->smooth_right = EXTRACT16(PSHR32(MAC16_16(MULT16_16(stereo->smooth_right, QCONST16(0.9
+ 1273              		.loc 3 268 0 discriminator 3
+ 1274 00ba 3B6A     		ldr	r3, [r7, #32]
+ 1275 00bc DB68     		ldr	r3, [r3, #12]
+ 1276 00be 1BB2     		sxth	r3, r3
+ 1277 00c0 1A46     		mov	r2, r3
+ 1278 00c2 47F67153 		movw	r3, #32113
+ 1279 00c6 03FB02F2 		mul	r2, r3, r2
+ 1280 00ca B7F91830 		ldrsh	r3, [r7, #24]
+ 1281 00ce 40F28F21 		movw	r1, #655
+ 1282 00d2 01FB03F3 		mul	r3, r1, r3
+ 1283 00d6 1344     		add	r3, r3, r2
+ 1284 00d8 03F58043 		add	r3, r3, #16384
+ 1285 00dc DB13     		asrs	r3, r3, #15
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 34
+
+
+ 1286 00de 1BB2     		sxth	r3, r3
+ 1287 00e0 1A46     		mov	r2, r3
+ 1288 00e2 3B6A     		ldr	r3, [r7, #32]
+ 1289 00e4 DA60     		str	r2, [r3, #12]
+ 269:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[2*i] = (spx_int16_t)MULT16_16_P14(stereo->smooth_left, tmp);
+ 1290              		.loc 3 269 0 discriminator 3
+ 1291 00e6 7B6A     		ldr	r3, [r7, #36]
+ 1292 00e8 9B00     		lsls	r3, r3, #2
+ 1293 00ea 1A46     		mov	r2, r3
+ 1294 00ec FB68     		ldr	r3, [r7, #12]
+ 1295 00ee 1344     		add	r3, r3, r2
+ 1296 00f0 3A6A     		ldr	r2, [r7, #32]
+ 1297 00f2 9268     		ldr	r2, [r2, #8]
+ 1298 00f4 12B2     		sxth	r2, r2
+ 1299 00f6 1146     		mov	r1, r2
+ 1300 00f8 B7F91420 		ldrsh	r2, [r7, #20]
+ 1301 00fc 02FB01F2 		mul	r2, r2, r1
+ 1302 0100 02F50052 		add	r2, r2, #8192
+ 1303 0104 9213     		asrs	r2, r2, #14
+ 1304 0106 12B2     		sxth	r2, r2
+ 1305 0108 1A80     		strh	r2, [r3]	@ movhi
+ 270:STM32F10x_Speex_Lib/libspeex/stereo.c ****       data[2*i+1] = (spx_int16_t)MULT16_16_P14(stereo->smooth_right, tmp);
+ 1306              		.loc 3 270 0 discriminator 3
+ 1307 010a 7B6A     		ldr	r3, [r7, #36]
+ 1308 010c 9B00     		lsls	r3, r3, #2
+ 1309 010e 0233     		adds	r3, r3, #2
+ 1310 0110 FA68     		ldr	r2, [r7, #12]
+ 1311 0112 1344     		add	r3, r3, r2
+ 1312 0114 3A6A     		ldr	r2, [r7, #32]
+ 1313 0116 D268     		ldr	r2, [r2, #12]
+ 1314 0118 12B2     		sxth	r2, r2
+ 1315 011a 1146     		mov	r1, r2
+ 1316 011c B7F91420 		ldrsh	r2, [r7, #20]
+ 1317 0120 02FB01F2 		mul	r2, r2, r1
+ 1318 0124 02F50052 		add	r2, r2, #8192
+ 1319 0128 9213     		asrs	r2, r2, #14
+ 1320 012a 12B2     		sxth	r2, r2
+ 1321 012c 1A80     		strh	r2, [r3]	@ movhi
+ 1322              	.LBE2:
+ 264:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 1323              		.loc 3 264 0 discriminator 3
+ 1324 012e 7B6A     		ldr	r3, [r7, #36]
+ 1325 0130 013B     		subs	r3, r3, #1
+ 1326 0132 7B62     		str	r3, [r7, #36]
+ 1327              	.L62:
+ 264:STM32F10x_Speex_Lib/libspeex/stereo.c ****    {
+ 1328              		.loc 3 264 0 is_stmt 0 discriminator 1
+ 1329 0134 7B6A     		ldr	r3, [r7, #36]
+ 1330 0136 002B     		cmp	r3, #0
+ 1331 0138 A3DA     		bge	.L63
+ 271:STM32F10x_Speex_Lib/libspeex/stereo.c ****    }
+ 272:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 1332              		.loc 3 272 0 is_stmt 1
+ 1333 013a 00BF     		nop
+ 1334 013c 2837     		adds	r7, r7, #40
+ 1335              	.LCFI62:
+ 1336              		.cfi_def_cfa_offset 8
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 35
+
+
+ 1337 013e BD46     		mov	sp, r7
+ 1338              	.LCFI63:
+ 1339              		.cfi_def_cfa_register 13
+ 1340              		@ sp needed
+ 1341 0140 80BD     		pop	{r7, pc}
+ 1342              	.L65:
+ 1343 0142 00BF     		.align	2
+ 1344              	.L64:
+ 1345 0144 EFBEADDE 		.word	-559038737
+ 1346              		.cfi_endproc
+ 1347              	.LFE25:
+ 1349              		.section	.text.speex_std_stereo_request_handler,"ax",%progbits
+ 1350              		.align	2
+ 1351              		.global	speex_std_stereo_request_handler
+ 1352              		.thumb
+ 1353              		.thumb_func
+ 1355              	speex_std_stereo_request_handler:
+ 1356              	.LFB26:
+ 273:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 274:STM32F10x_Speex_Lib/libspeex/stereo.c **** EXPORT int speex_std_stereo_request_handler(SpeexBits *bits, void *state, void *data)
+ 275:STM32F10x_Speex_Lib/libspeex/stereo.c **** {
+ 1357              		.loc 3 275 0
+ 1358              		.cfi_startproc
+ 1359              		@ args = 0, pretend = 0, frame = 32
+ 1360              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1361 0000 80B5     		push	{r7, lr}
+ 1362              	.LCFI64:
+ 1363              		.cfi_def_cfa_offset 8
+ 1364              		.cfi_offset 7, -8
+ 1365              		.cfi_offset 14, -4
+ 1366 0002 88B0     		sub	sp, sp, #32
+ 1367              	.LCFI65:
+ 1368              		.cfi_def_cfa_offset 40
+ 1369 0004 00AF     		add	r7, sp, #0
+ 1370              	.LCFI66:
+ 1371              		.cfi_def_cfa_register 7
+ 1372 0006 F860     		str	r0, [r7, #12]
+ 1373 0008 B960     		str	r1, [r7, #8]
+ 1374 000a 7A60     		str	r2, [r7, #4]
+ 276:STM32F10x_Speex_Lib/libspeex/stereo.c ****    RealSpeexStereoState *stereo;
+ 277:STM32F10x_Speex_Lib/libspeex/stereo.c ****    spx_word16_t sign=1, dexp;
+ 1375              		.loc 3 277 0
+ 1376 000c 0123     		movs	r3, #1
+ 1377 000e FB83     		strh	r3, [r7, #30]	@ movhi
+ 278:STM32F10x_Speex_Lib/libspeex/stereo.c ****    int tmp;
+ 279:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 280:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo = (RealSpeexStereoState*)data;
+ 1378              		.loc 3 280 0
+ 1379 0010 7B68     		ldr	r3, [r7, #4]
+ 1380 0012 BB61     		str	r3, [r7, #24]
+ 281:STM32F10x_Speex_Lib/libspeex/stereo.c ****    
+ 282:STM32F10x_Speex_Lib/libspeex/stereo.c ****    COMPATIBILITY_HACK(stereo);
+ 1381              		.loc 3 282 0
+ 1382 0014 BB69     		ldr	r3, [r7, #24]
+ 1383 0016 1B69     		ldr	r3, [r3, #16]
+ 1384 0018 1B4A     		ldr	r2, .L70
+ 1385 001a 9342     		cmp	r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 36
+
+
+ 1386 001c 02D0     		beq	.L67
+ 1387              		.loc 3 282 0 is_stmt 0 discriminator 1
+ 1388 001e B869     		ldr	r0, [r7, #24]
+ 1389 0020 FFF7FEFF 		bl	speex_stereo_state_reset
+ 1390              	.L67:
+ 283:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 284:STM32F10x_Speex_Lib/libspeex/stereo.c ****    if (speex_bits_unpack_unsigned(bits, 1))
+ 1391              		.loc 3 284 0 is_stmt 1
+ 1392 0024 0121     		movs	r1, #1
+ 1393 0026 F868     		ldr	r0, [r7, #12]
+ 1394 0028 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 1395 002c 0346     		mov	r3, r0
+ 1396 002e 002B     		cmp	r3, #0
+ 1397 0030 02D0     		beq	.L68
+ 285:STM32F10x_Speex_Lib/libspeex/stereo.c ****       sign=-1;
+ 1398              		.loc 3 285 0
+ 1399 0032 4FF6FF73 		movw	r3, #65535
+ 1400 0036 FB83     		strh	r3, [r7, #30]	@ movhi
+ 1401              	.L68:
+ 286:STM32F10x_Speex_Lib/libspeex/stereo.c ****    dexp = speex_bits_unpack_unsigned(bits, 5);
+ 1402              		.loc 3 286 0
+ 1403 0038 0521     		movs	r1, #5
+ 1404 003a F868     		ldr	r0, [r7, #12]
+ 1405 003c FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 1406 0040 0346     		mov	r3, r0
+ 1407 0042 FB82     		strh	r3, [r7, #22]	@ movhi
+ 287:STM32F10x_Speex_Lib/libspeex/stereo.c **** #ifndef FIXED_POINT
+ 288:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->balance = exp(sign*.25*dexp);
+ 289:STM32F10x_Speex_Lib/libspeex/stereo.c **** #else
+ 290:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->balance = spx_exp(MULT16_16(sign, SHL16(dexp, 9)));
+ 1408              		.loc 3 290 0
+ 1409 0044 B7F91630 		ldrsh	r3, [r7, #22]
+ 1410 0048 5B02     		lsls	r3, r3, #9
+ 1411 004a 9BB2     		uxth	r3, r3
+ 1412 004c FA8B     		ldrh	r2, [r7, #30]
+ 1413 004e 02FB03F3 		mul	r3, r2, r3
+ 1414 0052 9BB2     		uxth	r3, r3
+ 1415 0054 1BB2     		sxth	r3, r3
+ 1416 0056 1846     		mov	r0, r3
+ 1417 0058 FFF7FEFF 		bl	spx_exp
+ 1418 005c 0246     		mov	r2, r0
+ 1419 005e BB69     		ldr	r3, [r7, #24]
+ 1420 0060 1A60     		str	r2, [r3]
+ 291:STM32F10x_Speex_Lib/libspeex/stereo.c **** #endif
+ 292:STM32F10x_Speex_Lib/libspeex/stereo.c ****    tmp = speex_bits_unpack_unsigned(bits, 2);
+ 1421              		.loc 3 292 0
+ 1422 0062 0221     		movs	r1, #2
+ 1423 0064 F868     		ldr	r0, [r7, #12]
+ 1424 0066 FFF7FEFF 		bl	speex_bits_unpack_unsigned
+ 1425 006a 0346     		mov	r3, r0
+ 1426 006c 3B61     		str	r3, [r7, #16]
+ 293:STM32F10x_Speex_Lib/libspeex/stereo.c ****    stereo->e_ratio = e_ratio_quant[tmp];
+ 1427              		.loc 3 293 0
+ 1428 006e 074A     		ldr	r2, .L70+4
+ 1429 0070 3B69     		ldr	r3, [r7, #16]
+ 1430 0072 32F91330 		ldrsh	r3, [r2, r3, lsl #1]
+ 1431 0076 1A46     		mov	r2, r3
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 37
+
+
+ 1432 0078 BB69     		ldr	r3, [r7, #24]
+ 1433 007a 5A60     		str	r2, [r3, #4]
+ 294:STM32F10x_Speex_Lib/libspeex/stereo.c **** 
+ 295:STM32F10x_Speex_Lib/libspeex/stereo.c ****    return 0;
+ 1434              		.loc 3 295 0
+ 1435 007c 0023     		movs	r3, #0
+ 296:STM32F10x_Speex_Lib/libspeex/stereo.c **** }
+ 1436              		.loc 3 296 0
+ 1437 007e 1846     		mov	r0, r3
+ 1438 0080 2037     		adds	r7, r7, #32
+ 1439              	.LCFI67:
+ 1440              		.cfi_def_cfa_offset 8
+ 1441 0082 BD46     		mov	sp, r7
+ 1442              	.LCFI68:
+ 1443              		.cfi_def_cfa_register 13
+ 1444              		@ sp needed
+ 1445 0084 80BD     		pop	{r7, pc}
+ 1446              	.L71:
+ 1447 0086 00BF     		.align	2
+ 1448              	.L70:
+ 1449 0088 EFBEADDE 		.word	-559038737
+ 1450 008c 00000000 		.word	e_ratio_quant
+ 1451              		.cfi_endproc
+ 1452              	.LFE26:
+ 1454              		.text
+ 1455              	.Letext0:
+ 1456              		.file 4 "Inc/speex/speex_config_types.h"
+ 1457              		.file 5 "Inc/speex/speex_bits.h"
+ 1458              		.file 6 "Inc/speex/speex_stereo.h"
+ 1459              		.file 7 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s 			page 38
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stereo.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:20     .text.spx_ilog2:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:24     .text.spx_ilog2:0000000000000000 spx_ilog2
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:128    .text.spx_ilog4:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:132    .text.spx_ilog4:0000000000000000 spx_ilog4
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:222    .text.spx_sqrt:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:226    .text.spx_sqrt:0000000000000000 spx_sqrt
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:341    .text.spx_exp2:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:345    .text.spx_exp2:0000000000000000 spx_exp2
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:457    .text.spx_exp:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:461    .text.spx_exp:0000000000000000 spx_exp
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:522    .text.spx_exp:0000000000000050 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:527    .text.speex_alloc:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:531    .text.speex_alloc:0000000000000000 speex_alloc
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:570    .text.speex_free:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:574    .text.speex_free:0000000000000000 speex_free
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:609    .rodata.e_ratio_quant:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:612    .rodata.e_ratio_quant:0000000000000000 e_ratio_quant
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:618    .rodata.e_ratio_quant_bounds:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:621    .rodata.e_ratio_quant_bounds:0000000000000000 e_ratio_quant_bounds
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:626    .rodata.balance_bounds:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:629    .rodata.balance_bounds:0000000000000000 balance_bounds
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:662    .text.speex_stereo_state_init:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:667    .text.speex_stereo_state_init:0000000000000000 speex_stereo_state_init
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:713    .text.speex_stereo_state_reset:0000000000000000 speex_stereo_state_reset
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:708    .text.speex_stereo_state_reset:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:775    .text.speex_stereo_state_reset:0000000000000044 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:780    .text.speex_stereo_state_destroy:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:785    .text.speex_stereo_state_destroy:0000000000000000 speex_stereo_state_destroy
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:820    .text.speex_encode_stereo_int:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:825    .text.speex_encode_stereo_int:0000000000000000 speex_encode_stereo_int
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1161   .text.speex_encode_stereo_int:0000000000000244 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1167   .text.speex_decode_stereo_int:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1172   .text.speex_decode_stereo_int:0000000000000000 speex_decode_stereo_int
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1345   .text.speex_decode_stereo_int:0000000000000144 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1350   .text.speex_std_stereo_request_handler:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1355   .text.speex_std_stereo_request_handler:0000000000000000 speex_std_stereo_request_handler
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccZo4ERS.s:1449   .text.speex_std_stereo_request_handler:0000000000000088 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+calloc
+free
+speex_bits_pack
+scal_quant
+speex_bits_unpack_unsigned

@@ -1,0 +1,268 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"window.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	lag_window
+  20              		.section	.rodata.lag_window,"a",%progbits
+  21              		.align	2
+  24              	lag_window:
+  25 0000 0040     		.short	16384
+  26 0002 D13F     		.short	16337
+  27 0004 473F     		.short	16199
+  28 0006 623E     		.short	15970
+  29 0008 283D     		.short	15656
+  30 000a 9C3B     		.short	15260
+  31 000c C639     		.short	14790
+  32 000e AE37     		.short	14254
+  33 0010 5B35     		.short	13659
+  34 0012 D732     		.short	13015
+  35 0014 2A30     		.short	12330
+  36              		.global	lpc_window
+  37              		.section	.rodata.lpc_window,"a",%progbits
+  38              		.align	2
+  41              	lpc_window:
+  42 0000 1E05     		.short	1310
+  43 0002 2105     		.short	1313
+  44 0004 2905     		.short	1321
+  45 0006 3505     		.short	1333
+  46 0008 4805     		.short	1352
+  47 000a 5F05     		.short	1375
+  48 000c 7B05     		.short	1403
+  49 000e 9C05     		.short	1436
+  50 0010 C305     		.short	1475
+  51 0012 EE05     		.short	1518
+  52 0014 1F06     		.short	1567
+  53 0016 5506     		.short	1621
+  54 0018 8F06     		.short	1679
+  55 001a CF06     		.short	1743
+  56 001c 1307     		.short	1811
+  57 001e 5C07     		.short	1884
+  58 0020 AA07     		.short	1962
+  59 0022 FC07     		.short	2044
+  60 0024 5408     		.short	2132
+  61 0026 B008     		.short	2224
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 2
+
+
+  62 0028 1009     		.short	2320
+  63 002a 7509     		.short	2421
+  64 002c DE09     		.short	2526
+  65 002e 4C0A     		.short	2636
+  66 0030 BE0A     		.short	2750
+  67 0032 340B     		.short	2868
+  68 0034 AE0B     		.short	2990
+  69 0036 2C0C     		.short	3116
+  70 0038 AE0C     		.short	3246
+  71 003a 340D     		.short	3380
+  72 003c BE0D     		.short	3518
+  73 003e 4B0E     		.short	3659
+  74 0040 DC0E     		.short	3804
+  75 0042 700F     		.short	3952
+  76 0044 0810     		.short	4104
+  77 0046 A310     		.short	4259
+  78 0048 4111     		.short	4417
+  79 004a E211     		.short	4578
+  80 004c 8612     		.short	4742
+  81 004e 2D13     		.short	4909
+  82 0050 D713     		.short	5079
+  83 0052 8314     		.short	5251
+  84 0054 3115     		.short	5425
+  85 0056 E215     		.short	5602
+  86 0058 9516     		.short	5781
+  87 005a 4B17     		.short	5963
+  88 005c 0218     		.short	6146
+  89 005e BB18     		.short	6331
+  90 0060 7619     		.short	6518
+  91 0062 321A     		.short	6706
+  92 0064 F01A     		.short	6896
+  93 0066 AF1B     		.short	7087
+  94 0068 701C     		.short	7280
+  95 006a 311D     		.short	7473
+  96 006c F41D     		.short	7668
+  97 006e B71E     		.short	7863
+  98 0070 7B1F     		.short	8059
+  99 0072 4020     		.short	8256
+ 100 0074 0421     		.short	8452
+ 101 0076 CA21     		.short	8650
+ 102 0078 8F22     		.short	8847
+ 103 007a 5423     		.short	9044
+ 104 007c 1924     		.short	9241
+ 105 007e DE24     		.short	9438
+ 106 0080 A325     		.short	9635
+ 107 0082 6726     		.short	9831
+ 108 0084 2A27     		.short	10026
+ 109 0086 EC27     		.short	10220
+ 110 0088 AE28     		.short	10414
+ 111 008a 6E29     		.short	10606
+ 112 008c 2D2A     		.short	10797
+ 113 008e EB2A     		.short	10987
+ 114 0090 A82B     		.short	11176
+ 115 0092 632C     		.short	11363
+ 116 0094 1C2D     		.short	11548
+ 117 0096 D32D     		.short	11731
+ 118 0098 882E     		.short	11912
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 3
+
+
+ 119 009a 3B2F     		.short	12091
+ 120 009c EC2F     		.short	12268
+ 121 009e 9B30     		.short	12443
+ 122 00a0 4731     		.short	12615
+ 123 00a2 F131     		.short	12785
+ 124 00a4 9832     		.short	12952
+ 125 00a6 3C33     		.short	13116
+ 126 00a8 DD33     		.short	13277
+ 127 00aa 7B34     		.short	13435
+ 128 00ac 1635     		.short	13590
+ 129 00ae AE35     		.short	13742
+ 130 00b0 4236     		.short	13890
+ 131 00b2 D336     		.short	14035
+ 132 00b4 6037     		.short	14176
+ 133 00b6 EA37     		.short	14314
+ 134 00b8 7038     		.short	14448
+ 135 00ba F238     		.short	14578
+ 136 00bc 7039     		.short	14704
+ 137 00be EA39     		.short	14826
+ 138 00c0 603A     		.short	14944
+ 139 00c2 D23A     		.short	15058
+ 140 00c4 403B     		.short	15168
+ 141 00c6 A93B     		.short	15273
+ 142 00c8 0E3C     		.short	15374
+ 143 00ca 6E3C     		.short	15470
+ 144 00cc CA3C     		.short	15562
+ 145 00ce 213D     		.short	15649
+ 146 00d0 743D     		.short	15732
+ 147 00d2 C23D     		.short	15810
+ 148 00d4 0B3E     		.short	15883
+ 149 00d6 4F3E     		.short	15951
+ 150 00d8 8F3E     		.short	16015
+ 151 00da C93E     		.short	16073
+ 152 00dc FF3E     		.short	16127
+ 153 00de 2F3F     		.short	16175
+ 154 00e0 5B3F     		.short	16219
+ 155 00e2 813F     		.short	16257
+ 156 00e4 A33F     		.short	16291
+ 157 00e6 BF3F     		.short	16319
+ 158 00e8 D63F     		.short	16342
+ 159 00ea E83F     		.short	16360
+ 160 00ec F53F     		.short	16373
+ 161 00ee FD3F     		.short	16381
+ 162 00f0 0040     		.short	16384
+ 163 00f2 0040     		.short	16384
+ 164 00f4 0040     		.short	16384
+ 165 00f6 0040     		.short	16384
+ 166 00f8 0040     		.short	16384
+ 167 00fa 0040     		.short	16384
+ 168 00fc 0040     		.short	16384
+ 169 00fe 0040     		.short	16384
+ 170 0100 0040     		.short	16384
+ 171 0102 0040     		.short	16384
+ 172 0104 0040     		.short	16384
+ 173 0106 0040     		.short	16384
+ 174 0108 0040     		.short	16384
+ 175 010a 0040     		.short	16384
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 4
+
+
+ 176 010c 0040     		.short	16384
+ 177 010e 0040     		.short	16384
+ 178 0110 0040     		.short	16384
+ 179 0112 0040     		.short	16384
+ 180 0114 0040     		.short	16384
+ 181 0116 0040     		.short	16384
+ 182 0118 0040     		.short	16384
+ 183 011a 0040     		.short	16384
+ 184 011c 0040     		.short	16384
+ 185 011e 0040     		.short	16384
+ 186 0120 0040     		.short	16384
+ 187 0122 0040     		.short	16384
+ 188 0124 0040     		.short	16384
+ 189 0126 0040     		.short	16384
+ 190 0128 0040     		.short	16384
+ 191 012a 0040     		.short	16384
+ 192 012c 0040     		.short	16384
+ 193 012e 0040     		.short	16384
+ 194 0130 0040     		.short	16384
+ 195 0132 0040     		.short	16384
+ 196 0134 0040     		.short	16384
+ 197 0136 0040     		.short	16384
+ 198 0138 0040     		.short	16384
+ 199 013a 0040     		.short	16384
+ 200 013c 0040     		.short	16384
+ 201 013e 0040     		.short	16384
+ 202 0140 0040     		.short	16384
+ 203 0142 0040     		.short	16384
+ 204 0144 0040     		.short	16384
+ 205 0146 0040     		.short	16384
+ 206 0148 0040     		.short	16384
+ 207 014a 0040     		.short	16384
+ 208 014c 0040     		.short	16384
+ 209 014e 0040     		.short	16384
+ 210 0150 0040     		.short	16384
+ 211 0152 0040     		.short	16384
+ 212 0154 0040     		.short	16384
+ 213 0156 E93F     		.short	16361
+ 214 0158 A63F     		.short	16294
+ 215 015a 373F     		.short	16183
+ 216 015c 9C3E     		.short	16028
+ 217 015e D63D     		.short	15830
+ 218 0160 E43C     		.short	15588
+ 219 0162 C83B     		.short	15304
+ 220 0164 833A     		.short	14979
+ 221 0166 1539     		.short	14613
+ 222 0168 7F37     		.short	14207
+ 223 016a C335     		.short	13763
+ 224 016c E233     		.short	13282
+ 225 016e DE31     		.short	12766
+ 226 0170 B72F     		.short	12215
+ 227 0172 6F2D     		.short	11631
+ 228 0174 082B     		.short	11016
+ 229 0176 8528     		.short	10373
+ 230 0178 E625     		.short	9702
+ 231 017a 2F23     		.short	9007
+ 232 017c 6120     		.short	8289
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 5
+
+
+ 233 017e 7F1D     		.short	7551
+ 234 0180 8D1A     		.short	6797
+ 235 0182 8C17     		.short	6028
+ 236 0184 8314     		.short	5251
+ 237 0186 7611     		.short	4470
+ 238 0188 6F0E     		.short	3695
+ 239 018a 7F0B     		.short	2943
+ 240 018c C808     		.short	2248
+ 241 018e A006     		.short	1696
+ 242              		.text
+ 243              	.Letext0:
+ 244              		.file 1 "Inc/speex/speex_config_types.h"
+ 245              		.file 2 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ 246              		.file 3 "STM32F10x_Speex_Lib/libspeex/window.c"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 window.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s:24     .rodata.lag_window:0000000000000000 lag_window
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s:21     .rodata.lag_window:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s:41     .rodata.lpc_window:0000000000000000 lpc_window
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccs1vE3N.s:38     .rodata.lpc_window:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

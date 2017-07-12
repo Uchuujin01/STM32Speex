@@ -1,0 +1,206 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"exc_10_16_table.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	exc_10_16_table
+  20              		.section	.rodata.exc_10_16_table,"a",%progbits
+  21              		.align	2
+  24              	exc_10_16_table:
+  25 0000 16       		.byte	22
+  26 0001 27       		.byte	39
+  27 0002 0E       		.byte	14
+  28 0003 2C       		.byte	44
+  29 0004 0B       		.byte	11
+  30 0005 23       		.byte	35
+  31 0006 FE       		.byte	-2
+  32 0007 17       		.byte	23
+  33 0008 FC       		.byte	-4
+  34 0009 06       		.byte	6
+  35 000a 2E       		.byte	46
+  36 000b E4       		.byte	-28
+  37 000c 0D       		.byte	13
+  38 000d E5       		.byte	-27
+  39 000e E9       		.byte	-23
+  40 000f 0C       		.byte	12
+  41 0010 04       		.byte	4
+  42 0011 14       		.byte	20
+  43 0012 FB       		.byte	-5
+  44 0013 09       		.byte	9
+  45 0014 25       		.byte	37
+  46 0015 EE       		.byte	-18
+  47 0016 E9       		.byte	-23
+  48 0017 17       		.byte	23
+  49 0018 00       		.byte	0
+  50 0019 09       		.byte	9
+  51 001a FA       		.byte	-6
+  52 001b EC       		.byte	-20
+  53 001c 04       		.byte	4
+  54 001d FF       		.byte	-1
+  55 001e EF       		.byte	-17
+  56 001f FB       		.byte	-5
+  57 0020 FC       		.byte	-4
+  58 0021 11       		.byte	17
+  59 0022 00       		.byte	0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s 			page 2
+
+
+  60 0023 01       		.byte	1
+  61 0024 09       		.byte	9
+  62 0025 FE       		.byte	-2
+  63 0026 01       		.byte	1
+  64 0027 02       		.byte	2
+  65 0028 02       		.byte	2
+  66 0029 F4       		.byte	-12
+  67 002a 08       		.byte	8
+  68 002b E7       		.byte	-25
+  69 002c 27       		.byte	39
+  70 002d 0F       		.byte	15
+  71 002e 09       		.byte	9
+  72 002f 10       		.byte	16
+  73 0030 C9       		.byte	-55
+  74 0031 F5       		.byte	-11
+  75 0032 09       		.byte	9
+  76 0033 0B       		.byte	11
+  77 0034 05       		.byte	5
+  78 0035 0A       		.byte	10
+  79 0036 FE       		.byte	-2
+  80 0037 C4       		.byte	-60
+  81 0038 08       		.byte	8
+  82 0039 0D       		.byte	13
+  83 003a FA       		.byte	-6
+  84 003b 0B       		.byte	11
+  85 003c F0       		.byte	-16
+  86 003d 1B       		.byte	27
+  87 003e D1       		.byte	-47
+  88 003f F4       		.byte	-12
+  89 0040 0B       		.byte	11
+  90 0041 01       		.byte	1
+  91 0042 10       		.byte	16
+  92 0043 F9       		.byte	-7
+  93 0044 09       		.byte	9
+  94 0045 FD       		.byte	-3
+  95 0046 E3       		.byte	-29
+  96 0047 09       		.byte	9
+  97 0048 F2       		.byte	-14
+  98 0049 19       		.byte	25
+  99 004a ED       		.byte	-19
+ 100 004b 22       		.byte	34
+ 101 004c 24       		.byte	36
+ 102 004d 0C       		.byte	12
+ 103 004e 28       		.byte	40
+ 104 004f F6       		.byte	-10
+ 105 0050 FD       		.byte	-3
+ 106 0051 E8       		.byte	-24
+ 107 0052 F2       		.byte	-14
+ 108 0053 DB       		.byte	-37
+ 109 0054 EB       		.byte	-21
+ 110 0055 DD       		.byte	-35
+ 111 0056 FE       		.byte	-2
+ 112 0057 DC       		.byte	-36
+ 113 0058 03       		.byte	3
+ 114 0059 FA       		.byte	-6
+ 115 005a 43       		.byte	67
+ 116 005b 1C       		.byte	28
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s 			page 3
+
+
+ 117 005c 06       		.byte	6
+ 118 005d EF       		.byte	-17
+ 119 005e FD       		.byte	-3
+ 120 005f F4       		.byte	-12
+ 121 0060 F0       		.byte	-16
+ 122 0061 F1       		.byte	-15
+ 123 0062 EF       		.byte	-17
+ 124 0063 F9       		.byte	-7
+ 125 0064 C5       		.byte	-59
+ 126 0065 DC       		.byte	-36
+ 127 0066 F3       		.byte	-13
+ 128 0067 01       		.byte	1
+ 129 0068 07       		.byte	7
+ 130 0069 01       		.byte	1
+ 131 006a 02       		.byte	2
+ 132 006b 0A       		.byte	10
+ 133 006c 02       		.byte	2
+ 134 006d 0B       		.byte	11
+ 135 006e 0D       		.byte	13
+ 136 006f 0A       		.byte	10
+ 137 0070 08       		.byte	8
+ 138 0071 FE       		.byte	-2
+ 139 0072 07       		.byte	7
+ 140 0073 03       		.byte	3
+ 141 0074 05       		.byte	5
+ 142 0075 04       		.byte	4
+ 143 0076 02       		.byte	2
+ 144 0077 02       		.byte	2
+ 145 0078 FD       		.byte	-3
+ 146 0079 F8       		.byte	-8
+ 147 007a 04       		.byte	4
+ 148 007b FB       		.byte	-5
+ 149 007c 06       		.byte	6
+ 150 007d 07       		.byte	7
+ 151 007e D6       		.byte	-42
+ 152 007f 0F       		.byte	15
+ 153 0080 23       		.byte	35
+ 154 0081 FE       		.byte	-2
+ 155 0082 D2       		.byte	-46
+ 156 0083 26       		.byte	38
+ 157 0084 1C       		.byte	28
+ 158 0085 EC       		.byte	-20
+ 159 0086 F7       		.byte	-9
+ 160 0087 01       		.byte	1
+ 161 0088 07       		.byte	7
+ 162 0089 FD       		.byte	-3
+ 163 008a 00       		.byte	0
+ 164 008b FE       		.byte	-2
+ 165 008c 00       		.byte	0
+ 166 008d 00       		.byte	0
+ 167 008e 00       		.byte	0
+ 168 008f 00       		.byte	0
+ 169 0090 00       		.byte	0
+ 170 0091 00       		.byte	0
+ 171 0092 00       		.byte	0
+ 172 0093 00       		.byte	0
+ 173 0094 00       		.byte	0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s 			page 4
+
+
+ 174 0095 00       		.byte	0
+ 175 0096 F1       		.byte	-15
+ 176 0097 E4       		.byte	-28
+ 177 0098 34       		.byte	52
+ 178 0099 20       		.byte	32
+ 179 009a 05       		.byte	5
+ 180 009b FB       		.byte	-5
+ 181 009c EF       		.byte	-17
+ 182 009d EC       		.byte	-20
+ 183 009e F6       		.byte	-10
+ 184 009f FF       		.byte	-1
+ 185              		.text
+ 186              	.Letext0:
+ 187              		.file 1 "STM32F10x_Speex_Lib/libspeex/exc_10_16_table.c"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 exc_10_16_table.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s:24     .rodata.exc_10_16_table:0000000000000000 exc_10_16_table
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccXr66cw.s:21     .rodata.exc_10_16_table:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

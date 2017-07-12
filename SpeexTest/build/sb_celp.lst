@@ -1,0 +1,585 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"sb_celp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.rodata
+  20              		.align	2
+  21              	.LC0:
+  22 0000 53544D33 		.ascii	"STM32F10x_Speex_Lib/libspeex/sb_celp.c\000"
+  22      32463130 
+  22      785F5370 
+  22      6565785F 
+  22      4C69622F 
+  23 0027 00       		.align	2
+  24              	.LC1:
+  25 0028 57696465 		.ascii	"Wideband and Ultra-wideband are disabled\000"
+  25      62616E64 
+  25      20616E64 
+  25      20556C74 
+  25      72612D77 
+  26              		.section	.text.sb_encoder_init,"ax",%progbits
+  27              		.align	2
+  28              		.global	sb_encoder_init
+  29              		.thumb
+  30              		.thumb_func
+  32              	sb_encoder_init:
+  33              	.LFB21:
+  34              		.file 1 "STM32F10x_Speex_Lib/libspeex/sb_celp.c"
+   1:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** /* Copyright (C) 2002-2006 Jean-Marc Valin 
+   2:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    File: sb_celp.c
+   3:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+   4:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    Redistribution and use in source and binary forms, with or without
+   5:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    modification, are permitted provided that the following conditions
+   6:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    are met:
+   7:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    
+   8:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    - Redistributions of source code must retain the above copyright
+   9:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    notice, this list of conditions and the following disclaimer.
+  10:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    
+  11:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    - Redistributions in binary form must reproduce the above copyright
+  12:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    notice, this list of conditions and the following disclaimer in the
+  13:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    documentation and/or other materials provided with the distribution.
+  14:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    
+  15:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  16:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    contributors may be used to endorse or promote products derived from
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 2
+
+
+  17:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    this software without specific prior written permission.
+  18:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    
+  19:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  20:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  21:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  22:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  23:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  24:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  25:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  26:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  27:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  28:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  29:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  30:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** */
+  31:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  32:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** // #ifdef HAVE_CONFIG_H
+  33:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "config.h"
+  34:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** // #endif
+  35:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  36:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include <math.h>
+  37:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "sb_celp.h"
+  38:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "filters.h"
+  39:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "lpc.h"
+  40:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "lsp.h"
+  41:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "stack_alloc.h"
+  42:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "cb_search.h"
+  43:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "quant_lsp.h"
+  44:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "vq.h"
+  45:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "ltp.h"
+  46:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "arch.h"
+  47:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "math_approx.h"
+  48:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #include "os_support.h"
+  49:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  50:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #ifndef NULL
+  51:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #define NULL 0
+  52:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #endif
+  53:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  54:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** /* Default size for the encoder and decoder stack (can be changed at compile time).
+  55:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    This does not apply when using variable-size arrays or alloca. */
+  56:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #ifndef SB_ENC_STACK
+  57:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #define SB_ENC_STACK (10000*sizeof(spx_sig_t))
+  58:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #endif
+  59:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  60:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #ifndef SB_DEC_STACK
+  61:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #define SB_DEC_STACK (6000*sizeof(spx_sig_t))
+  62:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #endif
+  63:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  64:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** 
+  65:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** #ifdef DISABLE_WIDEBAND
+  66:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** void *sb_encoder_init(const SpeexMode *m)
+  67:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+  35              		.loc 1 67 0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 8
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39 0000 80B5     		push	{r7, lr}
+  40              	.LCFI0:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 3
+
+
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 82B0     		sub	sp, sp, #8
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 16
+  47 0004 00AF     		add	r7, sp, #0
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_register 7
+  50 0006 7860     		str	r0, [r7, #4]
+  68:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+  51              		.loc 1 68 0
+  52 0008 4422     		movs	r2, #68
+  53 000a 0449     		ldr	r1, .L3
+  54 000c 0448     		ldr	r0, .L3+4
+  55 000e FFF7FEFF 		bl	_speex_fatal
+  69:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return NULL;
+  56              		.loc 1 69 0
+  57 0012 0023     		movs	r3, #0
+  70:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+  58              		.loc 1 70 0
+  59 0014 1846     		mov	r0, r3
+  60 0016 0837     		adds	r7, r7, #8
+  61              	.LCFI3:
+  62              		.cfi_def_cfa_offset 8
+  63 0018 BD46     		mov	sp, r7
+  64              	.LCFI4:
+  65              		.cfi_def_cfa_register 13
+  66              		@ sp needed
+  67 001a 80BD     		pop	{r7, pc}
+  68              	.L4:
+  69              		.align	2
+  70              	.L3:
+  71 001c 00000000 		.word	.LC0
+  72 0020 28000000 		.word	.LC1
+  73              		.cfi_endproc
+  74              	.LFE21:
+  76              		.section	.text.sb_encoder_destroy,"ax",%progbits
+  77              		.align	2
+  78              		.global	sb_encoder_destroy
+  79              		.thumb
+  80              		.thumb_func
+  82              	sb_encoder_destroy:
+  83              	.LFB22:
+  71:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** void sb_encoder_destroy(void *state)
+  72:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+  84              		.loc 1 72 0
+  85              		.cfi_startproc
+  86              		@ args = 0, pretend = 0, frame = 8
+  87              		@ frame_needed = 1, uses_anonymous_args = 0
+  88 0000 80B5     		push	{r7, lr}
+  89              	.LCFI5:
+  90              		.cfi_def_cfa_offset 8
+  91              		.cfi_offset 7, -8
+  92              		.cfi_offset 14, -4
+  93 0002 82B0     		sub	sp, sp, #8
+  94              	.LCFI6:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 4
+
+
+  95              		.cfi_def_cfa_offset 16
+  96 0004 00AF     		add	r7, sp, #0
+  97              	.LCFI7:
+  98              		.cfi_def_cfa_register 7
+  99 0006 7860     		str	r0, [r7, #4]
+  73:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 100              		.loc 1 73 0
+ 101 0008 4922     		movs	r2, #73
+ 102 000a 0449     		ldr	r1, .L6
+ 103 000c 0448     		ldr	r0, .L6+4
+ 104 000e FFF7FEFF 		bl	_speex_fatal
+  74:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 105              		.loc 1 74 0
+ 106 0012 00BF     		nop
+ 107 0014 0837     		adds	r7, r7, #8
+ 108              	.LCFI8:
+ 109              		.cfi_def_cfa_offset 8
+ 110 0016 BD46     		mov	sp, r7
+ 111              	.LCFI9:
+ 112              		.cfi_def_cfa_register 13
+ 113              		@ sp needed
+ 114 0018 80BD     		pop	{r7, pc}
+ 115              	.L7:
+ 116 001a 00BF     		.align	2
+ 117              	.L6:
+ 118 001c 00000000 		.word	.LC0
+ 119 0020 28000000 		.word	.LC1
+ 120              		.cfi_endproc
+ 121              	.LFE22:
+ 123              		.section	.text.sb_encode,"ax",%progbits
+ 124              		.align	2
+ 125              		.global	sb_encode
+ 126              		.thumb
+ 127              		.thumb_func
+ 129              	sb_encode:
+ 130              	.LFB23:
+  75:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** int sb_encode(void *state, void *vin, SpeexBits *bits)
+  76:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 131              		.loc 1 76 0
+ 132              		.cfi_startproc
+ 133              		@ args = 0, pretend = 0, frame = 16
+ 134              		@ frame_needed = 1, uses_anonymous_args = 0
+ 135 0000 80B5     		push	{r7, lr}
+ 136              	.LCFI10:
+ 137              		.cfi_def_cfa_offset 8
+ 138              		.cfi_offset 7, -8
+ 139              		.cfi_offset 14, -4
+ 140 0002 84B0     		sub	sp, sp, #16
+ 141              	.LCFI11:
+ 142              		.cfi_def_cfa_offset 24
+ 143 0004 00AF     		add	r7, sp, #0
+ 144              	.LCFI12:
+ 145              		.cfi_def_cfa_register 7
+ 146 0006 F860     		str	r0, [r7, #12]
+ 147 0008 B960     		str	r1, [r7, #8]
+ 148 000a 7A60     		str	r2, [r7, #4]
+  77:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 5
+
+
+ 149              		.loc 1 77 0
+ 150 000c 4D22     		movs	r2, #77
+ 151 000e 0549     		ldr	r1, .L10
+ 152 0010 0548     		ldr	r0, .L10+4
+ 153 0012 FFF7FEFF 		bl	_speex_fatal
+  78:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return -2;
+ 154              		.loc 1 78 0
+ 155 0016 6FF00103 		mvn	r3, #1
+  79:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 156              		.loc 1 79 0
+ 157 001a 1846     		mov	r0, r3
+ 158 001c 1037     		adds	r7, r7, #16
+ 159              	.LCFI13:
+ 160              		.cfi_def_cfa_offset 8
+ 161 001e BD46     		mov	sp, r7
+ 162              	.LCFI14:
+ 163              		.cfi_def_cfa_register 13
+ 164              		@ sp needed
+ 165 0020 80BD     		pop	{r7, pc}
+ 166              	.L11:
+ 167 0022 00BF     		.align	2
+ 168              	.L10:
+ 169 0024 00000000 		.word	.LC0
+ 170 0028 28000000 		.word	.LC1
+ 171              		.cfi_endproc
+ 172              	.LFE23:
+ 174              		.section	.text.sb_decoder_init,"ax",%progbits
+ 175              		.align	2
+ 176              		.global	sb_decoder_init
+ 177              		.thumb
+ 178              		.thumb_func
+ 180              	sb_decoder_init:
+ 181              	.LFB24:
+  80:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** void *sb_decoder_init(const SpeexMode *m)
+  81:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 182              		.loc 1 81 0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 8
+ 185              		@ frame_needed = 1, uses_anonymous_args = 0
+ 186 0000 80B5     		push	{r7, lr}
+ 187              	.LCFI15:
+ 188              		.cfi_def_cfa_offset 8
+ 189              		.cfi_offset 7, -8
+ 190              		.cfi_offset 14, -4
+ 191 0002 82B0     		sub	sp, sp, #8
+ 192              	.LCFI16:
+ 193              		.cfi_def_cfa_offset 16
+ 194 0004 00AF     		add	r7, sp, #0
+ 195              	.LCFI17:
+ 196              		.cfi_def_cfa_register 7
+ 197 0006 7860     		str	r0, [r7, #4]
+  82:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 198              		.loc 1 82 0
+ 199 0008 5222     		movs	r2, #82
+ 200 000a 0449     		ldr	r1, .L14
+ 201 000c 0448     		ldr	r0, .L14+4
+ 202 000e FFF7FEFF 		bl	_speex_fatal
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 6
+
+
+  83:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return NULL;
+ 203              		.loc 1 83 0
+ 204 0012 0023     		movs	r3, #0
+  84:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 205              		.loc 1 84 0
+ 206 0014 1846     		mov	r0, r3
+ 207 0016 0837     		adds	r7, r7, #8
+ 208              	.LCFI18:
+ 209              		.cfi_def_cfa_offset 8
+ 210 0018 BD46     		mov	sp, r7
+ 211              	.LCFI19:
+ 212              		.cfi_def_cfa_register 13
+ 213              		@ sp needed
+ 214 001a 80BD     		pop	{r7, pc}
+ 215              	.L15:
+ 216              		.align	2
+ 217              	.L14:
+ 218 001c 00000000 		.word	.LC0
+ 219 0020 28000000 		.word	.LC1
+ 220              		.cfi_endproc
+ 221              	.LFE24:
+ 223              		.section	.text.sb_decoder_destroy,"ax",%progbits
+ 224              		.align	2
+ 225              		.global	sb_decoder_destroy
+ 226              		.thumb
+ 227              		.thumb_func
+ 229              	sb_decoder_destroy:
+ 230              	.LFB25:
+  85:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** void sb_decoder_destroy(void *state)
+  86:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 231              		.loc 1 86 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 8
+ 234              		@ frame_needed = 1, uses_anonymous_args = 0
+ 235 0000 80B5     		push	{r7, lr}
+ 236              	.LCFI20:
+ 237              		.cfi_def_cfa_offset 8
+ 238              		.cfi_offset 7, -8
+ 239              		.cfi_offset 14, -4
+ 240 0002 82B0     		sub	sp, sp, #8
+ 241              	.LCFI21:
+ 242              		.cfi_def_cfa_offset 16
+ 243 0004 00AF     		add	r7, sp, #0
+ 244              	.LCFI22:
+ 245              		.cfi_def_cfa_register 7
+ 246 0006 7860     		str	r0, [r7, #4]
+  87:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 247              		.loc 1 87 0
+ 248 0008 5722     		movs	r2, #87
+ 249 000a 0449     		ldr	r1, .L17
+ 250 000c 0448     		ldr	r0, .L17+4
+ 251 000e FFF7FEFF 		bl	_speex_fatal
+  88:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 252              		.loc 1 88 0
+ 253 0012 00BF     		nop
+ 254 0014 0837     		adds	r7, r7, #8
+ 255              	.LCFI23:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 7
+
+
+ 256              		.cfi_def_cfa_offset 8
+ 257 0016 BD46     		mov	sp, r7
+ 258              	.LCFI24:
+ 259              		.cfi_def_cfa_register 13
+ 260              		@ sp needed
+ 261 0018 80BD     		pop	{r7, pc}
+ 262              	.L18:
+ 263 001a 00BF     		.align	2
+ 264              	.L17:
+ 265 001c 00000000 		.word	.LC0
+ 266 0020 28000000 		.word	.LC1
+ 267              		.cfi_endproc
+ 268              	.LFE25:
+ 270              		.section	.text.sb_decode,"ax",%progbits
+ 271              		.align	2
+ 272              		.global	sb_decode
+ 273              		.thumb
+ 274              		.thumb_func
+ 276              	sb_decode:
+ 277              	.LFB26:
+  89:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** int sb_decode(void *state, SpeexBits *bits, void *vout)
+  90:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 278              		.loc 1 90 0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 16
+ 281              		@ frame_needed = 1, uses_anonymous_args = 0
+ 282 0000 80B5     		push	{r7, lr}
+ 283              	.LCFI25:
+ 284              		.cfi_def_cfa_offset 8
+ 285              		.cfi_offset 7, -8
+ 286              		.cfi_offset 14, -4
+ 287 0002 84B0     		sub	sp, sp, #16
+ 288              	.LCFI26:
+ 289              		.cfi_def_cfa_offset 24
+ 290 0004 00AF     		add	r7, sp, #0
+ 291              	.LCFI27:
+ 292              		.cfi_def_cfa_register 7
+ 293 0006 F860     		str	r0, [r7, #12]
+ 294 0008 B960     		str	r1, [r7, #8]
+ 295 000a 7A60     		str	r2, [r7, #4]
+  91:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 296              		.loc 1 91 0
+ 297 000c 5B22     		movs	r2, #91
+ 298 000e 0549     		ldr	r1, .L21
+ 299 0010 0548     		ldr	r0, .L21+4
+ 300 0012 FFF7FEFF 		bl	_speex_fatal
+  92:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return -2;
+ 301              		.loc 1 92 0
+ 302 0016 6FF00103 		mvn	r3, #1
+  93:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 303              		.loc 1 93 0
+ 304 001a 1846     		mov	r0, r3
+ 305 001c 1037     		adds	r7, r7, #16
+ 306              	.LCFI28:
+ 307              		.cfi_def_cfa_offset 8
+ 308 001e BD46     		mov	sp, r7
+ 309              	.LCFI29:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 8
+
+
+ 310              		.cfi_def_cfa_register 13
+ 311              		@ sp needed
+ 312 0020 80BD     		pop	{r7, pc}
+ 313              	.L22:
+ 314 0022 00BF     		.align	2
+ 315              	.L21:
+ 316 0024 00000000 		.word	.LC0
+ 317 0028 28000000 		.word	.LC1
+ 318              		.cfi_endproc
+ 319              	.LFE26:
+ 321              		.section	.text.sb_encoder_ctl,"ax",%progbits
+ 322              		.align	2
+ 323              		.global	sb_encoder_ctl
+ 324              		.thumb
+ 325              		.thumb_func
+ 327              	sb_encoder_ctl:
+ 328              	.LFB27:
+  94:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** int sb_encoder_ctl(void *state, int request, void *ptr)
+  95:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 329              		.loc 1 95 0
+ 330              		.cfi_startproc
+ 331              		@ args = 0, pretend = 0, frame = 16
+ 332              		@ frame_needed = 1, uses_anonymous_args = 0
+ 333 0000 80B5     		push	{r7, lr}
+ 334              	.LCFI30:
+ 335              		.cfi_def_cfa_offset 8
+ 336              		.cfi_offset 7, -8
+ 337              		.cfi_offset 14, -4
+ 338 0002 84B0     		sub	sp, sp, #16
+ 339              	.LCFI31:
+ 340              		.cfi_def_cfa_offset 24
+ 341 0004 00AF     		add	r7, sp, #0
+ 342              	.LCFI32:
+ 343              		.cfi_def_cfa_register 7
+ 344 0006 F860     		str	r0, [r7, #12]
+ 345 0008 B960     		str	r1, [r7, #8]
+ 346 000a 7A60     		str	r2, [r7, #4]
+  96:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 347              		.loc 1 96 0
+ 348 000c 6022     		movs	r2, #96
+ 349 000e 0549     		ldr	r1, .L25
+ 350 0010 0548     		ldr	r0, .L25+4
+ 351 0012 FFF7FEFF 		bl	_speex_fatal
+  97:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return -2;
+ 352              		.loc 1 97 0
+ 353 0016 6FF00103 		mvn	r3, #1
+  98:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 354              		.loc 1 98 0
+ 355 001a 1846     		mov	r0, r3
+ 356 001c 1037     		adds	r7, r7, #16
+ 357              	.LCFI33:
+ 358              		.cfi_def_cfa_offset 8
+ 359 001e BD46     		mov	sp, r7
+ 360              	.LCFI34:
+ 361              		.cfi_def_cfa_register 13
+ 362              		@ sp needed
+ 363 0020 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 9
+
+
+ 364              	.L26:
+ 365 0022 00BF     		.align	2
+ 366              	.L25:
+ 367 0024 00000000 		.word	.LC0
+ 368 0028 28000000 		.word	.LC1
+ 369              		.cfi_endproc
+ 370              	.LFE27:
+ 372              		.section	.text.sb_decoder_ctl,"ax",%progbits
+ 373              		.align	2
+ 374              		.global	sb_decoder_ctl
+ 375              		.thumb
+ 376              		.thumb_func
+ 378              	sb_decoder_ctl:
+ 379              	.LFB28:
+  99:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** int sb_decoder_ctl(void *state, int request, void *ptr)
+ 100:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** {
+ 380              		.loc 1 100 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 16
+ 383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 384 0000 80B5     		push	{r7, lr}
+ 385              	.LCFI35:
+ 386              		.cfi_def_cfa_offset 8
+ 387              		.cfi_offset 7, -8
+ 388              		.cfi_offset 14, -4
+ 389 0002 84B0     		sub	sp, sp, #16
+ 390              	.LCFI36:
+ 391              		.cfi_def_cfa_offset 24
+ 392 0004 00AF     		add	r7, sp, #0
+ 393              	.LCFI37:
+ 394              		.cfi_def_cfa_register 7
+ 395 0006 F860     		str	r0, [r7, #12]
+ 396 0008 B960     		str	r1, [r7, #8]
+ 397 000a 7A60     		str	r2, [r7, #4]
+ 101:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    speex_fatal("Wideband and Ultra-wideband are disabled");
+ 398              		.loc 1 101 0
+ 399 000c 6522     		movs	r2, #101
+ 400 000e 0549     		ldr	r1, .L29
+ 401 0010 0548     		ldr	r0, .L29+4
+ 402 0012 FFF7FEFF 		bl	_speex_fatal
+ 102:STM32F10x_Speex_Lib/libspeex/sb_celp.c ****    return -2;
+ 403              		.loc 1 102 0
+ 404 0016 6FF00103 		mvn	r3, #1
+ 103:STM32F10x_Speex_Lib/libspeex/sb_celp.c **** }
+ 405              		.loc 1 103 0
+ 406 001a 1846     		mov	r0, r3
+ 407 001c 1037     		adds	r7, r7, #16
+ 408              	.LCFI38:
+ 409              		.cfi_def_cfa_offset 8
+ 410 001e BD46     		mov	sp, r7
+ 411              	.LCFI39:
+ 412              		.cfi_def_cfa_register 13
+ 413              		@ sp needed
+ 414 0020 80BD     		pop	{r7, pc}
+ 415              	.L30:
+ 416 0022 00BF     		.align	2
+ 417              	.L29:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 10
+
+
+ 418 0024 00000000 		.word	.LC0
+ 419 0028 28000000 		.word	.LC1
+ 420              		.cfi_endproc
+ 421              	.LFE28:
+ 423              		.text
+ 424              	.Letext0:
+ 425              		.file 2 "Inc/speex/speex_bits.h"
+ 426              		.file 3 "Inc/speex/speex.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 sb_celp.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:20     .rodata:0000000000000000 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:27     .text.sb_encoder_init:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:32     .text.sb_encoder_init:0000000000000000 sb_encoder_init
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:71     .text.sb_encoder_init:000000000000001c $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:77     .text.sb_encoder_destroy:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:82     .text.sb_encoder_destroy:0000000000000000 sb_encoder_destroy
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:118    .text.sb_encoder_destroy:000000000000001c $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:124    .text.sb_encode:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:129    .text.sb_encode:0000000000000000 sb_encode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:169    .text.sb_encode:0000000000000024 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:175    .text.sb_decoder_init:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:180    .text.sb_decoder_init:0000000000000000 sb_decoder_init
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:218    .text.sb_decoder_init:000000000000001c $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:224    .text.sb_decoder_destroy:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:229    .text.sb_decoder_destroy:0000000000000000 sb_decoder_destroy
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:265    .text.sb_decoder_destroy:000000000000001c $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:271    .text.sb_decode:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:276    .text.sb_decode:0000000000000000 sb_decode
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:316    .text.sb_decode:0000000000000024 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:322    .text.sb_encoder_ctl:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:327    .text.sb_encoder_ctl:0000000000000000 sb_encoder_ctl
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:367    .text.sb_encoder_ctl:0000000000000024 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:373    .text.sb_decoder_ctl:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:378    .text.sb_decoder_ctl:0000000000000000 sb_decoder_ctl
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cc3U5Hj4.s:418    .text.sb_decoder_ctl:0000000000000024 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+_speex_fatal

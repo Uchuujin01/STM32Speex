@@ -1,0 +1,3275 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"lsp.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.spx_ilog4,"ax",%progbits
+  20              		.align	2
+  21              		.thumb
+  22              		.thumb_func
+  24              	spx_ilog4:
+  25              	.LFB1:
+  26              		.file 1 "STM32F10x_Speex_Lib/libspeex/math_approx.h"
+   1:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* Copyright (C) 2002 Jean-Marc Valin */
+   2:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /**
+   3:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    @file math_approx.h
+   4:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    @brief Various math approximation functions for Speex
+   5:STM32F10x_Speex_Lib/libspeex/math_approx.h **** */
+   6:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /*
+   7:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    modification, are permitted provided that the following conditions
+   9:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    are met:
+  10:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  11:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Redistributions of source code must retain the above copyright
+  12:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    notice, this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  14:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  18:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  19:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    contributors may be used to endorse or promote products derived from
+  20:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    this software without specific prior written permission.
+  21:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+  22:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  23:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  24:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  25:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  26:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  27:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  28:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  29:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  30:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  31:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  32:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 2
+
+
+  33:STM32F10x_Speex_Lib/libspeex/math_approx.h **** */
+  34:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  35:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifndef MATH_APPROX_H
+  36:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define MATH_APPROX_H
+  37:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  38:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #include "arch.h"
+  39:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  40:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifndef FIXED_POINT
+  41:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  42:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_sqrt sqrt
+  43:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_acos acos
+  44:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_exp exp
+  45:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_cos_norm(x) (cos((.5f*M_PI)*(x)))
+  46:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define spx_atan atan
+  47:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  48:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /** Generate a pseudo-random number */
+  49:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t speex_rand(spx_word16_t std, spx_int32_t *seed)
+  50:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+  51:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    const unsigned int jflone = 0x3f800000;
+  52:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    const unsigned int jflmsk = 0x007fffff;
+  53:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    union {int i; float f;} ran;
+  54:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    *seed = 1664525 * *seed + 1013904223;
+  55:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ran.i = jflone | (jflmsk & *seed);
+  56:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ran.f -= 1.5;
+  57:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return 3.4642*std*ran.f;
+  58:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+  59:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  60:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  61:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #endif
+  62:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  63:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  64:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_int16_t spx_ilog2(spx_uint32_t x)
+  65:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+  66:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int r=0;
+  67:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=(spx_int32_t)65536)
+  68:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  69:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 16;
+  70:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 16;
+  71:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  72:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=256)
+  73:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  74:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 8;
+  75:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 8;
+  76:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  77:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=16)
+  78:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  79:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 4;
+  80:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 4;
+  81:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  82:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=4)
+  83:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  84:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 2;
+  85:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 2;
+  86:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  87:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=2)
+  88:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  89:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 1;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 3
+
+
+  90:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+  91:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return r;
+  92:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+  93:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+  94:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_int16_t spx_ilog4(spx_uint32_t x)
+  95:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+  27              		.loc 1 95 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 24
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  96:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int r=0;
+  43              		.loc 1 96 0
+  44 0008 0023     		movs	r3, #0
+  45 000a FB60     		str	r3, [r7, #12]
+  97:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=(spx_int32_t)65536)
+  46              		.loc 1 97 0
+  47 000c 7B68     		ldr	r3, [r7, #4]
+  48 000e B3F5803F 		cmp	r3, #65536
+  49 0012 05D3     		bcc	.L2
+  98:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+  99:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 16;
+  50              		.loc 1 99 0
+  51 0014 7B68     		ldr	r3, [r7, #4]
+  52 0016 1B0C     		lsrs	r3, r3, #16
+  53 0018 7B60     		str	r3, [r7, #4]
+ 100:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 8;
+  54              		.loc 1 100 0
+  55 001a FB68     		ldr	r3, [r7, #12]
+  56 001c 0833     		adds	r3, r3, #8
+  57 001e FB60     		str	r3, [r7, #12]
+  58              	.L2:
+ 101:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 102:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=256)
+  59              		.loc 1 102 0
+  60 0020 7B68     		ldr	r3, [r7, #4]
+  61 0022 FF2B     		cmp	r3, #255
+  62 0024 05D9     		bls	.L3
+ 103:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 104:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 8;
+  63              		.loc 1 104 0
+  64 0026 7B68     		ldr	r3, [r7, #4]
+  65 0028 1B0A     		lsrs	r3, r3, #8
+  66 002a 7B60     		str	r3, [r7, #4]
+ 105:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 4;
+  67              		.loc 1 105 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 4
+
+
+  68 002c FB68     		ldr	r3, [r7, #12]
+  69 002e 0433     		adds	r3, r3, #4
+  70 0030 FB60     		str	r3, [r7, #12]
+  71              	.L3:
+ 106:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 107:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=16)
+  72              		.loc 1 107 0
+  73 0032 7B68     		ldr	r3, [r7, #4]
+  74 0034 0F2B     		cmp	r3, #15
+  75 0036 05D9     		bls	.L4
+ 108:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 109:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x >>= 4;
+  76              		.loc 1 109 0
+  77 0038 7B68     		ldr	r3, [r7, #4]
+  78 003a 1B09     		lsrs	r3, r3, #4
+  79 003c 7B60     		str	r3, [r7, #4]
+ 110:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 2;
+  80              		.loc 1 110 0
+  81 003e FB68     		ldr	r3, [r7, #12]
+  82 0040 0233     		adds	r3, r3, #2
+  83 0042 FB60     		str	r3, [r7, #12]
+  84              	.L4:
+ 111:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 112:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x>=4)
+  85              		.loc 1 112 0
+  86 0044 7B68     		ldr	r3, [r7, #4]
+  87 0046 032B     		cmp	r3, #3
+  88 0048 02D9     		bls	.L5
+ 113:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 114:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       r += 1;
+  89              		.loc 1 114 0
+  90 004a FB68     		ldr	r3, [r7, #12]
+  91 004c 0133     		adds	r3, r3, #1
+  92 004e FB60     		str	r3, [r7, #12]
+  93              	.L5:
+ 115:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 116:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return r;
+  94              		.loc 1 116 0
+  95 0050 FB68     		ldr	r3, [r7, #12]
+  96 0052 1BB2     		sxth	r3, r3
+ 117:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+  97              		.loc 1 117 0
+  98 0054 1846     		mov	r0, r3
+  99 0056 1437     		adds	r7, r7, #20
+ 100              	.LCFI3:
+ 101              		.cfi_def_cfa_offset 4
+ 102 0058 BD46     		mov	sp, r7
+ 103              	.LCFI4:
+ 104              		.cfi_def_cfa_register 13
+ 105              		@ sp needed
+ 106 005a 80BC     		pop	{r7}
+ 107              	.LCFI5:
+ 108              		.cfi_restore 7
+ 109              		.cfi_def_cfa_offset 0
+ 110 005c 7047     		bx	lr
+ 111              		.cfi_endproc
+ 112              	.LFE1:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 5
+
+
+ 114 005e 00BF     		.section	.text.spx_sqrt,"ax",%progbits
+ 115              		.align	2
+ 116              		.thumb
+ 117              		.thumb_func
+ 119              	spx_sqrt:
+ 120              	.LFB3:
+ 118:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 119:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #ifdef FIXED_POINT
+ 120:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 121:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /** Generate a pseudo-random number */
+ 122:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t speex_rand(spx_word16_t std, spx_int32_t *seed)
+ 123:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 124:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word32_t res;
+ 125:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    *seed = 1664525 * *seed + 1013904223;
+ 126:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    res = MULT16_16(EXTRACT16(SHR32(*seed,16)),std);
+ 127:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return EXTRACT16(PSHR32(SUB32(res, SHR32(res, 3)),14));
+ 128:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 129:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 130:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* sqrt(x) ~= 0.22178 + 1.29227*x - 0.77070*x^2 + 0.25723*x^3 (for .25 < x < 1) */
+ 131:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /*#define C0 3634
+ 132:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C1 21173
+ 133:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C2 -12627
+ 134:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C3 4215*/
+ 135:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 136:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* sqrt(x) ~= 0.22178 + 1.29227*x - 0.77070*x^2 + 0.25659*x^3 (for .25 < x < 1) */
+ 137:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C0 3634
+ 138:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C1 21173
+ 139:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C2 -12627
+ 140:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define C3 4204
+ 141:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 142:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_sqrt(spx_word32_t x)
+ 143:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 121              		.loc 1 143 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 16
+ 124              		@ frame_needed = 1, uses_anonymous_args = 0
+ 125 0000 80B5     		push	{r7, lr}
+ 126              	.LCFI6:
+ 127              		.cfi_def_cfa_offset 8
+ 128              		.cfi_offset 7, -8
+ 129              		.cfi_offset 14, -4
+ 130 0002 84B0     		sub	sp, sp, #16
+ 131              	.LCFI7:
+ 132              		.cfi_def_cfa_offset 24
+ 133 0004 00AF     		add	r7, sp, #0
+ 134              	.LCFI8:
+ 135              		.cfi_def_cfa_register 7
+ 136 0006 7860     		str	r0, [r7, #4]
+ 144:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int k;
+ 145:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word32_t rt;
+ 146:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    k = spx_ilog4(x)-6;
+ 137              		.loc 1 146 0
+ 138 0008 7B68     		ldr	r3, [r7, #4]
+ 139 000a 1846     		mov	r0, r3
+ 140 000c FFF7FEFF 		bl	spx_ilog4
+ 141 0010 0346     		mov	r3, r0
+ 142 0012 063B     		subs	r3, r3, #6
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 6
+
+
+ 143 0014 FB60     		str	r3, [r7, #12]
+ 147:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = VSHR32(x, (k<<1));
+ 144              		.loc 1 147 0
+ 145 0016 FB68     		ldr	r3, [r7, #12]
+ 146 0018 5B00     		lsls	r3, r3, #1
+ 147 001a 002B     		cmp	r3, #0
+ 148 001c 05DD     		ble	.L8
+ 149              		.loc 1 147 0 is_stmt 0 discriminator 1
+ 150 001e FB68     		ldr	r3, [r7, #12]
+ 151 0020 5B00     		lsls	r3, r3, #1
+ 152 0022 7A68     		ldr	r2, [r7, #4]
+ 153 0024 42FA03F3 		asr	r3, r2, r3
+ 154 0028 05E0     		b	.L9
+ 155              	.L8:
+ 156              		.loc 1 147 0 discriminator 2
+ 157 002a FB68     		ldr	r3, [r7, #12]
+ 158 002c 5B00     		lsls	r3, r3, #1
+ 159 002e 5B42     		negs	r3, r3
+ 160 0030 7A68     		ldr	r2, [r7, #4]
+ 161 0032 02FA03F3 		lsl	r3, r2, r3
+ 162              	.L9:
+ 163              		.loc 1 147 0 discriminator 4
+ 164 0036 7B60     		str	r3, [r7, #4]
+ 148:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    rt = ADD16(C0, MULT16_16_Q14(x, ADD16(C1, MULT16_16_Q14(x, ADD16(C2, MULT16_16_Q14(x, (C3)))))))
+ 165              		.loc 1 148 0 is_stmt 1 discriminator 4
+ 166 0038 7B68     		ldr	r3, [r7, #4]
+ 167 003a 1BB2     		sxth	r3, r3
+ 168 003c 1A46     		mov	r2, r3
+ 169 003e 7B68     		ldr	r3, [r7, #4]
+ 170 0040 1BB2     		sxth	r3, r3
+ 171 0042 1946     		mov	r1, r3
+ 172 0044 7B68     		ldr	r3, [r7, #4]
+ 173 0046 1BB2     		sxth	r3, r3
+ 174 0048 1846     		mov	r0, r3
+ 175 004a 41F26C03 		movw	r3, #4204
+ 176 004e 03FB00F3 		mul	r3, r3, r0
+ 177 0052 9B13     		asrs	r3, r3, #14
+ 178 0054 9BB2     		uxth	r3, r3
+ 179 0056 A3F54553 		sub	r3, r3, #12608
+ 180 005a 133B     		subs	r3, r3, #19
+ 181 005c 9BB2     		uxth	r3, r3
+ 182 005e 1BB2     		sxth	r3, r3
+ 183 0060 03FB01F3 		mul	r3, r3, r1
+ 184 0064 9B13     		asrs	r3, r3, #14
+ 185 0066 9BB2     		uxth	r3, r3
+ 186 0068 03F5A543 		add	r3, r3, #21120
+ 187 006c 3533     		adds	r3, r3, #53
+ 188 006e 9BB2     		uxth	r3, r3
+ 189 0070 1BB2     		sxth	r3, r3
+ 190 0072 03FB02F3 		mul	r3, r3, r2
+ 191 0076 9B13     		asrs	r3, r3, #14
+ 192 0078 9BB2     		uxth	r3, r3
+ 193 007a 03F63263 		addw	r3, r3, #3634
+ 194 007e 9BB2     		uxth	r3, r3
+ 195 0080 1BB2     		sxth	r3, r3
+ 196 0082 BB60     		str	r3, [r7, #8]
+ 149:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    rt = VSHR32(rt,7-k);
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 7
+
+
+ 197              		.loc 1 149 0 discriminator 4
+ 198 0084 FB68     		ldr	r3, [r7, #12]
+ 199 0086 C3F10703 		rsb	r3, r3, #7
+ 200 008a 002B     		cmp	r3, #0
+ 201 008c 06DD     		ble	.L10
+ 202              		.loc 1 149 0 is_stmt 0 discriminator 1
+ 203 008e FB68     		ldr	r3, [r7, #12]
+ 204 0090 C3F10703 		rsb	r3, r3, #7
+ 205 0094 BA68     		ldr	r2, [r7, #8]
+ 206 0096 42FA03F3 		asr	r3, r2, r3
+ 207 009a 04E0     		b	.L11
+ 208              	.L10:
+ 209              		.loc 1 149 0 discriminator 2
+ 210 009c FB68     		ldr	r3, [r7, #12]
+ 211 009e 073B     		subs	r3, r3, #7
+ 212 00a0 BA68     		ldr	r2, [r7, #8]
+ 213 00a2 02FA03F3 		lsl	r3, r2, r3
+ 214              	.L11:
+ 215              		.loc 1 149 0 discriminator 4
+ 216 00a6 BB60     		str	r3, [r7, #8]
+ 150:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return rt;
+ 217              		.loc 1 150 0 is_stmt 1 discriminator 4
+ 218 00a8 BB68     		ldr	r3, [r7, #8]
+ 219 00aa 1BB2     		sxth	r3, r3
+ 151:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 220              		.loc 1 151 0 discriminator 4
+ 221 00ac 1846     		mov	r0, r3
+ 222 00ae 1037     		adds	r7, r7, #16
+ 223              	.LCFI9:
+ 224              		.cfi_def_cfa_offset 8
+ 225 00b0 BD46     		mov	sp, r7
+ 226              	.LCFI10:
+ 227              		.cfi_def_cfa_register 13
+ 228              		@ sp needed
+ 229 00b2 80BD     		pop	{r7, pc}
+ 230              		.cfi_endproc
+ 231              	.LFE3:
+ 233              		.section	.text.spx_acos,"ax",%progbits
+ 234              		.align	2
+ 235              		.thumb
+ 236              		.thumb_func
+ 238              	spx_acos:
+ 239              	.LFB4:
+ 152:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 153:STM32F10x_Speex_Lib/libspeex/math_approx.h **** /* log(x) ~= -2.18151 + 4.20592*x - 2.88938*x^2 + 0.86535*x^3 (for .5 < x < 1) */
+ 154:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 155:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 156:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A1 16469
+ 157:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A2 2242
+ 158:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define A3 1486
+ 159:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 160:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_acos(spx_word16_t x)
+ 161:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 240              		.loc 1 161 0
+ 241              		.cfi_startproc
+ 242              		@ args = 0, pretend = 0, frame = 16
+ 243              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 8
+
+
+ 244 0000 80B5     		push	{r7, lr}
+ 245              	.LCFI11:
+ 246              		.cfi_def_cfa_offset 8
+ 247              		.cfi_offset 7, -8
+ 248              		.cfi_offset 14, -4
+ 249 0002 84B0     		sub	sp, sp, #16
+ 250              	.LCFI12:
+ 251              		.cfi_def_cfa_offset 24
+ 252 0004 00AF     		add	r7, sp, #0
+ 253              	.LCFI13:
+ 254              		.cfi_def_cfa_register 7
+ 255 0006 0346     		mov	r3, r0
+ 256 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 162:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    int s=0;
+ 257              		.loc 1 162 0
+ 258 000a 0023     		movs	r3, #0
+ 259 000c FB60     		str	r3, [r7, #12]
+ 163:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t ret;
+ 164:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t sq;
+ 165:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x<0)
+ 260              		.loc 1 165 0
+ 261 000e B7F90630 		ldrsh	r3, [r7, #6]
+ 262 0012 002B     		cmp	r3, #0
+ 263 0014 05DA     		bge	.L14
+ 166:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 167:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       s=1;
+ 264              		.loc 1 167 0
+ 265 0016 0123     		movs	r3, #1
+ 266 0018 FB60     		str	r3, [r7, #12]
+ 168:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x = NEG16(x);
+ 267              		.loc 1 168 0
+ 268 001a FB88     		ldrh	r3, [r7, #6]
+ 269 001c 5B42     		negs	r3, r3
+ 270 001e 9BB2     		uxth	r3, r3
+ 271 0020 FB80     		strh	r3, [r7, #6]	@ movhi
+ 272              	.L14:
+ 169:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 170:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = SUB16(16384,x);
+ 273              		.loc 1 170 0
+ 274 0022 FB88     		ldrh	r3, [r7, #6]
+ 275 0024 C3F58043 		rsb	r3, r3, #16384
+ 276 0028 9BB2     		uxth	r3, r3
+ 277 002a FB80     		strh	r3, [r7, #6]	@ movhi
+ 171:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+ 172:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    x = x >> 1;
+ 278              		.loc 1 172 0
+ 279 002c B7F90630 		ldrsh	r3, [r7, #6]
+ 280 0030 5B10     		asrs	r3, r3, #1
+ 281 0032 FB80     		strh	r3, [r7, #6]	@ movhi
+ 173:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    sq = MULT16_16_Q13(x, ADD16(A1, MULT16_16_Q13(x, ADD16(A2, MULT16_16_Q13(x, (A3))))));
+ 282              		.loc 1 173 0
+ 283 0034 B7F90620 		ldrsh	r2, [r7, #6]
+ 284 0038 B7F90630 		ldrsh	r3, [r7, #6]
+ 285 003c B7F90610 		ldrsh	r1, [r7, #6]
+ 286 0040 40F2CE50 		movw	r0, #1486
+ 287 0044 00FB01F1 		mul	r1, r0, r1
+ 288 0048 4913     		asrs	r1, r1, #13
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 9
+
+
+ 289 004a 89B2     		uxth	r1, r1
+ 290 004c 01F6C201 		addw	r1, r1, #2242
+ 291 0050 89B2     		uxth	r1, r1
+ 292 0052 09B2     		sxth	r1, r1
+ 293 0054 01FB03F3 		mul	r3, r1, r3
+ 294 0058 5B13     		asrs	r3, r3, #13
+ 295 005a 9BB2     		uxth	r3, r3
+ 296 005c 03F58043 		add	r3, r3, #16384
+ 297 0060 5533     		adds	r3, r3, #85
+ 298 0062 9BB2     		uxth	r3, r3
+ 299 0064 1BB2     		sxth	r3, r3
+ 300 0066 03FB02F3 		mul	r3, r3, r2
+ 301 006a 5B13     		asrs	r3, r3, #13
+ 302 006c 3B81     		strh	r3, [r7, #8]	@ movhi
+ 174:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    ret = spx_sqrt(SHL32(EXTEND32(sq),13));
+ 303              		.loc 1 174 0
+ 304 006e B7F90830 		ldrsh	r3, [r7, #8]
+ 305 0072 5B03     		lsls	r3, r3, #13
+ 306 0074 1846     		mov	r0, r3
+ 307 0076 FFF7FEFF 		bl	spx_sqrt
+ 308 007a 0346     		mov	r3, r0
+ 309 007c 7B81     		strh	r3, [r7, #10]	@ movhi
+ 175:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    
+ 176:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    /*ret = spx_sqrt(67108864*(-1.6129e-04 + 2.0104e+00*f + 2.7373e-01*f*f + 1.8136e-01*f*f*f));*/
+ 177:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (s)
+ 310              		.loc 1 177 0
+ 311 007e FB68     		ldr	r3, [r7, #12]
+ 312 0080 002B     		cmp	r3, #0
+ 313 0082 05D0     		beq	.L15
+ 178:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       ret = SUB16(25736,ret);
+ 314              		.loc 1 178 0
+ 315 0084 7B89     		ldrh	r3, [r7, #10]
+ 316 0086 C3F5C943 		rsb	r3, r3, #25728
+ 317 008a 0833     		adds	r3, r3, #8
+ 318 008c 9BB2     		uxth	r3, r3
+ 319 008e 7B81     		strh	r3, [r7, #10]	@ movhi
+ 320              	.L15:
+ 179:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    return ret;
+ 321              		.loc 1 179 0
+ 322 0090 B7F90A30 		ldrsh	r3, [r7, #10]
+ 180:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 323              		.loc 1 180 0
+ 324 0094 1846     		mov	r0, r3
+ 325 0096 1037     		adds	r7, r7, #16
+ 326              	.LCFI14:
+ 327              		.cfi_def_cfa_offset 8
+ 328 0098 BD46     		mov	sp, r7
+ 329              	.LCFI15:
+ 330              		.cfi_def_cfa_register 13
+ 331              		@ sp needed
+ 332 009a 80BD     		pop	{r7, pc}
+ 333              		.cfi_endproc
+ 334              	.LFE4:
+ 336              		.section	.text.spx_cos,"ax",%progbits
+ 337              		.align	2
+ 338              		.thumb
+ 339              		.thumb_func
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 10
+
+
+ 341              	spx_cos:
+ 342              	.LFB5:
+ 181:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 182:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 183:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K1 8192
+ 184:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K2 -4096
+ 185:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K3 340
+ 186:STM32F10x_Speex_Lib/libspeex/math_approx.h **** #define K4 -10
+ 187:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 188:STM32F10x_Speex_Lib/libspeex/math_approx.h **** static inline spx_word16_t spx_cos(spx_word16_t x)
+ 189:STM32F10x_Speex_Lib/libspeex/math_approx.h **** {
+ 343              		.loc 1 189 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 16
+ 346              		@ frame_needed = 1, uses_anonymous_args = 0
+ 347              		@ link register save eliminated.
+ 348 0000 80B4     		push	{r7}
+ 349              	.LCFI16:
+ 350              		.cfi_def_cfa_offset 4
+ 351              		.cfi_offset 7, -4
+ 352 0002 85B0     		sub	sp, sp, #20
+ 353              	.LCFI17:
+ 354              		.cfi_def_cfa_offset 24
+ 355 0004 00AF     		add	r7, sp, #0
+ 356              	.LCFI18:
+ 357              		.cfi_def_cfa_register 7
+ 358 0006 0346     		mov	r3, r0
+ 359 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 190:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    spx_word16_t x2;
+ 191:STM32F10x_Speex_Lib/libspeex/math_approx.h **** 
+ 192:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    if (x<12868)
+ 360              		.loc 1 192 0
+ 361 000a B7F90630 		ldrsh	r3, [r7, #6]
+ 362 000e 43F24322 		movw	r2, #12867
+ 363 0012 9342     		cmp	r3, r2
+ 364 0014 30DC     		bgt	.L18
+ 193:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    {
+ 194:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x2 = MULT16_16_P13(x,x);
+ 365              		.loc 1 194 0
+ 366 0016 B7F90630 		ldrsh	r3, [r7, #6]
+ 367 001a B7F90620 		ldrsh	r2, [r7, #6]
+ 368 001e 02FB03F3 		mul	r3, r2, r3
+ 369 0022 03F58053 		add	r3, r3, #4096
+ 370 0026 5B13     		asrs	r3, r3, #13
+ 371 0028 FB81     		strh	r3, [r7, #14]	@ movhi
+ 195:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return ADD32(K1, MULT16_16_P13(x2, ADD32(K2, MULT16_16_P13(x2, ADD32(K3, MULT16_16_P13(K4, x2
+ 372              		.loc 1 195 0
+ 373 002a B7F90E30 		ldrsh	r3, [r7, #14]
+ 374 002e B7F90E20 		ldrsh	r2, [r7, #14]
+ 375 0032 B7F90E10 		ldrsh	r1, [r7, #14]
+ 376 0036 6FF00900 		mvn	r0, #9
+ 377 003a 00FB01F1 		mul	r1, r0, r1
+ 378 003e 01F58051 		add	r1, r1, #4096
+ 379 0042 4913     		asrs	r1, r1, #13
+ 380 0044 89B2     		uxth	r1, r1
+ 381 0046 01F5AA71 		add	r1, r1, #340
+ 382 004a 89B2     		uxth	r1, r1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 11
+
+
+ 383 004c 09B2     		sxth	r1, r1
+ 384 004e 01FB02F2 		mul	r2, r1, r2
+ 385 0052 02F58052 		add	r2, r2, #4096
+ 386 0056 5213     		asrs	r2, r2, #13
+ 387 0058 92B2     		uxth	r2, r2
+ 388 005a A2F58052 		sub	r2, r2, #4096
+ 389 005e 92B2     		uxth	r2, r2
+ 390 0060 12B2     		sxth	r2, r2
+ 391 0062 02FB03F3 		mul	r3, r2, r3
+ 392 0066 03F58053 		add	r3, r3, #4096
+ 393 006a 5B13     		asrs	r3, r3, #13
+ 394 006c 9BB2     		uxth	r3, r3
+ 395 006e 03F50053 		add	r3, r3, #8192
+ 396 0072 9BB2     		uxth	r3, r3
+ 397 0074 1BB2     		sxth	r3, r3
+ 398 0076 35E0     		b	.L19
+ 399              	.L18:
+ 196:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    } else {
+ 197:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x = SUB16(25736,x);
+ 400              		.loc 1 197 0
+ 401 0078 FB88     		ldrh	r3, [r7, #6]
+ 402 007a C3F5C943 		rsb	r3, r3, #25728
+ 403 007e 0833     		adds	r3, r3, #8
+ 404 0080 9BB2     		uxth	r3, r3
+ 405 0082 FB80     		strh	r3, [r7, #6]	@ movhi
+ 198:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       x2 = MULT16_16_P13(x,x);
+ 406              		.loc 1 198 0
+ 407 0084 B7F90630 		ldrsh	r3, [r7, #6]
+ 408 0088 B7F90620 		ldrsh	r2, [r7, #6]
+ 409 008c 02FB03F3 		mul	r3, r2, r3
+ 410 0090 03F58053 		add	r3, r3, #4096
+ 411 0094 5B13     		asrs	r3, r3, #13
+ 412 0096 FB81     		strh	r3, [r7, #14]	@ movhi
+ 199:STM32F10x_Speex_Lib/libspeex/math_approx.h ****       return SUB32(-K1, MULT16_16_P13(x2, ADD32(K2, MULT16_16_P13(x2, ADD32(K3, MULT16_16_P13(K4, x
+ 413              		.loc 1 199 0
+ 414 0098 B7F90E30 		ldrsh	r3, [r7, #14]
+ 415 009c B7F90E20 		ldrsh	r2, [r7, #14]
+ 416 00a0 B7F90E10 		ldrsh	r1, [r7, #14]
+ 417 00a4 6FF00900 		mvn	r0, #9
+ 418 00a8 00FB01F1 		mul	r1, r0, r1
+ 419 00ac 01F58051 		add	r1, r1, #4096
+ 420 00b0 4913     		asrs	r1, r1, #13
+ 421 00b2 89B2     		uxth	r1, r1
+ 422 00b4 01F5AA71 		add	r1, r1, #340
+ 423 00b8 89B2     		uxth	r1, r1
+ 424 00ba 09B2     		sxth	r1, r1
+ 425 00bc 01FB02F2 		mul	r2, r1, r2
+ 426 00c0 02F58052 		add	r2, r2, #4096
+ 427 00c4 5213     		asrs	r2, r2, #13
+ 428 00c6 92B2     		uxth	r2, r2
+ 429 00c8 A2F58052 		sub	r2, r2, #4096
+ 430 00cc 92B2     		uxth	r2, r2
+ 431 00ce 12B2     		sxth	r2, r2
+ 432 00d0 02FB03F3 		mul	r3, r2, r3
+ 433 00d4 03F58053 		add	r3, r3, #4096
+ 434 00d8 5B13     		asrs	r3, r3, #13
+ 435 00da 9AB2     		uxth	r2, r3
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 12
+
+
+ 436 00dc 044B     		ldr	r3, .L20
+ 437 00de 9B1A     		subs	r3, r3, r2
+ 438 00e0 9BB2     		uxth	r3, r3
+ 439 00e2 1BB2     		sxth	r3, r3
+ 440              	.L19:
+ 200:STM32F10x_Speex_Lib/libspeex/math_approx.h ****    }
+ 201:STM32F10x_Speex_Lib/libspeex/math_approx.h **** }
+ 441              		.loc 1 201 0
+ 442 00e4 1846     		mov	r0, r3
+ 443 00e6 1437     		adds	r7, r7, #20
+ 444              	.LCFI19:
+ 445              		.cfi_def_cfa_offset 4
+ 446 00e8 BD46     		mov	sp, r7
+ 447              	.LCFI20:
+ 448              		.cfi_def_cfa_register 13
+ 449              		@ sp needed
+ 450 00ea 80BC     		pop	{r7}
+ 451              	.LCFI21:
+ 452              		.cfi_restore 7
+ 453              		.cfi_def_cfa_offset 0
+ 454 00ec 7047     		bx	lr
+ 455              	.L21:
+ 456 00ee 00BF     		.align	2
+ 457              	.L20:
+ 458 00f0 00E0FFFF 		.word	-8192
+ 459              		.cfi_endproc
+ 460              	.LFE5:
+ 462              		.section	.text.cheb_poly_eva,"ax",%progbits
+ 463              		.align	2
+ 464              		.thumb
+ 465              		.thumb_func
+ 467              	cheb_poly_eva:
+ 468              	.LFB12:
+ 469              		.file 2 "STM32F10x_Speex_Lib/libspeex/lsp.c"
+   1:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*---------------------------------------------------------------------------*\
+   2:STM32F10x_Speex_Lib/libspeex/lsp.c **** Original copyright
+   3:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	FILE........: lsp.c
+   4:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	AUTHOR......: David Rowe
+   5:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	DATE CREATED: 24/2/93
+   6:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+   7:STM32F10x_Speex_Lib/libspeex/lsp.c **** Heavily modified by Jean-Marc Valin (c) 2002-2006 (fixed-point, 
+   8:STM32F10x_Speex_Lib/libspeex/lsp.c ****                        optimizations, additional functions, ...)
+   9:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  10:STM32F10x_Speex_Lib/libspeex/lsp.c ****    This file contains functions for converting Linear Prediction
+  11:STM32F10x_Speex_Lib/libspeex/lsp.c ****    Coefficients (LPC) to Line Spectral Pair (LSP) and back. Note that the
+  12:STM32F10x_Speex_Lib/libspeex/lsp.c ****    LSP coefficients are not in radians format but in the x domain of the
+  13:STM32F10x_Speex_Lib/libspeex/lsp.c ****    unit circle.
+  14:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  15:STM32F10x_Speex_Lib/libspeex/lsp.c ****    Speex License:
+  16:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  17:STM32F10x_Speex_Lib/libspeex/lsp.c ****    Redistribution and use in source and binary forms, with or without
+  18:STM32F10x_Speex_Lib/libspeex/lsp.c ****    modification, are permitted provided that the following conditions
+  19:STM32F10x_Speex_Lib/libspeex/lsp.c ****    are met:
+  20:STM32F10x_Speex_Lib/libspeex/lsp.c ****    
+  21:STM32F10x_Speex_Lib/libspeex/lsp.c ****    - Redistributions of source code must retain the above copyright
+  22:STM32F10x_Speex_Lib/libspeex/lsp.c ****    notice, this list of conditions and the following disclaimer.
+  23:STM32F10x_Speex_Lib/libspeex/lsp.c ****    
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 13
+
+
+  24:STM32F10x_Speex_Lib/libspeex/lsp.c ****    - Redistributions in binary form must reproduce the above copyright
+  25:STM32F10x_Speex_Lib/libspeex/lsp.c ****    notice, this list of conditions and the following disclaimer in the
+  26:STM32F10x_Speex_Lib/libspeex/lsp.c ****    documentation and/or other materials provided with the distribution.
+  27:STM32F10x_Speex_Lib/libspeex/lsp.c ****    
+  28:STM32F10x_Speex_Lib/libspeex/lsp.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  29:STM32F10x_Speex_Lib/libspeex/lsp.c ****    contributors may be used to endorse or promote products derived from
+  30:STM32F10x_Speex_Lib/libspeex/lsp.c ****    this software without specific prior written permission.
+  31:STM32F10x_Speex_Lib/libspeex/lsp.c ****    
+  32:STM32F10x_Speex_Lib/libspeex/lsp.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  33:STM32F10x_Speex_Lib/libspeex/lsp.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  34:STM32F10x_Speex_Lib/libspeex/lsp.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  35:STM32F10x_Speex_Lib/libspeex/lsp.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  36:STM32F10x_Speex_Lib/libspeex/lsp.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  37:STM32F10x_Speex_Lib/libspeex/lsp.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  38:STM32F10x_Speex_Lib/libspeex/lsp.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  39:STM32F10x_Speex_Lib/libspeex/lsp.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  40:STM32F10x_Speex_Lib/libspeex/lsp.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  41:STM32F10x_Speex_Lib/libspeex/lsp.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  42:STM32F10x_Speex_Lib/libspeex/lsp.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  43:STM32F10x_Speex_Lib/libspeex/lsp.c **** */
+  44:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  45:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*---------------------------------------------------------------------------*\
+  46:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  47:STM32F10x_Speex_Lib/libspeex/lsp.c ****   Introduction to Line Spectrum Pairs (LSPs)
+  48:STM32F10x_Speex_Lib/libspeex/lsp.c ****   ------------------------------------------
+  49:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  50:STM32F10x_Speex_Lib/libspeex/lsp.c ****   LSPs are used to encode the LPC filter coefficients {ak} for
+  51:STM32F10x_Speex_Lib/libspeex/lsp.c ****   transmission over the channel.  LSPs have several properties (like
+  52:STM32F10x_Speex_Lib/libspeex/lsp.c ****   less sensitivity to quantisation noise) that make them superior to
+  53:STM32F10x_Speex_Lib/libspeex/lsp.c ****   direct quantisation of {ak}.
+  54:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  55:STM32F10x_Speex_Lib/libspeex/lsp.c ****   A(z) is a polynomial of order lpcrdr with {ak} as the coefficients.
+  56:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  57:STM32F10x_Speex_Lib/libspeex/lsp.c ****   A(z) is transformed to P(z) and Q(z) (using a substitution and some
+  58:STM32F10x_Speex_Lib/libspeex/lsp.c ****   algebra), to obtain something like:
+  59:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  60:STM32F10x_Speex_Lib/libspeex/lsp.c ****     A(z) = 0.5[P(z)(z+z^-1) + Q(z)(z-z^-1)]  (1)
+  61:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  62:STM32F10x_Speex_Lib/libspeex/lsp.c ****   As you can imagine A(z) has complex zeros all over the z-plane. P(z)
+  63:STM32F10x_Speex_Lib/libspeex/lsp.c ****   and Q(z) have the very neat property of only having zeros _on_ the
+  64:STM32F10x_Speex_Lib/libspeex/lsp.c ****   unit circle.  So to find them we take a test point z=exp(jw) and
+  65:STM32F10x_Speex_Lib/libspeex/lsp.c ****   evaluate P (exp(jw)) and Q(exp(jw)) using a grid of points between 0
+  66:STM32F10x_Speex_Lib/libspeex/lsp.c ****   and pi.
+  67:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  68:STM32F10x_Speex_Lib/libspeex/lsp.c ****   The zeros (roots) of P(z) also happen to alternate, which is why we
+  69:STM32F10x_Speex_Lib/libspeex/lsp.c ****   swap coefficients as we find roots.  So the process of finding the
+  70:STM32F10x_Speex_Lib/libspeex/lsp.c ****   LSP frequencies is basically finding the roots of 5th order
+  71:STM32F10x_Speex_Lib/libspeex/lsp.c ****   polynomials.
+  72:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  73:STM32F10x_Speex_Lib/libspeex/lsp.c ****   The root so P(z) and Q(z) occur in symmetrical pairs at +/-w, hence
+  74:STM32F10x_Speex_Lib/libspeex/lsp.c ****   the name Line Spectrum Pairs (LSPs).
+  75:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  76:STM32F10x_Speex_Lib/libspeex/lsp.c ****   To convert back to ak we just evaluate (1), "clocking" an impulse
+  77:STM32F10x_Speex_Lib/libspeex/lsp.c ****   thru it lpcrdr times gives us the impulse response of A(z) which is
+  78:STM32F10x_Speex_Lib/libspeex/lsp.c ****   {ak}.
+  79:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  80:STM32F10x_Speex_Lib/libspeex/lsp.c **** \*---------------------------------------------------------------------------*/
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 14
+
+
+  81:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  82:STM32F10x_Speex_Lib/libspeex/lsp.c **** // #ifdef HAVE_CONFIG_H
+  83:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include "config.h"
+  84:STM32F10x_Speex_Lib/libspeex/lsp.c **** // #endif
+  85:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  86:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include <math.h>
+  87:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include "lsp.h"
+  88:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include "stack_alloc.h"
+  89:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include "math_approx.h"
+  90:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  91:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifndef M_PI
+  92:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define M_PI           3.14159265358979323846  /* pi */
+  93:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+  94:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  95:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifndef NULL
+  96:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define NULL 0
+  97:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+  98:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+  99:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 100:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 101:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define FREQ_SCALE 16384
+ 102:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 103:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*#define ANGLE2X(a) (32768*cos(((a)/8192.)))*/
+ 104:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define ANGLE2X(a) (SHL16(spx_cos(a),2))
+ 105:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 106:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*#define X2ANGLE(x) (acos(.00006103515625*(x))*LSP_SCALING)*/
+ 107:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define X2ANGLE(x) (spx_acos(x))
+ 108:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 109:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef BFIN_ASM
+ 110:STM32F10x_Speex_Lib/libspeex/lsp.c **** #include "lsp_bfin.h"
+ 111:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 112:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 113:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 114:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 115:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*#define C1 0.99940307
+ 116:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define C2 -0.49558072
+ 117:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define C3 0.03679168*/
+ 118:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 119:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define FREQ_SCALE 1.
+ 120:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define ANGLE2X(a) (spx_cos(a))
+ 121:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define X2ANGLE(x) (acos(x))
+ 122:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 123:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 124:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 125:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 126:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*---------------------------------------------------------------------------*\
+ 127:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 128:STM32F10x_Speex_Lib/libspeex/lsp.c ****    FUNCTION....: cheb_poly_eva()
+ 129:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 130:STM32F10x_Speex_Lib/libspeex/lsp.c ****    AUTHOR......: David Rowe
+ 131:STM32F10x_Speex_Lib/libspeex/lsp.c ****    DATE CREATED: 24/2/93
+ 132:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 133:STM32F10x_Speex_Lib/libspeex/lsp.c ****    This function evaluates a series of Chebyshev polynomials
+ 134:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 135:STM32F10x_Speex_Lib/libspeex/lsp.c **** \*---------------------------------------------------------------------------*/
+ 136:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 137:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 15
+
+
+ 138:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 139:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifndef OVERRIDE_CHEB_POLY_EVA
+ 140:STM32F10x_Speex_Lib/libspeex/lsp.c **** static inline spx_word32_t cheb_poly_eva(
+ 141:STM32F10x_Speex_Lib/libspeex/lsp.c ****   spx_word16_t *coef, /* P or Q coefs in Q13 format               */
+ 142:STM32F10x_Speex_Lib/libspeex/lsp.c ****   spx_word16_t     x, /* cos of freq (-1.0 to 1.0) in Q14 format  */
+ 143:STM32F10x_Speex_Lib/libspeex/lsp.c ****   int              m, /* LPC order/2                              */
+ 144:STM32F10x_Speex_Lib/libspeex/lsp.c ****   char         *stack
+ 145:STM32F10x_Speex_Lib/libspeex/lsp.c **** )
+ 146:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 470              		.loc 2 146 0
+ 471              		.cfi_startproc
+ 472              		@ args = 0, pretend = 0, frame = 32
+ 473              		@ frame_needed = 1, uses_anonymous_args = 0
+ 474              		@ link register save eliminated.
+ 475 0000 80B4     		push	{r7}
+ 476              	.LCFI22:
+ 477              		.cfi_def_cfa_offset 4
+ 478              		.cfi_offset 7, -4
+ 479 0002 89B0     		sub	sp, sp, #36
+ 480              	.LCFI23:
+ 481              		.cfi_def_cfa_offset 40
+ 482 0004 00AF     		add	r7, sp, #0
+ 483              	.LCFI24:
+ 484              		.cfi_def_cfa_register 7
+ 485 0006 F860     		str	r0, [r7, #12]
+ 486 0008 7A60     		str	r2, [r7, #4]
+ 487 000a 3B60     		str	r3, [r7]
+ 488 000c 0B46     		mov	r3, r1	@ movhi
+ 489 000e 7B81     		strh	r3, [r7, #10]	@ movhi
+ 147:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int i;
+ 148:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word16_t b0, b1;
+ 149:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t sum;
+ 150:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 151:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /*Prevents overflows*/
+ 152:STM32F10x_Speex_Lib/libspeex/lsp.c ****     if (x>16383)
+ 490              		.loc 2 152 0
+ 491 0010 B7F90A30 		ldrsh	r3, [r7, #10]
+ 492 0014 B3F5804F 		cmp	r3, #16384
+ 493 0018 02DB     		blt	.L23
+ 153:STM32F10x_Speex_Lib/libspeex/lsp.c ****        x = 16383;
+ 494              		.loc 2 153 0
+ 495 001a 43F6FF73 		movw	r3, #16383
+ 496 001e 7B81     		strh	r3, [r7, #10]	@ movhi
+ 497              	.L23:
+ 154:STM32F10x_Speex_Lib/libspeex/lsp.c ****     if (x<-16383)
+ 498              		.loc 2 154 0
+ 499 0020 B7F90A30 		ldrsh	r3, [r7, #10]
+ 500 0024 13F5804F 		cmn	r3, #16384
+ 501 0028 02DC     		bgt	.L24
+ 155:STM32F10x_Speex_Lib/libspeex/lsp.c ****        x = -16383;
+ 502              		.loc 2 155 0
+ 503 002a 4CF20103 		movw	r3, #49153
+ 504 002e 7B81     		strh	r3, [r7, #10]	@ movhi
+ 505              	.L24:
+ 156:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 157:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* Initialise values */
+ 158:STM32F10x_Speex_Lib/libspeex/lsp.c ****     b1=16384;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 16
+
+
+ 506              		.loc 2 158 0
+ 507 0030 4FF48043 		mov	r3, #16384
+ 508 0034 3B83     		strh	r3, [r7, #24]	@ movhi
+ 159:STM32F10x_Speex_Lib/libspeex/lsp.c ****     b0=x;
+ 509              		.loc 2 159 0
+ 510 0036 7B89     		ldrh	r3, [r7, #10]	@ movhi
+ 511 0038 7B83     		strh	r3, [r7, #26]	@ movhi
+ 160:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 161:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* Evaluate Chebyshev series formulation usin g iterative approach  */
+ 162:STM32F10x_Speex_Lib/libspeex/lsp.c ****     sum = ADD32(EXTEND32(coef[m]), EXTEND32(MULT16_16_P14(coef[m-1],x)));
+ 512              		.loc 2 162 0
+ 513 003a 7B68     		ldr	r3, [r7, #4]
+ 514 003c 5B00     		lsls	r3, r3, #1
+ 515 003e FA68     		ldr	r2, [r7, #12]
+ 516 0040 1344     		add	r3, r3, r2
+ 517 0042 B3F90030 		ldrsh	r3, [r3]
+ 518 0046 1946     		mov	r1, r3
+ 519 0048 7B68     		ldr	r3, [r7, #4]
+ 520 004a 03F10043 		add	r3, r3, #-2147483648
+ 521 004e 013B     		subs	r3, r3, #1
+ 522 0050 5B00     		lsls	r3, r3, #1
+ 523 0052 FA68     		ldr	r2, [r7, #12]
+ 524 0054 1344     		add	r3, r3, r2
+ 525 0056 B3F90030 		ldrsh	r3, [r3]
+ 526 005a 1A46     		mov	r2, r3
+ 527 005c B7F90A30 		ldrsh	r3, [r7, #10]
+ 528 0060 03FB02F3 		mul	r3, r3, r2
+ 529 0064 03F50053 		add	r3, r3, #8192
+ 530 0068 9B13     		asrs	r3, r3, #14
+ 531 006a 0B44     		add	r3, r3, r1
+ 532 006c 7B61     		str	r3, [r7, #20]
+ 163:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=2;i<=m;i++)
+ 533              		.loc 2 163 0
+ 534 006e 0223     		movs	r3, #2
+ 535 0070 FB61     		str	r3, [r7, #28]
+ 536 0072 25E0     		b	.L25
+ 537              	.L26:
+ 538              	.LBB2:
+ 164:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 165:STM32F10x_Speex_Lib/libspeex/lsp.c ****        spx_word16_t tmp=b0;
+ 539              		.loc 2 165 0 discriminator 3
+ 540 0074 7B8B     		ldrh	r3, [r7, #26]	@ movhi
+ 541 0076 7B82     		strh	r3, [r7, #18]	@ movhi
+ 166:STM32F10x_Speex_Lib/libspeex/lsp.c ****        b0 = SUB16(MULT16_16_Q13(x,b0), b1);
+ 542              		.loc 2 166 0 discriminator 3
+ 543 0078 B7F90A30 		ldrsh	r3, [r7, #10]
+ 544 007c B7F91A20 		ldrsh	r2, [r7, #26]
+ 545 0080 02FB03F3 		mul	r3, r2, r3
+ 546 0084 5B13     		asrs	r3, r3, #13
+ 547 0086 9AB2     		uxth	r2, r3
+ 548 0088 3B8B     		ldrh	r3, [r7, #24]
+ 549 008a D31A     		subs	r3, r2, r3
+ 550 008c 9BB2     		uxth	r3, r3
+ 551 008e 7B83     		strh	r3, [r7, #26]	@ movhi
+ 167:STM32F10x_Speex_Lib/libspeex/lsp.c ****        b1 = tmp;
+ 552              		.loc 2 167 0 discriminator 3
+ 553 0090 7B8A     		ldrh	r3, [r7, #18]	@ movhi
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 17
+
+
+ 554 0092 3B83     		strh	r3, [r7, #24]	@ movhi
+ 168:STM32F10x_Speex_Lib/libspeex/lsp.c ****        sum = ADD32(sum, EXTEND32(MULT16_16_P14(coef[m-i],b0)));
+ 555              		.loc 2 168 0 discriminator 3
+ 556 0094 7A68     		ldr	r2, [r7, #4]
+ 557 0096 FB69     		ldr	r3, [r7, #28]
+ 558 0098 D31A     		subs	r3, r2, r3
+ 559 009a 5B00     		lsls	r3, r3, #1
+ 560 009c FA68     		ldr	r2, [r7, #12]
+ 561 009e 1344     		add	r3, r3, r2
+ 562 00a0 B3F90030 		ldrsh	r3, [r3]
+ 563 00a4 1A46     		mov	r2, r3
+ 564 00a6 B7F91A30 		ldrsh	r3, [r7, #26]
+ 565 00aa 03FB02F3 		mul	r3, r3, r2
+ 566 00ae 03F50053 		add	r3, r3, #8192
+ 567 00b2 9B13     		asrs	r3, r3, #14
+ 568 00b4 7A69     		ldr	r2, [r7, #20]
+ 569 00b6 1344     		add	r3, r3, r2
+ 570 00b8 7B61     		str	r3, [r7, #20]
+ 571              	.LBE2:
+ 163:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 572              		.loc 2 163 0 discriminator 3
+ 573 00ba FB69     		ldr	r3, [r7, #28]
+ 574 00bc 0133     		adds	r3, r3, #1
+ 575 00be FB61     		str	r3, [r7, #28]
+ 576              	.L25:
+ 163:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 577              		.loc 2 163 0 is_stmt 0 discriminator 1
+ 578 00c0 FA69     		ldr	r2, [r7, #28]
+ 579 00c2 7B68     		ldr	r3, [r7, #4]
+ 580 00c4 9A42     		cmp	r2, r3
+ 581 00c6 D5DD     		ble	.L26
+ 169:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 170:STM32F10x_Speex_Lib/libspeex/lsp.c ****     
+ 171:STM32F10x_Speex_Lib/libspeex/lsp.c ****     return sum;
+ 582              		.loc 2 171 0 is_stmt 1
+ 583 00c8 7B69     		ldr	r3, [r7, #20]
+ 172:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 584              		.loc 2 172 0
+ 585 00ca 1846     		mov	r0, r3
+ 586 00cc 2437     		adds	r7, r7, #36
+ 587              	.LCFI25:
+ 588              		.cfi_def_cfa_offset 4
+ 589 00ce BD46     		mov	sp, r7
+ 590              	.LCFI26:
+ 591              		.cfi_def_cfa_register 13
+ 592              		@ sp needed
+ 593 00d0 80BC     		pop	{r7}
+ 594              	.LCFI27:
+ 595              		.cfi_restore 7
+ 596              		.cfi_def_cfa_offset 0
+ 597 00d2 7047     		bx	lr
+ 598              		.cfi_endproc
+ 599              	.LFE12:
+ 601              		.section	.text.lpc_to_lsp,"ax",%progbits
+ 602              		.align	2
+ 603              		.global	lpc_to_lsp
+ 604              		.thumb
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 18
+
+
+ 605              		.thumb_func
+ 607              	lpc_to_lsp:
+ 608              	.LFB13:
+ 173:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 174:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 175:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 176:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 177:STM32F10x_Speex_Lib/libspeex/lsp.c **** static float cheb_poly_eva(spx_word32_t *coef, spx_word16_t x, int m, char *stack)
+ 178:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 179:STM32F10x_Speex_Lib/libspeex/lsp.c ****    int k;
+ 180:STM32F10x_Speex_Lib/libspeex/lsp.c ****    float b0, b1, tmp;
+ 181:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 182:STM32F10x_Speex_Lib/libspeex/lsp.c ****    /* Initial conditions */
+ 183:STM32F10x_Speex_Lib/libspeex/lsp.c ****    b0=0; /* b_(m+1) */
+ 184:STM32F10x_Speex_Lib/libspeex/lsp.c ****    b1=0; /* b_(m+2) */
+ 185:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 186:STM32F10x_Speex_Lib/libspeex/lsp.c ****    x*=2;
+ 187:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 188:STM32F10x_Speex_Lib/libspeex/lsp.c ****    /* Calculate the b_(k) */
+ 189:STM32F10x_Speex_Lib/libspeex/lsp.c ****    for(k=m;k>0;k--)
+ 190:STM32F10x_Speex_Lib/libspeex/lsp.c ****    {
+ 191:STM32F10x_Speex_Lib/libspeex/lsp.c ****       tmp=b0;                           /* tmp holds the previous value of b0 */
+ 192:STM32F10x_Speex_Lib/libspeex/lsp.c ****       b0=x*b0-b1+coef[m-k];    /* b0 holds its new value based on b0 and b1 */
+ 193:STM32F10x_Speex_Lib/libspeex/lsp.c ****       b1=tmp;                           /* b1 holds the previous value of b0 */
+ 194:STM32F10x_Speex_Lib/libspeex/lsp.c ****    }
+ 195:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 196:STM32F10x_Speex_Lib/libspeex/lsp.c ****    return(-b1+.5*x*b0+coef[m]);
+ 197:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 198:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 199:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 200:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*---------------------------------------------------------------------------*\
+ 201:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 202:STM32F10x_Speex_Lib/libspeex/lsp.c ****     FUNCTION....: lpc_to_lsp()
+ 203:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 204:STM32F10x_Speex_Lib/libspeex/lsp.c ****     AUTHOR......: David Rowe
+ 205:STM32F10x_Speex_Lib/libspeex/lsp.c ****     DATE CREATED: 24/2/93
+ 206:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 207:STM32F10x_Speex_Lib/libspeex/lsp.c ****     This function converts LPC coefficients to LSP
+ 208:STM32F10x_Speex_Lib/libspeex/lsp.c ****     coefficients.
+ 209:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 210:STM32F10x_Speex_Lib/libspeex/lsp.c **** \*---------------------------------------------------------------------------*/
+ 211:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 212:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 213:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define SIGN_CHANGE(a,b) (((a)&0x70000000)^((b)&0x70000000)||(b==0))
+ 214:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 215:STM32F10x_Speex_Lib/libspeex/lsp.c **** #define SIGN_CHANGE(a,b) (((a)*(b))<0.0)
+ 216:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 217:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 218:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 219:STM32F10x_Speex_Lib/libspeex/lsp.c **** int lpc_to_lsp (spx_coef_t *a,int lpcrdr,spx_lsp_t *freq,int nb,spx_word16_t delta, char *stack)
+ 220:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *a 		     	lpc coefficients			*/
+ 221:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  int lpcrdr			order of LPC coefficients (10) 		*/
+ 222:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *freq 	      	LSP frequencies in the x domain       	*/
+ 223:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  int nb			number of sub-intervals (4) 		*/
+ 224:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float delta			grid spacing interval (0.02) 		*/
+ 225:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 226:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 19
+
+
+ 227:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 609              		.loc 2 227 0
+ 610              		.cfi_startproc
+ 611              		@ args = 8, pretend = 0, frame = 112
+ 612              		@ frame_needed = 1, uses_anonymous_args = 0
+ 613 0000 90B5     		push	{r4, r7, lr}
+ 614              	.LCFI28:
+ 615              		.cfi_def_cfa_offset 12
+ 616              		.cfi_offset 4, -12
+ 617              		.cfi_offset 7, -8
+ 618              		.cfi_offset 14, -4
+ 619 0002 9DB0     		sub	sp, sp, #116
+ 620              	.LCFI29:
+ 621              		.cfi_def_cfa_offset 128
+ 622 0004 00AF     		add	r7, sp, #0
+ 623              	.LCFI30:
+ 624              		.cfi_def_cfa_register 7
+ 625 0006 F860     		str	r0, [r7, #12]
+ 626 0008 B960     		str	r1, [r7, #8]
+ 627 000a 7A60     		str	r2, [r7, #4]
+ 628 000c 3B60     		str	r3, [r7]
+ 228:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word16_t temp_xr,xl,xr,xm=0;
+ 629              		.loc 2 228 0
+ 630 000e 0023     		movs	r3, #0
+ 631 0010 A7F86A30 		strh	r3, [r7, #106]	@ movhi
+ 229:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t psuml,psumr,psumm,temp_psumr/*,temp_qsumr*/;
+ 230:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int i,j,m,flag,k;
+ 231:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t *Q);                 	/* ptrs for memory allocation 		*/
+ 232:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t *P);
+ 233:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word16_t *Q16);         /* ptrs for memory allocation 		*/
+ 234:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word16_t *P16);
+ 235:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t *px;                	/* ptrs of respective P'(z) & Q'(z)	*/
+ 236:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t *qx;
+ 237:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t *p;
+ 238:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t *q;
+ 239:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word16_t *pt;                	/* ptr used for cheb_poly_eval()
+ 240:STM32F10x_Speex_Lib/libspeex/lsp.c **** 				whether P' or Q' 			*/
+ 241:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int roots=0;              	/* DR 8/2/94: number of roots found 	*/
+ 632              		.loc 2 241 0
+ 633 0014 0023     		movs	r3, #0
+ 634 0016 FB63     		str	r3, [r7, #60]
+ 242:STM32F10x_Speex_Lib/libspeex/lsp.c ****     flag = 1;                	/*  program is searching for a root when,
+ 635              		.loc 2 242 0
+ 636 0018 0123     		movs	r3, #1
+ 637 001a BB65     		str	r3, [r7, #88]
+ 243:STM32F10x_Speex_Lib/libspeex/lsp.c **** 				1 else has found one 			*/
+ 244:STM32F10x_Speex_Lib/libspeex/lsp.c ****     m = lpcrdr/2;            	/* order of P'(z) & Q'(z) polynomials 	*/
+ 638              		.loc 2 244 0
+ 639 001c BB68     		ldr	r3, [r7, #8]
+ 640 001e DA0F     		lsrs	r2, r3, #31
+ 641 0020 1344     		add	r3, r3, r2
+ 642 0022 5B10     		asrs	r3, r3, #1
+ 643 0024 7B63     		str	r3, [r7, #52]
+ 245:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 246:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* Allocate memory space for polynomials */
+ 247:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(Q, (m+1), spx_word32_t);
+ 644              		.loc 2 247 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 20
+
+
+ 645 0026 D7F88430 		ldr	r3, [r7, #132]
+ 646 002a 5B42     		negs	r3, r3
+ 647 002c 03F00303 		and	r3, r3, #3
+ 648 0030 D7F88420 		ldr	r2, [r7, #132]
+ 649 0034 1344     		add	r3, r3, r2
+ 650 0036 C7F88430 		str	r3, [r7, #132]
+ 651 003a 7B6B     		ldr	r3, [r7, #52]
+ 652 003c 0133     		adds	r3, r3, #1
+ 653 003e 9B00     		lsls	r3, r3, #2
+ 654 0040 D7F88420 		ldr	r2, [r7, #132]
+ 655 0044 1344     		add	r3, r3, r2
+ 656 0046 C7F88430 		str	r3, [r7, #132]
+ 657 004a 7B6B     		ldr	r3, [r7, #52]
+ 658 004c 0133     		adds	r3, r3, #1
+ 659 004e 9B00     		lsls	r3, r3, #2
+ 660 0050 5B42     		negs	r3, r3
+ 661 0052 D7F88420 		ldr	r2, [r7, #132]
+ 662 0056 1344     		add	r3, r3, r2
+ 663 0058 3B63     		str	r3, [r7, #48]
+ 248:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(P, (m+1), spx_word32_t);
+ 664              		.loc 2 248 0
+ 665 005a D7F88430 		ldr	r3, [r7, #132]
+ 666 005e 5B42     		negs	r3, r3
+ 667 0060 03F00303 		and	r3, r3, #3
+ 668 0064 D7F88420 		ldr	r2, [r7, #132]
+ 669 0068 1344     		add	r3, r3, r2
+ 670 006a C7F88430 		str	r3, [r7, #132]
+ 671 006e 7B6B     		ldr	r3, [r7, #52]
+ 672 0070 0133     		adds	r3, r3, #1
+ 673 0072 9B00     		lsls	r3, r3, #2
+ 674 0074 D7F88420 		ldr	r2, [r7, #132]
+ 675 0078 1344     		add	r3, r3, r2
+ 676 007a C7F88430 		str	r3, [r7, #132]
+ 677 007e 7B6B     		ldr	r3, [r7, #52]
+ 678 0080 0133     		adds	r3, r3, #1
+ 679 0082 9B00     		lsls	r3, r3, #2
+ 680 0084 5B42     		negs	r3, r3
+ 681 0086 D7F88420 		ldr	r2, [r7, #132]
+ 682 008a 1344     		add	r3, r3, r2
+ 683 008c FB62     		str	r3, [r7, #44]
+ 249:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 250:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* determine P'(z)'s and Q'(z)'s coefficients where
+ 251:STM32F10x_Speex_Lib/libspeex/lsp.c ****       P'(z) = P(z)/(1 + z^(-1)) and Q'(z) = Q(z)/(1-z^(-1)) */
+ 252:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 253:STM32F10x_Speex_Lib/libspeex/lsp.c ****     px = P;                      /* initialise ptrs 			*/
+ 684              		.loc 2 253 0
+ 685 008e FB6A     		ldr	r3, [r7, #44]
+ 686 0090 3B65     		str	r3, [r7, #80]
+ 254:STM32F10x_Speex_Lib/libspeex/lsp.c ****     qx = Q;
+ 687              		.loc 2 254 0
+ 688 0092 3B6B     		ldr	r3, [r7, #48]
+ 689 0094 FB64     		str	r3, [r7, #76]
+ 255:STM32F10x_Speex_Lib/libspeex/lsp.c ****     p = px;
+ 690              		.loc 2 255 0
+ 691 0096 3B6D     		ldr	r3, [r7, #80]
+ 692 0098 BB64     		str	r3, [r7, #72]
+ 256:STM32F10x_Speex_Lib/libspeex/lsp.c ****     q = qx;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 21
+
+
+ 693              		.loc 2 256 0
+ 694 009a FB6C     		ldr	r3, [r7, #76]
+ 695 009c 7B64     		str	r3, [r7, #68]
+ 257:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 258:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 259:STM32F10x_Speex_Lib/libspeex/lsp.c ****     *px++ = LPC_SCALING;
+ 696              		.loc 2 259 0
+ 697 009e 3B6D     		ldr	r3, [r7, #80]
+ 698 00a0 1A1D     		adds	r2, r3, #4
+ 699 00a2 3A65     		str	r2, [r7, #80]
+ 700 00a4 4FF40052 		mov	r2, #8192
+ 701 00a8 1A60     		str	r2, [r3]
+ 260:STM32F10x_Speex_Lib/libspeex/lsp.c ****     *qx++ = LPC_SCALING;
+ 702              		.loc 2 260 0
+ 703 00aa FB6C     		ldr	r3, [r7, #76]
+ 704 00ac 1A1D     		adds	r2, r3, #4
+ 705 00ae FA64     		str	r2, [r7, #76]
+ 706 00b0 4FF40052 		mov	r2, #8192
+ 707 00b4 1A60     		str	r2, [r3]
+ 261:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++){
+ 708              		.loc 2 261 0
+ 709 00b6 0023     		movs	r3, #0
+ 710 00b8 3B66     		str	r3, [r7, #96]
+ 711 00ba 3AE0     		b	.L29
+ 712              	.L30:
+ 262:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *px++ = SUB32(ADD32(EXTEND32(a[i]),EXTEND32(a[lpcrdr-i-1])), *p++);
+ 713              		.loc 2 262 0 discriminator 3
+ 714 00bc 3A6D     		ldr	r2, [r7, #80]
+ 715 00be 131D     		adds	r3, r2, #4
+ 716 00c0 3B65     		str	r3, [r7, #80]
+ 717 00c2 3B6E     		ldr	r3, [r7, #96]
+ 718 00c4 5B00     		lsls	r3, r3, #1
+ 719 00c6 F968     		ldr	r1, [r7, #12]
+ 720 00c8 0B44     		add	r3, r3, r1
+ 721 00ca B3F90030 		ldrsh	r3, [r3]
+ 722 00ce 1846     		mov	r0, r3
+ 723 00d0 B968     		ldr	r1, [r7, #8]
+ 724 00d2 3B6E     		ldr	r3, [r7, #96]
+ 725 00d4 CB1A     		subs	r3, r1, r3
+ 726 00d6 03F10043 		add	r3, r3, #-2147483648
+ 727 00da 013B     		subs	r3, r3, #1
+ 728 00dc 5B00     		lsls	r3, r3, #1
+ 729 00de F968     		ldr	r1, [r7, #12]
+ 730 00e0 0B44     		add	r3, r3, r1
+ 731 00e2 B3F90030 		ldrsh	r3, [r3]
+ 732 00e6 C118     		adds	r1, r0, r3
+ 733 00e8 BB6C     		ldr	r3, [r7, #72]
+ 734 00ea 181D     		adds	r0, r3, #4
+ 735 00ec B864     		str	r0, [r7, #72]
+ 736 00ee 1B68     		ldr	r3, [r3]
+ 737 00f0 CB1A     		subs	r3, r1, r3
+ 738 00f2 1360     		str	r3, [r2]
+ 263:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *qx++ = ADD32(SUB32(EXTEND32(a[i]),EXTEND32(a[lpcrdr-i-1])), *q++);
+ 739              		.loc 2 263 0 discriminator 3
+ 740 00f4 FA6C     		ldr	r2, [r7, #76]
+ 741 00f6 131D     		adds	r3, r2, #4
+ 742 00f8 FB64     		str	r3, [r7, #76]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 22
+
+
+ 743 00fa 3B6E     		ldr	r3, [r7, #96]
+ 744 00fc 5B00     		lsls	r3, r3, #1
+ 745 00fe F968     		ldr	r1, [r7, #12]
+ 746 0100 0B44     		add	r3, r3, r1
+ 747 0102 B3F90030 		ldrsh	r3, [r3]
+ 748 0106 1846     		mov	r0, r3
+ 749 0108 B968     		ldr	r1, [r7, #8]
+ 750 010a 3B6E     		ldr	r3, [r7, #96]
+ 751 010c CB1A     		subs	r3, r1, r3
+ 752 010e 03F10043 		add	r3, r3, #-2147483648
+ 753 0112 013B     		subs	r3, r3, #1
+ 754 0114 5B00     		lsls	r3, r3, #1
+ 755 0116 F968     		ldr	r1, [r7, #12]
+ 756 0118 0B44     		add	r3, r3, r1
+ 757 011a B3F90030 		ldrsh	r3, [r3]
+ 758 011e C11A     		subs	r1, r0, r3
+ 759 0120 7B6C     		ldr	r3, [r7, #68]
+ 760 0122 181D     		adds	r0, r3, #4
+ 761 0124 7864     		str	r0, [r7, #68]
+ 762 0126 1B68     		ldr	r3, [r3]
+ 763 0128 0B44     		add	r3, r3, r1
+ 764 012a 1360     		str	r3, [r2]
+ 261:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++){
+ 765              		.loc 2 261 0 discriminator 3
+ 766 012c 3B6E     		ldr	r3, [r7, #96]
+ 767 012e 0133     		adds	r3, r3, #1
+ 768 0130 3B66     		str	r3, [r7, #96]
+ 769              	.L29:
+ 261:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++){
+ 770              		.loc 2 261 0 is_stmt 0 discriminator 1
+ 771 0132 3A6E     		ldr	r2, [r7, #96]
+ 772 0134 7B6B     		ldr	r3, [r7, #52]
+ 773 0136 9A42     		cmp	r2, r3
+ 774 0138 C0DB     		blt	.L30
+ 264:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 265:STM32F10x_Speex_Lib/libspeex/lsp.c ****     px = P;
+ 775              		.loc 2 265 0 is_stmt 1
+ 776 013a FB6A     		ldr	r3, [r7, #44]
+ 777 013c 3B65     		str	r3, [r7, #80]
+ 266:STM32F10x_Speex_Lib/libspeex/lsp.c ****     qx = Q;
+ 778              		.loc 2 266 0
+ 779 013e 3B6B     		ldr	r3, [r7, #48]
+ 780 0140 FB64     		str	r3, [r7, #76]
+ 267:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++)
+ 781              		.loc 2 267 0
+ 782 0142 0023     		movs	r3, #0
+ 783 0144 3B66     		str	r3, [r7, #96]
+ 784 0146 14E0     		b	.L31
+ 785              	.L32:
+ 268:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 269:STM32F10x_Speex_Lib/libspeex/lsp.c ****        /*if (fabs(*px)>=32768)
+ 270:STM32F10x_Speex_Lib/libspeex/lsp.c ****           speex_warning_int("px", *px);
+ 271:STM32F10x_Speex_Lib/libspeex/lsp.c ****        if (fabs(*qx)>=32768)
+ 272:STM32F10x_Speex_Lib/libspeex/lsp.c ****        speex_warning_int("qx", *qx);*/
+ 273:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *px = PSHR32(*px,2);
+ 786              		.loc 2 273 0 discriminator 3
+ 787 0148 3B6D     		ldr	r3, [r7, #80]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 23
+
+
+ 788 014a 1B68     		ldr	r3, [r3]
+ 789 014c 0233     		adds	r3, r3, #2
+ 790 014e 9A10     		asrs	r2, r3, #2
+ 791 0150 3B6D     		ldr	r3, [r7, #80]
+ 792 0152 1A60     		str	r2, [r3]
+ 274:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *qx = PSHR32(*qx,2);
+ 793              		.loc 2 274 0 discriminator 3
+ 794 0154 FB6C     		ldr	r3, [r7, #76]
+ 795 0156 1B68     		ldr	r3, [r3]
+ 796 0158 0233     		adds	r3, r3, #2
+ 797 015a 9A10     		asrs	r2, r3, #2
+ 798 015c FB6C     		ldr	r3, [r7, #76]
+ 799 015e 1A60     		str	r2, [r3]
+ 275:STM32F10x_Speex_Lib/libspeex/lsp.c ****        px++;
+ 800              		.loc 2 275 0 discriminator 3
+ 801 0160 3B6D     		ldr	r3, [r7, #80]
+ 802 0162 0433     		adds	r3, r3, #4
+ 803 0164 3B65     		str	r3, [r7, #80]
+ 276:STM32F10x_Speex_Lib/libspeex/lsp.c ****        qx++;
+ 804              		.loc 2 276 0 discriminator 3
+ 805 0166 FB6C     		ldr	r3, [r7, #76]
+ 806 0168 0433     		adds	r3, r3, #4
+ 807 016a FB64     		str	r3, [r7, #76]
+ 267:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 808              		.loc 2 267 0 discriminator 3
+ 809 016c 3B6E     		ldr	r3, [r7, #96]
+ 810 016e 0133     		adds	r3, r3, #1
+ 811 0170 3B66     		str	r3, [r7, #96]
+ 812              	.L31:
+ 267:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 813              		.loc 2 267 0 is_stmt 0 discriminator 1
+ 814 0172 3A6E     		ldr	r2, [r7, #96]
+ 815 0174 7B6B     		ldr	r3, [r7, #52]
+ 816 0176 9A42     		cmp	r2, r3
+ 817 0178 E6DB     		blt	.L32
+ 277:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 278:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* The reason for this lies in the way cheb_poly_eva() is implemented for fixed-point */
+ 279:STM32F10x_Speex_Lib/libspeex/lsp.c ****     P[m] = PSHR32(P[m],3);
+ 818              		.loc 2 279 0 is_stmt 1
+ 819 017a 7B6B     		ldr	r3, [r7, #52]
+ 820 017c 9B00     		lsls	r3, r3, #2
+ 821 017e FA6A     		ldr	r2, [r7, #44]
+ 822 0180 1344     		add	r3, r3, r2
+ 823 0182 7A6B     		ldr	r2, [r7, #52]
+ 824 0184 9200     		lsls	r2, r2, #2
+ 825 0186 F96A     		ldr	r1, [r7, #44]
+ 826 0188 0A44     		add	r2, r2, r1
+ 827 018a 1268     		ldr	r2, [r2]
+ 828 018c 0432     		adds	r2, r2, #4
+ 829 018e D210     		asrs	r2, r2, #3
+ 830 0190 1A60     		str	r2, [r3]
+ 280:STM32F10x_Speex_Lib/libspeex/lsp.c ****     Q[m] = PSHR32(Q[m],3);
+ 831              		.loc 2 280 0
+ 832 0192 7B6B     		ldr	r3, [r7, #52]
+ 833 0194 9B00     		lsls	r3, r3, #2
+ 834 0196 3A6B     		ldr	r2, [r7, #48]
+ 835 0198 1344     		add	r3, r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 24
+
+
+ 836 019a 7A6B     		ldr	r2, [r7, #52]
+ 837 019c 9200     		lsls	r2, r2, #2
+ 838 019e 396B     		ldr	r1, [r7, #48]
+ 839 01a0 0A44     		add	r2, r2, r1
+ 840 01a2 1268     		ldr	r2, [r2]
+ 841 01a4 0432     		adds	r2, r2, #4
+ 842 01a6 D210     		asrs	r2, r2, #3
+ 843 01a8 1A60     		str	r2, [r3]
+ 281:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 282:STM32F10x_Speex_Lib/libspeex/lsp.c ****     *px++ = LPC_SCALING;
+ 283:STM32F10x_Speex_Lib/libspeex/lsp.c ****     *qx++ = LPC_SCALING;
+ 284:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++){
+ 285:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *px++ = (a[i]+a[lpcrdr-1-i]) - *p++;
+ 286:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *qx++ = (a[i]-a[lpcrdr-1-i]) + *q++;
+ 287:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 288:STM32F10x_Speex_Lib/libspeex/lsp.c ****     px = P;
+ 289:STM32F10x_Speex_Lib/libspeex/lsp.c ****     qx = Q;
+ 290:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<m;i++){
+ 291:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *px = 2**px;
+ 292:STM32F10x_Speex_Lib/libspeex/lsp.c ****        *qx = 2**qx;
+ 293:STM32F10x_Speex_Lib/libspeex/lsp.c ****        px++;
+ 294:STM32F10x_Speex_Lib/libspeex/lsp.c ****        qx++;
+ 295:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 296:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 297:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 298:STM32F10x_Speex_Lib/libspeex/lsp.c ****     px = P;             	/* re-initialise ptrs 			*/
+ 844              		.loc 2 298 0
+ 845 01aa FB6A     		ldr	r3, [r7, #44]
+ 846 01ac 3B65     		str	r3, [r7, #80]
+ 299:STM32F10x_Speex_Lib/libspeex/lsp.c ****     qx = Q;
+ 847              		.loc 2 299 0
+ 848 01ae 3B6B     		ldr	r3, [r7, #48]
+ 849 01b0 FB64     		str	r3, [r7, #76]
+ 300:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 301:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* now that we have computed P and Q convert to 16 bits to
+ 302:STM32F10x_Speex_Lib/libspeex/lsp.c ****        speed up cheb_poly_eval */
+ 303:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 304:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(P16, m+1, spx_word16_t);
+ 850              		.loc 2 304 0
+ 851 01b2 D7F88430 		ldr	r3, [r7, #132]
+ 852 01b6 5B42     		negs	r3, r3
+ 853 01b8 03F00103 		and	r3, r3, #1
+ 854 01bc D7F88420 		ldr	r2, [r7, #132]
+ 855 01c0 1344     		add	r3, r3, r2
+ 856 01c2 C7F88430 		str	r3, [r7, #132]
+ 857 01c6 7B6B     		ldr	r3, [r7, #52]
+ 858 01c8 0133     		adds	r3, r3, #1
+ 859 01ca 5B00     		lsls	r3, r3, #1
+ 860 01cc D7F88420 		ldr	r2, [r7, #132]
+ 861 01d0 1344     		add	r3, r3, r2
+ 862 01d2 C7F88430 		str	r3, [r7, #132]
+ 863 01d6 7B6B     		ldr	r3, [r7, #52]
+ 864 01d8 0133     		adds	r3, r3, #1
+ 865 01da 5B00     		lsls	r3, r3, #1
+ 866 01dc 5B42     		negs	r3, r3
+ 867 01de D7F88420 		ldr	r2, [r7, #132]
+ 868 01e2 1344     		add	r3, r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 25
+
+
+ 869 01e4 BB62     		str	r3, [r7, #40]
+ 305:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(Q16, m+1, spx_word16_t);
+ 870              		.loc 2 305 0
+ 871 01e6 D7F88430 		ldr	r3, [r7, #132]
+ 872 01ea 5B42     		negs	r3, r3
+ 873 01ec 03F00103 		and	r3, r3, #1
+ 874 01f0 D7F88420 		ldr	r2, [r7, #132]
+ 875 01f4 1344     		add	r3, r3, r2
+ 876 01f6 C7F88430 		str	r3, [r7, #132]
+ 877 01fa 7B6B     		ldr	r3, [r7, #52]
+ 878 01fc 0133     		adds	r3, r3, #1
+ 879 01fe 5B00     		lsls	r3, r3, #1
+ 880 0200 D7F88420 		ldr	r2, [r7, #132]
+ 881 0204 1344     		add	r3, r3, r2
+ 882 0206 C7F88430 		str	r3, [r7, #132]
+ 883 020a 7B6B     		ldr	r3, [r7, #52]
+ 884 020c 0133     		adds	r3, r3, #1
+ 885 020e 5B00     		lsls	r3, r3, #1
+ 886 0210 5B42     		negs	r3, r3
+ 887 0212 D7F88420 		ldr	r2, [r7, #132]
+ 888 0216 1344     		add	r3, r3, r2
+ 889 0218 7B62     		str	r3, [r7, #36]
+ 306:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 307:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for (i=0;i<m+1;i++)
+ 890              		.loc 2 307 0
+ 891 021a 0023     		movs	r3, #0
+ 892 021c 3B66     		str	r3, [r7, #96]
+ 893 021e 18E0     		b	.L33
+ 894              	.L34:
+ 308:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 309:STM32F10x_Speex_Lib/libspeex/lsp.c ****        P16[i] = P[i];
+ 895              		.loc 2 309 0 discriminator 3
+ 896 0220 3B6E     		ldr	r3, [r7, #96]
+ 897 0222 5B00     		lsls	r3, r3, #1
+ 898 0224 BA6A     		ldr	r2, [r7, #40]
+ 899 0226 1344     		add	r3, r3, r2
+ 900 0228 3A6E     		ldr	r2, [r7, #96]
+ 901 022a 9200     		lsls	r2, r2, #2
+ 902 022c F96A     		ldr	r1, [r7, #44]
+ 903 022e 0A44     		add	r2, r2, r1
+ 904 0230 1268     		ldr	r2, [r2]
+ 905 0232 12B2     		sxth	r2, r2
+ 906 0234 1A80     		strh	r2, [r3]	@ movhi
+ 310:STM32F10x_Speex_Lib/libspeex/lsp.c ****        Q16[i] = Q[i];
+ 907              		.loc 2 310 0 discriminator 3
+ 908 0236 3B6E     		ldr	r3, [r7, #96]
+ 909 0238 5B00     		lsls	r3, r3, #1
+ 910 023a 7A6A     		ldr	r2, [r7, #36]
+ 911 023c 1344     		add	r3, r3, r2
+ 912 023e 3A6E     		ldr	r2, [r7, #96]
+ 913 0240 9200     		lsls	r2, r2, #2
+ 914 0242 396B     		ldr	r1, [r7, #48]
+ 915 0244 0A44     		add	r2, r2, r1
+ 916 0246 1268     		ldr	r2, [r2]
+ 917 0248 12B2     		sxth	r2, r2
+ 918 024a 1A80     		strh	r2, [r3]	@ movhi
+ 307:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 26
+
+
+ 919              		.loc 2 307 0 discriminator 3
+ 920 024c 3B6E     		ldr	r3, [r7, #96]
+ 921 024e 0133     		adds	r3, r3, #1
+ 922 0250 3B66     		str	r3, [r7, #96]
+ 923              	.L33:
+ 307:STM32F10x_Speex_Lib/libspeex/lsp.c ****     {
+ 924              		.loc 2 307 0 is_stmt 0 discriminator 1
+ 925 0252 7B6B     		ldr	r3, [r7, #52]
+ 926 0254 5A1C     		adds	r2, r3, #1
+ 927 0256 3B6E     		ldr	r3, [r7, #96]
+ 928 0258 9A42     		cmp	r2, r3
+ 929 025a E1DC     		bgt	.L34
+ 311:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 312:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 313:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* Search for a zero in P'(z) polynomial first and then alternate to Q'(z).
+ 314:STM32F10x_Speex_Lib/libspeex/lsp.c ****     Keep alternating between the two polynomials as each zero is found 	*/
+ 315:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 316:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xr = 0;             	/* initialise xr to zero 		*/
+ 930              		.loc 2 316 0 is_stmt 1
+ 931 025c 0023     		movs	r3, #0
+ 932 025e A7F86C30 		strh	r3, [r7, #108]	@ movhi
+ 317:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xl = FREQ_SCALE;               	/* start at point xl = 1 		*/
+ 933              		.loc 2 317 0
+ 934 0262 4FF48043 		mov	r3, #16384
+ 935 0266 A7F86E30 		strh	r3, [r7, #110]	@ movhi
+ 318:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 319:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(j=0;j<lpcrdr;j++){
+ 936              		.loc 2 319 0
+ 937 026a 0023     		movs	r3, #0
+ 938 026c FB65     		str	r3, [r7, #92]
+ 939 026e BAE0     		b	.L35
+ 940              	.L48:
+ 320:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	if(j&1)            	/* determines whether P' or Q' is eval. */
+ 941              		.loc 2 320 0
+ 942 0270 FB6D     		ldr	r3, [r7, #92]
+ 943 0272 03F00103 		and	r3, r3, #1
+ 944 0276 002B     		cmp	r3, #0
+ 945 0278 02D0     		beq	.L36
+ 321:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    pt = Q16;
+ 946              		.loc 2 321 0
+ 947 027a 7B6A     		ldr	r3, [r7, #36]
+ 948 027c 3B64     		str	r3, [r7, #64]
+ 949 027e 01E0     		b	.L37
+ 950              	.L36:
+ 322:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	else
+ 323:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    pt = P16;
+ 951              		.loc 2 323 0
+ 952 0280 BB6A     		ldr	r3, [r7, #40]
+ 953 0282 3B64     		str	r3, [r7, #64]
+ 954              	.L37:
+ 324:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 325:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	psuml = cheb_poly_eva(pt,xl,m,stack);	/* evals poly. at xl 	*/
+ 955              		.loc 2 325 0
+ 956 0284 B7F96E10 		ldrsh	r1, [r7, #110]
+ 957 0288 D7F88430 		ldr	r3, [r7, #132]
+ 958 028c 7A6B     		ldr	r2, [r7, #52]
+ 959 028e 386C     		ldr	r0, [r7, #64]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 27
+
+
+ 960 0290 FFF7FEFF 		bl	cheb_poly_eva
+ 961 0294 7866     		str	r0, [r7, #100]
+ 326:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	flag = 1;
+ 962              		.loc 2 326 0
+ 963 0296 0123     		movs	r3, #1
+ 964 0298 BB65     		str	r3, [r7, #88]
+ 327:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	while(flag && (xr >= -FREQ_SCALE)){
+ 965              		.loc 2 327 0
+ 966 029a 98E0     		b	.L38
+ 967              	.L47:
+ 968              	.LBB3:
+ 328:STM32F10x_Speex_Lib/libspeex/lsp.c ****            spx_word16_t dd;
+ 329:STM32F10x_Speex_Lib/libspeex/lsp.c ****            /* Modified by JMV to provide smaller steps around x=+-1 */
+ 330:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 331:STM32F10x_Speex_Lib/libspeex/lsp.c ****            dd = MULT16_16_Q15(delta,SUB16(FREQ_SCALE, MULT16_16_Q14(MULT16_16_Q14(xl,xl),14000)));
+ 969              		.loc 2 331 0
+ 970 029c B7F98030 		ldrsh	r3, [r7, #128]
+ 971 02a0 B7F96E20 		ldrsh	r2, [r7, #110]
+ 972 02a4 B7F96E10 		ldrsh	r1, [r7, #110]
+ 973 02a8 01FB02F2 		mul	r2, r1, r2
+ 974 02ac 9213     		asrs	r2, r2, #14
+ 975 02ae 12B2     		sxth	r2, r2
+ 976 02b0 1146     		mov	r1, r2
+ 977 02b2 43F2B062 		movw	r2, #14000
+ 978 02b6 02FB01F2 		mul	r2, r2, r1
+ 979 02ba 9213     		asrs	r2, r2, #14
+ 980 02bc 92B2     		uxth	r2, r2
+ 981 02be C2F58042 		rsb	r2, r2, #16384
+ 982 02c2 92B2     		uxth	r2, r2
+ 983 02c4 12B2     		sxth	r2, r2
+ 984 02c6 02FB03F3 		mul	r3, r2, r3
+ 985 02ca DB13     		asrs	r3, r3, #15
+ 986 02cc 7B87     		strh	r3, [r7, #58]	@ movhi
+ 332:STM32F10x_Speex_Lib/libspeex/lsp.c ****            if (psuml<512 && psuml>-512)
+ 987              		.loc 2 332 0
+ 988 02ce 7B6E     		ldr	r3, [r7, #100]
+ 989 02d0 B3F5007F 		cmp	r3, #512
+ 990 02d4 08DA     		bge	.L39
+ 991              		.loc 2 332 0 is_stmt 0 discriminator 1
+ 992 02d6 7B6E     		ldr	r3, [r7, #100]
+ 993 02d8 13F5007F 		cmn	r3, #512
+ 994 02dc 04DD     		ble	.L39
+ 333:STM32F10x_Speex_Lib/libspeex/lsp.c ****               dd = PSHR16(dd,1);
+ 995              		.loc 2 333 0 is_stmt 1
+ 996 02de B7F93A30 		ldrsh	r3, [r7, #58]
+ 997 02e2 0133     		adds	r3, r3, #1
+ 998 02e4 5B10     		asrs	r3, r3, #1
+ 999 02e6 7B87     		strh	r3, [r7, #58]	@ movhi
+ 1000              	.L39:
+ 334:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 335:STM32F10x_Speex_Lib/libspeex/lsp.c ****            dd=delta*(1-.9*xl*xl);
+ 336:STM32F10x_Speex_Lib/libspeex/lsp.c ****            if (fabs(psuml)<.2)
+ 337:STM32F10x_Speex_Lib/libspeex/lsp.c ****               dd *= .5;
+ 338:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 339:STM32F10x_Speex_Lib/libspeex/lsp.c ****            xr = SUB16(xl, dd);                        	/* interval spacing 	*/
+ 1001              		.loc 2 339 0
+ 1002 02e8 B7F86E20 		ldrh	r2, [r7, #110]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 28
+
+
+ 1003 02ec 7B8F     		ldrh	r3, [r7, #58]
+ 1004 02ee D31A     		subs	r3, r2, r3
+ 1005 02f0 9BB2     		uxth	r3, r3
+ 1006 02f2 A7F86C30 		strh	r3, [r7, #108]	@ movhi
+ 340:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    psumr = cheb_poly_eva(pt,xr,m,stack);/* poly(xl-delta_x) 	*/
+ 1007              		.loc 2 340 0
+ 1008 02f6 B7F96C10 		ldrsh	r1, [r7, #108]
+ 1009 02fa D7F88430 		ldr	r3, [r7, #132]
+ 1010 02fe 7A6B     		ldr	r2, [r7, #52]
+ 1011 0300 386C     		ldr	r0, [r7, #64]
+ 1012 0302 FFF7FEFF 		bl	cheb_poly_eva
+ 1013 0306 3862     		str	r0, [r7, #32]
+ 341:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    temp_psumr = psumr;
+ 1014              		.loc 2 341 0
+ 1015 0308 3B6A     		ldr	r3, [r7, #32]
+ 1016 030a FB61     		str	r3, [r7, #28]
+ 342:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    temp_xr = xr;
+ 1017              		.loc 2 342 0
+ 1018 030c B7F86C30 		ldrh	r3, [r7, #108]	@ movhi
+ 1019 0310 7B83     		strh	r3, [r7, #26]	@ movhi
+ 343:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 344:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* if no sign change increment xr and re-evaluate poly(xr). Repeat til
+ 345:STM32F10x_Speex_Lib/libspeex/lsp.c ****     sign change.
+ 346:STM32F10x_Speex_Lib/libspeex/lsp.c ****     if a sign change has occurred the interval is bisected and then
+ 347:STM32F10x_Speex_Lib/libspeex/lsp.c ****     checked again for a sign change which determines in which
+ 348:STM32F10x_Speex_Lib/libspeex/lsp.c ****     interval the zero lies in.
+ 349:STM32F10x_Speex_Lib/libspeex/lsp.c ****     If there is no sign change between poly(xm) and poly(xl) set interval
+ 350:STM32F10x_Speex_Lib/libspeex/lsp.c ****     between xm and xr else set interval between xl and xr and repeat till
+ 351:STM32F10x_Speex_Lib/libspeex/lsp.c ****     root is located within the specified limits 			*/
+ 352:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 353:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    if(SIGN_CHANGE(psumr,psuml))
+ 1020              		.loc 2 353 0
+ 1021 0312 3A6A     		ldr	r2, [r7, #32]
+ 1022 0314 7B6E     		ldr	r3, [r7, #100]
+ 1023 0316 5340     		eors	r3, r3, r2
+ 1024 0318 03F0E043 		and	r3, r3, #1879048192
+ 1025 031c 002B     		cmp	r3, #0
+ 1026 031e 02D1     		bne	.L40
+ 1027              		.loc 2 353 0 is_stmt 0 discriminator 1
+ 1028 0320 7B6E     		ldr	r3, [r7, #100]
+ 1029 0322 002B     		cmp	r3, #0
+ 1030 0324 4ED1     		bne	.L41
+ 1031              	.L40:
+ 354:STM32F10x_Speex_Lib/libspeex/lsp.c ****             {
+ 355:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		roots++;
+ 1032              		.loc 2 355 0 is_stmt 1
+ 1033 0326 FB6B     		ldr	r3, [r7, #60]
+ 1034 0328 0133     		adds	r3, r3, #1
+ 1035 032a FB63     		str	r3, [r7, #60]
+ 356:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 357:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		psumm=psuml;
+ 1036              		.loc 2 357 0
+ 1037 032c 7B6E     		ldr	r3, [r7, #100]
+ 1038 032e 7B61     		str	r3, [r7, #20]
+ 358:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		for(k=0;k<=nb;k++){
+ 1039              		.loc 2 358 0
+ 1040 0330 0023     		movs	r3, #0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 29
+
+
+ 1041 0332 7B65     		str	r3, [r7, #84]
+ 1042 0334 30E0     		b	.L42
+ 1043              	.L45:
+ 359:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 360:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    xm = ADD16(PSHR16(xl,1),PSHR16(xr,1));        	/* bisect the interval 	*/
+ 1044              		.loc 2 360 0
+ 1045 0336 B7F96E30 		ldrsh	r3, [r7, #110]
+ 1046 033a 0133     		adds	r3, r3, #1
+ 1047 033c 5B10     		asrs	r3, r3, #1
+ 1048 033e 9AB2     		uxth	r2, r3
+ 1049 0340 B7F96C30 		ldrsh	r3, [r7, #108]
+ 1050 0344 0133     		adds	r3, r3, #1
+ 1051 0346 5B10     		asrs	r3, r3, #1
+ 1052 0348 9BB2     		uxth	r3, r3
+ 1053 034a 1344     		add	r3, r3, r2
+ 1054 034c 9BB2     		uxth	r3, r3
+ 1055 034e A7F86A30 		strh	r3, [r7, #106]	@ movhi
+ 361:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 362:STM32F10x_Speex_Lib/libspeex/lsp.c ****                     xm = .5*(xl+xr);        	/* bisect the interval 	*/
+ 363:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 364:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    psumm=cheb_poly_eva(pt,xm,m,stack);
+ 1056              		.loc 2 364 0
+ 1057 0352 B7F96A10 		ldrsh	r1, [r7, #106]
+ 1058 0356 D7F88430 		ldr	r3, [r7, #132]
+ 1059 035a 7A6B     		ldr	r2, [r7, #52]
+ 1060 035c 386C     		ldr	r0, [r7, #64]
+ 1061 035e FFF7FEFF 		bl	cheb_poly_eva
+ 1062 0362 7861     		str	r0, [r7, #20]
+ 365:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    /*if(psumm*psuml>0.)*/
+ 366:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    if(!SIGN_CHANGE(psumm,psuml))
+ 1063              		.loc 2 366 0
+ 1064 0364 7A69     		ldr	r2, [r7, #20]
+ 1065 0366 7B6E     		ldr	r3, [r7, #100]
+ 1066 0368 5340     		eors	r3, r3, r2
+ 1067 036a 03F0E043 		and	r3, r3, #1879048192
+ 1068 036e 002B     		cmp	r3, #0
+ 1069 0370 09D1     		bne	.L43
+ 1070              		.loc 2 366 0 is_stmt 0 discriminator 1
+ 1071 0372 7B6E     		ldr	r3, [r7, #100]
+ 1072 0374 002B     		cmp	r3, #0
+ 1073 0376 06D0     		beq	.L43
+ 367:STM32F10x_Speex_Lib/libspeex/lsp.c ****                     {
+ 368:STM32F10x_Speex_Lib/libspeex/lsp.c **** 			psuml=psumm;
+ 1074              		.loc 2 368 0 is_stmt 1
+ 1075 0378 7B69     		ldr	r3, [r7, #20]
+ 1076 037a 7B66     		str	r3, [r7, #100]
+ 369:STM32F10x_Speex_Lib/libspeex/lsp.c **** 			xl=xm;
+ 1077              		.loc 2 369 0
+ 1078 037c B7F86A30 		ldrh	r3, [r7, #106]	@ movhi
+ 1079 0380 A7F86E30 		strh	r3, [r7, #110]	@ movhi
+ 1080 0384 05E0     		b	.L44
+ 1081              	.L43:
+ 370:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    } else {
+ 371:STM32F10x_Speex_Lib/libspeex/lsp.c **** 			psumr=psumm;
+ 1082              		.loc 2 371 0
+ 1083 0386 7B69     		ldr	r3, [r7, #20]
+ 1084 0388 3B62     		str	r3, [r7, #32]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 30
+
+
+ 372:STM32F10x_Speex_Lib/libspeex/lsp.c **** 			xr=xm;
+ 1085              		.loc 2 372 0
+ 1086 038a B7F86A30 		ldrh	r3, [r7, #106]	@ movhi
+ 1087 038e A7F86C30 		strh	r3, [r7, #108]	@ movhi
+ 1088              	.L44:
+ 358:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 1089              		.loc 2 358 0 discriminator 2
+ 1090 0392 7B6D     		ldr	r3, [r7, #84]
+ 1091 0394 0133     		adds	r3, r3, #1
+ 1092 0396 7B65     		str	r3, [r7, #84]
+ 1093              	.L42:
+ 358:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 1094              		.loc 2 358 0 is_stmt 0 discriminator 1
+ 1095 0398 7A6D     		ldr	r2, [r7, #84]
+ 1096 039a 3B68     		ldr	r3, [r7]
+ 1097 039c 9A42     		cmp	r2, r3
+ 1098 039e CADD     		ble	.L45
+ 373:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		    }
+ 374:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		}
+ 375:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 376:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	       /* once zero is found, reset initial interval to xr 	*/
+ 377:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	       freq[j] = X2ANGLE(xm);
+ 1099              		.loc 2 377 0 is_stmt 1
+ 1100 03a0 FB6D     		ldr	r3, [r7, #92]
+ 1101 03a2 5B00     		lsls	r3, r3, #1
+ 1102 03a4 7A68     		ldr	r2, [r7, #4]
+ 1103 03a6 D418     		adds	r4, r2, r3
+ 1104 03a8 B7F96A30 		ldrsh	r3, [r7, #106]
+ 1105 03ac 1846     		mov	r0, r3
+ 1106 03ae FFF7FEFF 		bl	spx_acos
+ 1107 03b2 0346     		mov	r3, r0
+ 1108 03b4 2380     		strh	r3, [r4]	@ movhi
+ 378:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	       xl = xm;
+ 1109              		.loc 2 378 0
+ 1110 03b6 B7F86A30 		ldrh	r3, [r7, #106]	@ movhi
+ 1111 03ba A7F86E30 		strh	r3, [r7, #110]	@ movhi
+ 379:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	       flag = 0;       		/* reset flag for next search 	*/
+ 1112              		.loc 2 379 0
+ 1113 03be 0023     		movs	r3, #0
+ 1114 03c0 BB65     		str	r3, [r7, #88]
+ 1115 03c2 04E0     		b	.L38
+ 1116              	.L41:
+ 380:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    }
+ 381:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    else{
+ 382:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		psuml=temp_psumr;
+ 1117              		.loc 2 382 0
+ 1118 03c4 FB69     		ldr	r3, [r7, #28]
+ 1119 03c6 7B66     		str	r3, [r7, #100]
+ 383:STM32F10x_Speex_Lib/libspeex/lsp.c **** 		xl=temp_xr;
+ 1120              		.loc 2 383 0
+ 1121 03c8 7B8B     		ldrh	r3, [r7, #26]	@ movhi
+ 1122 03ca A7F86E30 		strh	r3, [r7, #110]	@ movhi
+ 1123              	.L38:
+ 1124              	.LBE3:
+ 327:STM32F10x_Speex_Lib/libspeex/lsp.c ****            spx_word16_t dd;
+ 1125              		.loc 2 327 0
+ 1126 03ce BB6D     		ldr	r3, [r7, #88]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 31
+
+
+ 1127 03d0 002B     		cmp	r3, #0
+ 1128 03d2 05D0     		beq	.L46
+ 327:STM32F10x_Speex_Lib/libspeex/lsp.c ****            spx_word16_t dd;
+ 1129              		.loc 2 327 0 is_stmt 0 discriminator 1
+ 1130 03d4 B7F96C30 		ldrsh	r3, [r7, #108]
+ 1131 03d8 13F5804F 		cmn	r3, #16384
+ 1132 03dc BFF65EAF 		bge	.L47
+ 1133              	.L46:
+ 319:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	if(j&1)            	/* determines whether P' or Q' is eval. */
+ 1134              		.loc 2 319 0 is_stmt 1 discriminator 2
+ 1135 03e0 FB6D     		ldr	r3, [r7, #92]
+ 1136 03e2 0133     		adds	r3, r3, #1
+ 1137 03e4 FB65     		str	r3, [r7, #92]
+ 1138              	.L35:
+ 319:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	if(j&1)            	/* determines whether P' or Q' is eval. */
+ 1139              		.loc 2 319 0 is_stmt 0 discriminator 1
+ 1140 03e6 FA6D     		ldr	r2, [r7, #92]
+ 1141 03e8 BB68     		ldr	r3, [r7, #8]
+ 1142 03ea 9A42     		cmp	r2, r3
+ 1143 03ec FFF640AF 		blt	.L48
+ 384:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    }
+ 385:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	}
+ 386:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 387:STM32F10x_Speex_Lib/libspeex/lsp.c ****     return(roots);
+ 1144              		.loc 2 387 0 is_stmt 1
+ 1145 03f0 FB6B     		ldr	r3, [r7, #60]
+ 388:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 1146              		.loc 2 388 0
+ 1147 03f2 1846     		mov	r0, r3
+ 1148 03f4 7437     		adds	r7, r7, #116
+ 1149              	.LCFI31:
+ 1150              		.cfi_def_cfa_offset 12
+ 1151 03f6 BD46     		mov	sp, r7
+ 1152              	.LCFI32:
+ 1153              		.cfi_def_cfa_register 13
+ 1154              		@ sp needed
+ 1155 03f8 90BD     		pop	{r4, r7, pc}
+ 1156              		.cfi_endproc
+ 1157              	.LFE13:
+ 1159 03fa 00BF     		.section	.text.lsp_to_lpc,"ax",%progbits
+ 1160              		.align	2
+ 1161              		.global	lsp_to_lpc
+ 1162              		.thumb
+ 1163              		.thumb_func
+ 1165              	lsp_to_lpc:
+ 1166              	.LFB14:
+ 389:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 390:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*---------------------------------------------------------------------------*\
+ 391:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 392:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	FUNCTION....: lsp_to_lpc()
+ 393:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 394:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	AUTHOR......: David Rowe
+ 395:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	DATE CREATED: 24/2/93
+ 396:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 397:STM32F10x_Speex_Lib/libspeex/lsp.c ****         Converts LSP coefficients to LPC coefficients.
+ 398:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 399:STM32F10x_Speex_Lib/libspeex/lsp.c **** \*---------------------------------------------------------------------------*/
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 32
+
+
+ 400:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 401:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 402:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 403:STM32F10x_Speex_Lib/libspeex/lsp.c **** void lsp_to_lpc(spx_lsp_t *freq,spx_coef_t *ak,int lpcrdr, char *stack)
+ 404:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *freq 	array of LSP frequencies in the x domain	*/
+ 405:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *ak 		array of LPC coefficients 			*/
+ 406:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  int lpcrdr  	order of LPC coefficients 			*/
+ 407:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 1167              		.loc 2 407 0
+ 1168              		.cfi_startproc
+ 1169              		@ args = 0, pretend = 0, frame = 72
+ 1170              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1171 0000 90B5     		push	{r4, r7, lr}
+ 1172              	.LCFI33:
+ 1173              		.cfi_def_cfa_offset 12
+ 1174              		.cfi_offset 4, -12
+ 1175              		.cfi_offset 7, -8
+ 1176              		.cfi_offset 14, -4
+ 1177 0002 93B0     		sub	sp, sp, #76
+ 1178              	.LCFI34:
+ 1179              		.cfi_def_cfa_offset 88
+ 1180 0004 00AF     		add	r7, sp, #0
+ 1181              	.LCFI35:
+ 1182              		.cfi_def_cfa_register 7
+ 1183 0006 F860     		str	r0, [r7, #12]
+ 1184 0008 B960     		str	r1, [r7, #8]
+ 1185 000a 7A60     		str	r2, [r7, #4]
+ 1186 000c 3B60     		str	r3, [r7]
+ 408:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int i,j;
+ 409:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t xout1,xout2,xin;
+ 410:STM32F10x_Speex_Lib/libspeex/lsp.c ****     spx_word32_t mult, a;
+ 411:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word16_t *freqn);
+ 412:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t **xp);
+ 413:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t *xpmem);
+ 414:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t **xq);
+ 415:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(spx_word32_t *xqmem);
+ 416:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int m = lpcrdr>>1;
+ 1187              		.loc 2 416 0
+ 1188 000e 7B68     		ldr	r3, [r7, #4]
+ 1189 0010 5B10     		asrs	r3, r3, #1
+ 1190 0012 3B63     		str	r3, [r7, #48]
+ 417:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 418:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* 
+ 419:STM32F10x_Speex_Lib/libspeex/lsp.c ****     
+ 420:STM32F10x_Speex_Lib/libspeex/lsp.c ****        Reconstruct P(z) and Q(z) by cascading second order polynomials
+ 421:STM32F10x_Speex_Lib/libspeex/lsp.c ****        in form 1 - 2cos(w)z(-1) + z(-2), where w is the LSP frequency.
+ 422:STM32F10x_Speex_Lib/libspeex/lsp.c ****        In the time domain this is:
+ 423:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 424:STM32F10x_Speex_Lib/libspeex/lsp.c ****        y(n) = x(n) - 2cos(w)x(n-1) + x(n-2)
+ 425:STM32F10x_Speex_Lib/libspeex/lsp.c ****     
+ 426:STM32F10x_Speex_Lib/libspeex/lsp.c ****        This is what the ALLOCS below are trying to do:
+ 427:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 428:STM32F10x_Speex_Lib/libspeex/lsp.c ****          int xp[m+1][lpcrdr+1+2]; // P matrix in QIMP
+ 429:STM32F10x_Speex_Lib/libspeex/lsp.c ****          int xq[m+1][lpcrdr+1+2]; // Q matrix in QIMP
+ 430:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 431:STM32F10x_Speex_Lib/libspeex/lsp.c ****        These matrices store the output of each stage on each row.  The
+ 432:STM32F10x_Speex_Lib/libspeex/lsp.c ****        final (m-th) row has the output of the final (m-th) cascaded
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 33
+
+
+ 433:STM32F10x_Speex_Lib/libspeex/lsp.c ****        2nd order filter.  The first row is the impulse input to the
+ 434:STM32F10x_Speex_Lib/libspeex/lsp.c ****        system (not written as it is known).
+ 435:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 436:STM32F10x_Speex_Lib/libspeex/lsp.c ****        The version below takes advantage of the fact that a lot of the
+ 437:STM32F10x_Speex_Lib/libspeex/lsp.c ****        outputs are zero or known, for example if we put an inpulse
+ 438:STM32F10x_Speex_Lib/libspeex/lsp.c ****        into the first section the "clock" it 10 times only the first 3
+ 439:STM32F10x_Speex_Lib/libspeex/lsp.c ****        outputs samples are non-zero (it's an FIR filter).
+ 440:STM32F10x_Speex_Lib/libspeex/lsp.c ****     */
+ 441:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 442:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(xp, (m+1), spx_word32_t*);
+ 1191              		.loc 2 442 0
+ 1192 0014 3B68     		ldr	r3, [r7]
+ 1193 0016 5B42     		negs	r3, r3
+ 1194 0018 03F00303 		and	r3, r3, #3
+ 1195 001c 3A68     		ldr	r2, [r7]
+ 1196 001e 1344     		add	r3, r3, r2
+ 1197 0020 3B60     		str	r3, [r7]
+ 1198 0022 3B6B     		ldr	r3, [r7, #48]
+ 1199 0024 0133     		adds	r3, r3, #1
+ 1200 0026 9B00     		lsls	r3, r3, #2
+ 1201 0028 3A68     		ldr	r2, [r7]
+ 1202 002a 1344     		add	r3, r3, r2
+ 1203 002c 3B60     		str	r3, [r7]
+ 1204 002e 3B6B     		ldr	r3, [r7, #48]
+ 1205 0030 0133     		adds	r3, r3, #1
+ 1206 0032 9B00     		lsls	r3, r3, #2
+ 1207 0034 5B42     		negs	r3, r3
+ 1208 0036 3A68     		ldr	r2, [r7]
+ 1209 0038 1344     		add	r3, r3, r2
+ 1210 003a FB62     		str	r3, [r7, #44]
+ 443:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(xpmem, (m+1)*(lpcrdr+1+2), spx_word32_t);
+ 1211              		.loc 2 443 0
+ 1212 003c 3B68     		ldr	r3, [r7]
+ 1213 003e 5B42     		negs	r3, r3
+ 1214 0040 03F00303 		and	r3, r3, #3
+ 1215 0044 3A68     		ldr	r2, [r7]
+ 1216 0046 1344     		add	r3, r3, r2
+ 1217 0048 3B60     		str	r3, [r7]
+ 1218 004a 3B6B     		ldr	r3, [r7, #48]
+ 1219 004c 0133     		adds	r3, r3, #1
+ 1220 004e 7A68     		ldr	r2, [r7, #4]
+ 1221 0050 0332     		adds	r2, r2, #3
+ 1222 0052 02FB03F3 		mul	r3, r2, r3
+ 1223 0056 9B00     		lsls	r3, r3, #2
+ 1224 0058 3A68     		ldr	r2, [r7]
+ 1225 005a 1344     		add	r3, r3, r2
+ 1226 005c 3B60     		str	r3, [r7]
+ 1227 005e 3B6B     		ldr	r3, [r7, #48]
+ 1228 0060 0133     		adds	r3, r3, #1
+ 1229 0062 7A68     		ldr	r2, [r7, #4]
+ 1230 0064 0332     		adds	r2, r2, #3
+ 1231 0066 02FB03F3 		mul	r3, r2, r3
+ 1232 006a 9B00     		lsls	r3, r3, #2
+ 1233 006c 5B42     		negs	r3, r3
+ 1234 006e 3A68     		ldr	r2, [r7]
+ 1235 0070 1344     		add	r3, r3, r2
+ 1236 0072 BB62     		str	r3, [r7, #40]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 34
+
+
+ 444:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 445:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(xq, (m+1), spx_word32_t*);
+ 1237              		.loc 2 445 0
+ 1238 0074 3B68     		ldr	r3, [r7]
+ 1239 0076 5B42     		negs	r3, r3
+ 1240 0078 03F00303 		and	r3, r3, #3
+ 1241 007c 3A68     		ldr	r2, [r7]
+ 1242 007e 1344     		add	r3, r3, r2
+ 1243 0080 3B60     		str	r3, [r7]
+ 1244 0082 3B6B     		ldr	r3, [r7, #48]
+ 1245 0084 0133     		adds	r3, r3, #1
+ 1246 0086 9B00     		lsls	r3, r3, #2
+ 1247 0088 3A68     		ldr	r2, [r7]
+ 1248 008a 1344     		add	r3, r3, r2
+ 1249 008c 3B60     		str	r3, [r7]
+ 1250 008e 3B6B     		ldr	r3, [r7, #48]
+ 1251 0090 0133     		adds	r3, r3, #1
+ 1252 0092 9B00     		lsls	r3, r3, #2
+ 1253 0094 5B42     		negs	r3, r3
+ 1254 0096 3A68     		ldr	r2, [r7]
+ 1255 0098 1344     		add	r3, r3, r2
+ 1256 009a 7B62     		str	r3, [r7, #36]
+ 446:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(xqmem, (m+1)*(lpcrdr+1+2), spx_word32_t);
+ 1257              		.loc 2 446 0
+ 1258 009c 3B68     		ldr	r3, [r7]
+ 1259 009e 5B42     		negs	r3, r3
+ 1260 00a0 03F00303 		and	r3, r3, #3
+ 1261 00a4 3A68     		ldr	r2, [r7]
+ 1262 00a6 1344     		add	r3, r3, r2
+ 1263 00a8 3B60     		str	r3, [r7]
+ 1264 00aa 3B6B     		ldr	r3, [r7, #48]
+ 1265 00ac 0133     		adds	r3, r3, #1
+ 1266 00ae 7A68     		ldr	r2, [r7, #4]
+ 1267 00b0 0332     		adds	r2, r2, #3
+ 1268 00b2 02FB03F3 		mul	r3, r2, r3
+ 1269 00b6 9B00     		lsls	r3, r3, #2
+ 1270 00b8 3A68     		ldr	r2, [r7]
+ 1271 00ba 1344     		add	r3, r3, r2
+ 1272 00bc 3B60     		str	r3, [r7]
+ 1273 00be 3B6B     		ldr	r3, [r7, #48]
+ 1274 00c0 0133     		adds	r3, r3, #1
+ 1275 00c2 7A68     		ldr	r2, [r7, #4]
+ 1276 00c4 0332     		adds	r2, r2, #3
+ 1277 00c6 02FB03F3 		mul	r3, r2, r3
+ 1278 00ca 9B00     		lsls	r3, r3, #2
+ 1279 00cc 5B42     		negs	r3, r3
+ 1280 00ce 3A68     		ldr	r2, [r7]
+ 1281 00d0 1344     		add	r3, r3, r2
+ 1282 00d2 3B62     		str	r3, [r7, #32]
+ 447:STM32F10x_Speex_Lib/libspeex/lsp.c ****     
+ 448:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0; i<=m; i++) {
+ 1283              		.loc 2 448 0
+ 1284 00d4 0023     		movs	r3, #0
+ 1285 00d6 7B64     		str	r3, [r7, #68]
+ 1286 00d8 1CE0     		b	.L51
+ 1287              	.L52:
+ 449:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xp[i] = xpmem + i*(lpcrdr+1+2);
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 35
+
+
+ 1288              		.loc 2 449 0 discriminator 3
+ 1289 00da 7B6C     		ldr	r3, [r7, #68]
+ 1290 00dc 9B00     		lsls	r3, r3, #2
+ 1291 00de FA6A     		ldr	r2, [r7, #44]
+ 1292 00e0 1344     		add	r3, r3, r2
+ 1293 00e2 7A68     		ldr	r2, [r7, #4]
+ 1294 00e4 0332     		adds	r2, r2, #3
+ 1295 00e6 796C     		ldr	r1, [r7, #68]
+ 1296 00e8 01FB02F2 		mul	r2, r1, r2
+ 1297 00ec 9200     		lsls	r2, r2, #2
+ 1298 00ee B96A     		ldr	r1, [r7, #40]
+ 1299 00f0 0A44     		add	r2, r2, r1
+ 1300 00f2 1A60     		str	r2, [r3]
+ 450:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xq[i] = xqmem + i*(lpcrdr+1+2);
+ 1301              		.loc 2 450 0 discriminator 3
+ 1302 00f4 7B6C     		ldr	r3, [r7, #68]
+ 1303 00f6 9B00     		lsls	r3, r3, #2
+ 1304 00f8 7A6A     		ldr	r2, [r7, #36]
+ 1305 00fa 1344     		add	r3, r3, r2
+ 1306 00fc 7A68     		ldr	r2, [r7, #4]
+ 1307 00fe 0332     		adds	r2, r2, #3
+ 1308 0100 796C     		ldr	r1, [r7, #68]
+ 1309 0102 01FB02F2 		mul	r2, r1, r2
+ 1310 0106 9200     		lsls	r2, r2, #2
+ 1311 0108 396A     		ldr	r1, [r7, #32]
+ 1312 010a 0A44     		add	r2, r2, r1
+ 1313 010c 1A60     		str	r2, [r3]
+ 448:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xp[i] = xpmem + i*(lpcrdr+1+2);
+ 1314              		.loc 2 448 0 discriminator 3
+ 1315 010e 7B6C     		ldr	r3, [r7, #68]
+ 1316 0110 0133     		adds	r3, r3, #1
+ 1317 0112 7B64     		str	r3, [r7, #68]
+ 1318              	.L51:
+ 448:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xp[i] = xpmem + i*(lpcrdr+1+2);
+ 1319              		.loc 2 448 0 is_stmt 0 discriminator 1
+ 1320 0114 7A6C     		ldr	r2, [r7, #68]
+ 1321 0116 3B6B     		ldr	r3, [r7, #48]
+ 1322 0118 9A42     		cmp	r2, r3
+ 1323 011a DEDD     		ble	.L52
+ 451:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 452:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 453:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* work out 2cos terms in Q14 */
+ 454:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 455:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(freqn, lpcrdr, spx_word16_t);
+ 1324              		.loc 2 455 0 is_stmt 1
+ 1325 011c 3B68     		ldr	r3, [r7]
+ 1326 011e 5B42     		negs	r3, r3
+ 1327 0120 03F00103 		and	r3, r3, #1
+ 1328 0124 3A68     		ldr	r2, [r7]
+ 1329 0126 1344     		add	r3, r3, r2
+ 1330 0128 3B60     		str	r3, [r7]
+ 1331 012a 7B68     		ldr	r3, [r7, #4]
+ 1332 012c 5B00     		lsls	r3, r3, #1
+ 1333 012e 3A68     		ldr	r2, [r7]
+ 1334 0130 1344     		add	r3, r3, r2
+ 1335 0132 3B60     		str	r3, [r7]
+ 1336 0134 7B68     		ldr	r3, [r7, #4]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 36
+
+
+ 1337 0136 5B00     		lsls	r3, r3, #1
+ 1338 0138 5B42     		negs	r3, r3
+ 1339 013a 3A68     		ldr	r2, [r7]
+ 1340 013c 1344     		add	r3, r3, r2
+ 1341 013e FB61     		str	r3, [r7, #28]
+ 456:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for (i=0;i<lpcrdr;i++) 
+ 1342              		.loc 2 456 0
+ 1343 0140 0023     		movs	r3, #0
+ 1344 0142 7B64     		str	r3, [r7, #68]
+ 1345 0144 13E0     		b	.L53
+ 1346              	.L54:
+ 457:STM32F10x_Speex_Lib/libspeex/lsp.c ****        freqn[i] = ANGLE2X(freq[i]);
+ 1347              		.loc 2 457 0 discriminator 3
+ 1348 0146 7B6C     		ldr	r3, [r7, #68]
+ 1349 0148 5B00     		lsls	r3, r3, #1
+ 1350 014a FA69     		ldr	r2, [r7, #28]
+ 1351 014c D418     		adds	r4, r2, r3
+ 1352 014e 7B6C     		ldr	r3, [r7, #68]
+ 1353 0150 5B00     		lsls	r3, r3, #1
+ 1354 0152 FA68     		ldr	r2, [r7, #12]
+ 1355 0154 1344     		add	r3, r3, r2
+ 1356 0156 B3F90030 		ldrsh	r3, [r3]
+ 1357 015a 1846     		mov	r0, r3
+ 1358 015c FFF7FEFF 		bl	spx_cos
+ 1359 0160 0346     		mov	r3, r0
+ 1360 0162 9B00     		lsls	r3, r3, #2
+ 1361 0164 1BB2     		sxth	r3, r3
+ 1362 0166 2380     		strh	r3, [r4]	@ movhi
+ 456:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for (i=0;i<lpcrdr;i++) 
+ 1363              		.loc 2 456 0 discriminator 3
+ 1364 0168 7B6C     		ldr	r3, [r7, #68]
+ 1365 016a 0133     		adds	r3, r3, #1
+ 1366 016c 7B64     		str	r3, [r7, #68]
+ 1367              	.L53:
+ 456:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for (i=0;i<lpcrdr;i++) 
+ 1368              		.loc 2 456 0 is_stmt 0 discriminator 1
+ 1369 016e 7A6C     		ldr	r2, [r7, #68]
+ 1370 0170 7B68     		ldr	r3, [r7, #4]
+ 1371 0172 9A42     		cmp	r2, r3
+ 1372 0174 E7DB     		blt	.L54
+ 458:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 459:STM32F10x_Speex_Lib/libspeex/lsp.c ****     #define QIMP  21   /* scaling for impulse */
+ 460:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 461:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xin = SHL32(EXTEND32(1), (QIMP-1)); /* 0.5 in QIMP format */
+ 1373              		.loc 2 461 0 is_stmt 1
+ 1374 0176 4FF48013 		mov	r3, #1048576
+ 1375 017a BB61     		str	r3, [r7, #24]
+ 462:STM32F10x_Speex_Lib/libspeex/lsp.c ****    
+ 463:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* first col and last non-zero values of each row are trivial */
+ 464:STM32F10x_Speex_Lib/libspeex/lsp.c ****     
+ 465:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<=m;i++) {
+ 1376              		.loc 2 465 0
+ 1377 017c 0023     		movs	r3, #0
+ 1378 017e 7B64     		str	r3, [r7, #68]
+ 1379 0180 38E0     		b	.L55
+ 1380              	.L56:
+ 466:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xp[i][1] = 0;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 37
+
+
+ 1381              		.loc 2 466 0 discriminator 3
+ 1382 0182 7B6C     		ldr	r3, [r7, #68]
+ 1383 0184 9B00     		lsls	r3, r3, #2
+ 1384 0186 FA6A     		ldr	r2, [r7, #44]
+ 1385 0188 1344     		add	r3, r3, r2
+ 1386 018a 1B68     		ldr	r3, [r3]
+ 1387 018c 0433     		adds	r3, r3, #4
+ 1388 018e 0022     		movs	r2, #0
+ 1389 0190 1A60     		str	r2, [r3]
+ 467:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xp[i][2] = xin;
+ 1390              		.loc 2 467 0 discriminator 3
+ 1391 0192 7B6C     		ldr	r3, [r7, #68]
+ 1392 0194 9B00     		lsls	r3, r3, #2
+ 1393 0196 FA6A     		ldr	r2, [r7, #44]
+ 1394 0198 1344     		add	r3, r3, r2
+ 1395 019a 1B68     		ldr	r3, [r3]
+ 1396 019c 0833     		adds	r3, r3, #8
+ 1397 019e BA69     		ldr	r2, [r7, #24]
+ 1398 01a0 1A60     		str	r2, [r3]
+ 468:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xp[i][2+2*i] = xin;
+ 1399              		.loc 2 468 0 discriminator 3
+ 1400 01a2 7B6C     		ldr	r3, [r7, #68]
+ 1401 01a4 9B00     		lsls	r3, r3, #2
+ 1402 01a6 FA6A     		ldr	r2, [r7, #44]
+ 1403 01a8 1344     		add	r3, r3, r2
+ 1404 01aa 1B68     		ldr	r3, [r3]
+ 1405 01ac 7A6C     		ldr	r2, [r7, #68]
+ 1406 01ae 0132     		adds	r2, r2, #1
+ 1407 01b0 D200     		lsls	r2, r2, #3
+ 1408 01b2 1344     		add	r3, r3, r2
+ 1409 01b4 BA69     		ldr	r2, [r7, #24]
+ 1410 01b6 1A60     		str	r2, [r3]
+ 469:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xq[i][1] = 0;
+ 1411              		.loc 2 469 0 discriminator 3
+ 1412 01b8 7B6C     		ldr	r3, [r7, #68]
+ 1413 01ba 9B00     		lsls	r3, r3, #2
+ 1414 01bc 7A6A     		ldr	r2, [r7, #36]
+ 1415 01be 1344     		add	r3, r3, r2
+ 1416 01c0 1B68     		ldr	r3, [r3]
+ 1417 01c2 0433     		adds	r3, r3, #4
+ 1418 01c4 0022     		movs	r2, #0
+ 1419 01c6 1A60     		str	r2, [r3]
+ 470:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xq[i][2] = xin;
+ 1420              		.loc 2 470 0 discriminator 3
+ 1421 01c8 7B6C     		ldr	r3, [r7, #68]
+ 1422 01ca 9B00     		lsls	r3, r3, #2
+ 1423 01cc 7A6A     		ldr	r2, [r7, #36]
+ 1424 01ce 1344     		add	r3, r3, r2
+ 1425 01d0 1B68     		ldr	r3, [r3]
+ 1426 01d2 0833     		adds	r3, r3, #8
+ 1427 01d4 BA69     		ldr	r2, [r7, #24]
+ 1428 01d6 1A60     		str	r2, [r3]
+ 471:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xq[i][2+2*i] = xin;
+ 1429              		.loc 2 471 0 discriminator 3
+ 1430 01d8 7B6C     		ldr	r3, [r7, #68]
+ 1431 01da 9B00     		lsls	r3, r3, #2
+ 1432 01dc 7A6A     		ldr	r2, [r7, #36]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 38
+
+
+ 1433 01de 1344     		add	r3, r3, r2
+ 1434 01e0 1B68     		ldr	r3, [r3]
+ 1435 01e2 7A6C     		ldr	r2, [r7, #68]
+ 1436 01e4 0132     		adds	r2, r2, #1
+ 1437 01e6 D200     		lsls	r2, r2, #3
+ 1438 01e8 1344     		add	r3, r3, r2
+ 1439 01ea BA69     		ldr	r2, [r7, #24]
+ 1440 01ec 1A60     		str	r2, [r3]
+ 465:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xp[i][1] = 0;
+ 1441              		.loc 2 465 0 discriminator 3
+ 1442 01ee 7B6C     		ldr	r3, [r7, #68]
+ 1443 01f0 0133     		adds	r3, r3, #1
+ 1444 01f2 7B64     		str	r3, [r7, #68]
+ 1445              	.L55:
+ 465:STM32F10x_Speex_Lib/libspeex/lsp.c ****      xp[i][1] = 0;
+ 1446              		.loc 2 465 0 is_stmt 0 discriminator 1
+ 1447 01f4 7A6C     		ldr	r2, [r7, #68]
+ 1448 01f6 3B6B     		ldr	r3, [r7, #48]
+ 1449 01f8 9A42     		cmp	r2, r3
+ 1450 01fa C2DD     		ble	.L56
+ 472:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 473:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 474:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* 2nd row (first output row) is trivial */
+ 475:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 476:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xp[1][3] = -MULT16_32_Q14(freqn[0],xp[0][2]);
+ 1451              		.loc 2 476 0 is_stmt 1
+ 1452 01fc FB6A     		ldr	r3, [r7, #44]
+ 1453 01fe 0433     		adds	r3, r3, #4
+ 1454 0200 1B68     		ldr	r3, [r3]
+ 1455 0202 0C33     		adds	r3, r3, #12
+ 1456 0204 FA69     		ldr	r2, [r7, #28]
+ 1457 0206 B2F90020 		ldrsh	r2, [r2]
+ 1458 020a 1146     		mov	r1, r2
+ 1459 020c FA6A     		ldr	r2, [r7, #44]
+ 1460 020e 1268     		ldr	r2, [r2]
+ 1461 0210 0832     		adds	r2, r2, #8
+ 1462 0212 1268     		ldr	r2, [r2]
+ 1463 0214 9213     		asrs	r2, r2, #14
+ 1464 0216 12B2     		sxth	r2, r2
+ 1465 0218 02FB01F1 		mul	r1, r2, r1
+ 1466 021c FA69     		ldr	r2, [r7, #28]
+ 1467 021e B2F90020 		ldrsh	r2, [r2]
+ 1468 0222 1046     		mov	r0, r2
+ 1469 0224 FA6A     		ldr	r2, [r7, #44]
+ 1470 0226 1268     		ldr	r2, [r2]
+ 1471 0228 0832     		adds	r2, r2, #8
+ 1472 022a 1268     		ldr	r2, [r2]
+ 1473 022c C2F30D02 		ubfx	r2, r2, #0, #14
+ 1474 0230 02FB00F2 		mul	r2, r2, r0
+ 1475 0234 9213     		asrs	r2, r2, #14
+ 1476 0236 0A44     		add	r2, r2, r1
+ 1477 0238 5242     		negs	r2, r2
+ 1478 023a 1A60     		str	r2, [r3]
+ 477:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xq[1][3] = -MULT16_32_Q14(freqn[1],xq[0][2]);
+ 1479              		.loc 2 477 0
+ 1480 023c 7B6A     		ldr	r3, [r7, #36]
+ 1481 023e 0433     		adds	r3, r3, #4
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 39
+
+
+ 1482 0240 1B68     		ldr	r3, [r3]
+ 1483 0242 0C33     		adds	r3, r3, #12
+ 1484 0244 FA69     		ldr	r2, [r7, #28]
+ 1485 0246 0232     		adds	r2, r2, #2
+ 1486 0248 B2F90020 		ldrsh	r2, [r2]
+ 1487 024c 1146     		mov	r1, r2
+ 1488 024e 7A6A     		ldr	r2, [r7, #36]
+ 1489 0250 1268     		ldr	r2, [r2]
+ 1490 0252 0832     		adds	r2, r2, #8
+ 1491 0254 1268     		ldr	r2, [r2]
+ 1492 0256 9213     		asrs	r2, r2, #14
+ 1493 0258 12B2     		sxth	r2, r2
+ 1494 025a 02FB01F1 		mul	r1, r2, r1
+ 1495 025e FA69     		ldr	r2, [r7, #28]
+ 1496 0260 0232     		adds	r2, r2, #2
+ 1497 0262 B2F90020 		ldrsh	r2, [r2]
+ 1498 0266 1046     		mov	r0, r2
+ 1499 0268 7A6A     		ldr	r2, [r7, #36]
+ 1500 026a 1268     		ldr	r2, [r2]
+ 1501 026c 0832     		adds	r2, r2, #8
+ 1502 026e 1268     		ldr	r2, [r2]
+ 1503 0270 C2F30D02 		ubfx	r2, r2, #0, #14
+ 1504 0274 02FB00F2 		mul	r2, r2, r0
+ 1505 0278 9213     		asrs	r2, r2, #14
+ 1506 027a 0A44     		add	r2, r2, r1
+ 1507 027c 5242     		negs	r2, r2
+ 1508 027e 1A60     		str	r2, [r3]
+ 478:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 479:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xout1 = xout2 = 0;
+ 1509              		.loc 2 479 0
+ 1510 0280 0023     		movs	r3, #0
+ 1511 0282 BB63     		str	r3, [r7, #56]
+ 1512 0284 BB6B     		ldr	r3, [r7, #56]
+ 1513 0286 FB63     		str	r3, [r7, #60]
+ 480:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 481:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* now generate remaining rows */
+ 482:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 483:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=1;i<m;i++) {
+ 1514              		.loc 2 483 0
+ 1515 0288 0123     		movs	r3, #1
+ 1516 028a 7B64     		str	r3, [r7, #68]
+ 1517 028c 3AE1     		b	.L57
+ 1518              	.L60:
+ 484:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 485:STM32F10x_Speex_Lib/libspeex/lsp.c ****       for(j=1;j<2*(i+1)-1;j++) {
+ 1519              		.loc 2 485 0
+ 1520 028e 0123     		movs	r3, #1
+ 1521 0290 3B64     		str	r3, [r7, #64]
+ 1522 0292 A2E0     		b	.L58
+ 1523              	.L59:
+ 486:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	mult = MULT16_32_Q14(freqn[2*i],xp[i][j+1]);
+ 1524              		.loc 2 486 0 discriminator 3
+ 1525 0294 7B6C     		ldr	r3, [r7, #68]
+ 1526 0296 9B00     		lsls	r3, r3, #2
+ 1527 0298 1A46     		mov	r2, r3
+ 1528 029a FB69     		ldr	r3, [r7, #28]
+ 1529 029c 1344     		add	r3, r3, r2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 40
+
+
+ 1530 029e B3F90030 		ldrsh	r3, [r3]
+ 1531 02a2 1946     		mov	r1, r3
+ 1532 02a4 7B6C     		ldr	r3, [r7, #68]
+ 1533 02a6 9B00     		lsls	r3, r3, #2
+ 1534 02a8 FA6A     		ldr	r2, [r7, #44]
+ 1535 02aa 1344     		add	r3, r3, r2
+ 1536 02ac 1A68     		ldr	r2, [r3]
+ 1537 02ae 3B6C     		ldr	r3, [r7, #64]
+ 1538 02b0 0133     		adds	r3, r3, #1
+ 1539 02b2 9B00     		lsls	r3, r3, #2
+ 1540 02b4 1344     		add	r3, r3, r2
+ 1541 02b6 1B68     		ldr	r3, [r3]
+ 1542 02b8 9B13     		asrs	r3, r3, #14
+ 1543 02ba 1BB2     		sxth	r3, r3
+ 1544 02bc 03FB01F2 		mul	r2, r3, r1
+ 1545 02c0 7B6C     		ldr	r3, [r7, #68]
+ 1546 02c2 9B00     		lsls	r3, r3, #2
+ 1547 02c4 1946     		mov	r1, r3
+ 1548 02c6 FB69     		ldr	r3, [r7, #28]
+ 1549 02c8 0B44     		add	r3, r3, r1
+ 1550 02ca B3F90030 		ldrsh	r3, [r3]
+ 1551 02ce 1846     		mov	r0, r3
+ 1552 02d0 7B6C     		ldr	r3, [r7, #68]
+ 1553 02d2 9B00     		lsls	r3, r3, #2
+ 1554 02d4 F96A     		ldr	r1, [r7, #44]
+ 1555 02d6 0B44     		add	r3, r3, r1
+ 1556 02d8 1968     		ldr	r1, [r3]
+ 1557 02da 3B6C     		ldr	r3, [r7, #64]
+ 1558 02dc 0133     		adds	r3, r3, #1
+ 1559 02de 9B00     		lsls	r3, r3, #2
+ 1560 02e0 0B44     		add	r3, r3, r1
+ 1561 02e2 1B68     		ldr	r3, [r3]
+ 1562 02e4 C3F30D03 		ubfx	r3, r3, #0, #14
+ 1563 02e8 03FB00F3 		mul	r3, r3, r0
+ 1564 02ec 9B13     		asrs	r3, r3, #14
+ 1565 02ee 1344     		add	r3, r3, r2
+ 1566 02f0 7B61     		str	r3, [r7, #20]
+ 487:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xp[i+1][j+2] = ADD32(SUB32(xp[i][j+2], mult), xp[i][j]);
+ 1567              		.loc 2 487 0 discriminator 3
+ 1568 02f2 7B6C     		ldr	r3, [r7, #68]
+ 1569 02f4 0133     		adds	r3, r3, #1
+ 1570 02f6 9B00     		lsls	r3, r3, #2
+ 1571 02f8 FA6A     		ldr	r2, [r7, #44]
+ 1572 02fa 1344     		add	r3, r3, r2
+ 1573 02fc 1A68     		ldr	r2, [r3]
+ 1574 02fe 3B6C     		ldr	r3, [r7, #64]
+ 1575 0300 0233     		adds	r3, r3, #2
+ 1576 0302 9B00     		lsls	r3, r3, #2
+ 1577 0304 1344     		add	r3, r3, r2
+ 1578 0306 7A6C     		ldr	r2, [r7, #68]
+ 1579 0308 9200     		lsls	r2, r2, #2
+ 1580 030a F96A     		ldr	r1, [r7, #44]
+ 1581 030c 0A44     		add	r2, r2, r1
+ 1582 030e 1168     		ldr	r1, [r2]
+ 1583 0310 3A6C     		ldr	r2, [r7, #64]
+ 1584 0312 0232     		adds	r2, r2, #2
+ 1585 0314 9200     		lsls	r2, r2, #2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 41
+
+
+ 1586 0316 0A44     		add	r2, r2, r1
+ 1587 0318 1168     		ldr	r1, [r2]
+ 1588 031a 7A69     		ldr	r2, [r7, #20]
+ 1589 031c 891A     		subs	r1, r1, r2
+ 1590 031e 7A6C     		ldr	r2, [r7, #68]
+ 1591 0320 9200     		lsls	r2, r2, #2
+ 1592 0322 F86A     		ldr	r0, [r7, #44]
+ 1593 0324 0244     		add	r2, r2, r0
+ 1594 0326 1068     		ldr	r0, [r2]
+ 1595 0328 3A6C     		ldr	r2, [r7, #64]
+ 1596 032a 9200     		lsls	r2, r2, #2
+ 1597 032c 0244     		add	r2, r2, r0
+ 1598 032e 1268     		ldr	r2, [r2]
+ 1599 0330 0A44     		add	r2, r2, r1
+ 1600 0332 1A60     		str	r2, [r3]
+ 488:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	mult = MULT16_32_Q14(freqn[2*i+1],xq[i][j+1]);
+ 1601              		.loc 2 488 0 discriminator 3
+ 1602 0334 7B6C     		ldr	r3, [r7, #68]
+ 1603 0336 9B00     		lsls	r3, r3, #2
+ 1604 0338 0233     		adds	r3, r3, #2
+ 1605 033a FA69     		ldr	r2, [r7, #28]
+ 1606 033c 1344     		add	r3, r3, r2
+ 1607 033e B3F90030 		ldrsh	r3, [r3]
+ 1608 0342 1946     		mov	r1, r3
+ 1609 0344 7B6C     		ldr	r3, [r7, #68]
+ 1610 0346 9B00     		lsls	r3, r3, #2
+ 1611 0348 7A6A     		ldr	r2, [r7, #36]
+ 1612 034a 1344     		add	r3, r3, r2
+ 1613 034c 1A68     		ldr	r2, [r3]
+ 1614 034e 3B6C     		ldr	r3, [r7, #64]
+ 1615 0350 0133     		adds	r3, r3, #1
+ 1616 0352 9B00     		lsls	r3, r3, #2
+ 1617 0354 1344     		add	r3, r3, r2
+ 1618 0356 1B68     		ldr	r3, [r3]
+ 1619 0358 9B13     		asrs	r3, r3, #14
+ 1620 035a 1BB2     		sxth	r3, r3
+ 1621 035c 03FB01F2 		mul	r2, r3, r1
+ 1622 0360 7B6C     		ldr	r3, [r7, #68]
+ 1623 0362 9B00     		lsls	r3, r3, #2
+ 1624 0364 0233     		adds	r3, r3, #2
+ 1625 0366 F969     		ldr	r1, [r7, #28]
+ 1626 0368 0B44     		add	r3, r3, r1
+ 1627 036a B3F90030 		ldrsh	r3, [r3]
+ 1628 036e 1846     		mov	r0, r3
+ 1629 0370 7B6C     		ldr	r3, [r7, #68]
+ 1630 0372 9B00     		lsls	r3, r3, #2
+ 1631 0374 796A     		ldr	r1, [r7, #36]
+ 1632 0376 0B44     		add	r3, r3, r1
+ 1633 0378 1968     		ldr	r1, [r3]
+ 1634 037a 3B6C     		ldr	r3, [r7, #64]
+ 1635 037c 0133     		adds	r3, r3, #1
+ 1636 037e 9B00     		lsls	r3, r3, #2
+ 1637 0380 0B44     		add	r3, r3, r1
+ 1638 0382 1B68     		ldr	r3, [r3]
+ 1639 0384 C3F30D03 		ubfx	r3, r3, #0, #14
+ 1640 0388 03FB00F3 		mul	r3, r3, r0
+ 1641 038c 9B13     		asrs	r3, r3, #14
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 42
+
+
+ 1642 038e 1344     		add	r3, r3, r2
+ 1643 0390 7B61     		str	r3, [r7, #20]
+ 489:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xq[i+1][j+2] = ADD32(SUB32(xq[i][j+2], mult), xq[i][j]);
+ 1644              		.loc 2 489 0 discriminator 3
+ 1645 0392 7B6C     		ldr	r3, [r7, #68]
+ 1646 0394 0133     		adds	r3, r3, #1
+ 1647 0396 9B00     		lsls	r3, r3, #2
+ 1648 0398 7A6A     		ldr	r2, [r7, #36]
+ 1649 039a 1344     		add	r3, r3, r2
+ 1650 039c 1A68     		ldr	r2, [r3]
+ 1651 039e 3B6C     		ldr	r3, [r7, #64]
+ 1652 03a0 0233     		adds	r3, r3, #2
+ 1653 03a2 9B00     		lsls	r3, r3, #2
+ 1654 03a4 1344     		add	r3, r3, r2
+ 1655 03a6 7A6C     		ldr	r2, [r7, #68]
+ 1656 03a8 9200     		lsls	r2, r2, #2
+ 1657 03aa 796A     		ldr	r1, [r7, #36]
+ 1658 03ac 0A44     		add	r2, r2, r1
+ 1659 03ae 1168     		ldr	r1, [r2]
+ 1660 03b0 3A6C     		ldr	r2, [r7, #64]
+ 1661 03b2 0232     		adds	r2, r2, #2
+ 1662 03b4 9200     		lsls	r2, r2, #2
+ 1663 03b6 0A44     		add	r2, r2, r1
+ 1664 03b8 1168     		ldr	r1, [r2]
+ 1665 03ba 7A69     		ldr	r2, [r7, #20]
+ 1666 03bc 891A     		subs	r1, r1, r2
+ 1667 03be 7A6C     		ldr	r2, [r7, #68]
+ 1668 03c0 9200     		lsls	r2, r2, #2
+ 1669 03c2 786A     		ldr	r0, [r7, #36]
+ 1670 03c4 0244     		add	r2, r2, r0
+ 1671 03c6 1068     		ldr	r0, [r2]
+ 1672 03c8 3A6C     		ldr	r2, [r7, #64]
+ 1673 03ca 9200     		lsls	r2, r2, #2
+ 1674 03cc 0244     		add	r2, r2, r0
+ 1675 03ce 1268     		ldr	r2, [r2]
+ 1676 03d0 0A44     		add	r2, r2, r1
+ 1677 03d2 1A60     		str	r2, [r3]
+ 485:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	mult = MULT16_32_Q14(freqn[2*i],xp[i][j+1]);
+ 1678              		.loc 2 485 0 discriminator 3
+ 1679 03d4 3B6C     		ldr	r3, [r7, #64]
+ 1680 03d6 0133     		adds	r3, r3, #1
+ 1681 03d8 3B64     		str	r3, [r7, #64]
+ 1682              	.L58:
+ 485:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	mult = MULT16_32_Q14(freqn[2*i],xp[i][j+1]);
+ 1683              		.loc 2 485 0 is_stmt 0 discriminator 1
+ 1684 03da 7B6C     		ldr	r3, [r7, #68]
+ 1685 03dc 0133     		adds	r3, r3, #1
+ 1686 03de 5B00     		lsls	r3, r3, #1
+ 1687 03e0 5A1E     		subs	r2, r3, #1
+ 1688 03e2 3B6C     		ldr	r3, [r7, #64]
+ 1689 03e4 9A42     		cmp	r2, r3
+ 1690 03e6 3FF755AF 		bgt	.L59
+ 490:STM32F10x_Speex_Lib/libspeex/lsp.c ****       }
+ 491:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 492:STM32F10x_Speex_Lib/libspeex/lsp.c ****       /* for last col xp[i][j+2] = xq[i][j+2] = 0 */
+ 493:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 494:STM32F10x_Speex_Lib/libspeex/lsp.c ****       mult = MULT16_32_Q14(freqn[2*i],xp[i][j+1]);
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 43
+
+
+ 1691              		.loc 2 494 0 is_stmt 1 discriminator 2
+ 1692 03ea 7B6C     		ldr	r3, [r7, #68]
+ 1693 03ec 9B00     		lsls	r3, r3, #2
+ 1694 03ee 1A46     		mov	r2, r3
+ 1695 03f0 FB69     		ldr	r3, [r7, #28]
+ 1696 03f2 1344     		add	r3, r3, r2
+ 1697 03f4 B3F90030 		ldrsh	r3, [r3]
+ 1698 03f8 1946     		mov	r1, r3
+ 1699 03fa 7B6C     		ldr	r3, [r7, #68]
+ 1700 03fc 9B00     		lsls	r3, r3, #2
+ 1701 03fe FA6A     		ldr	r2, [r7, #44]
+ 1702 0400 1344     		add	r3, r3, r2
+ 1703 0402 1A68     		ldr	r2, [r3]
+ 1704 0404 3B6C     		ldr	r3, [r7, #64]
+ 1705 0406 0133     		adds	r3, r3, #1
+ 1706 0408 9B00     		lsls	r3, r3, #2
+ 1707 040a 1344     		add	r3, r3, r2
+ 1708 040c 1B68     		ldr	r3, [r3]
+ 1709 040e 9B13     		asrs	r3, r3, #14
+ 1710 0410 1BB2     		sxth	r3, r3
+ 1711 0412 03FB01F2 		mul	r2, r3, r1
+ 1712 0416 7B6C     		ldr	r3, [r7, #68]
+ 1713 0418 9B00     		lsls	r3, r3, #2
+ 1714 041a 1946     		mov	r1, r3
+ 1715 041c FB69     		ldr	r3, [r7, #28]
+ 1716 041e 0B44     		add	r3, r3, r1
+ 1717 0420 B3F90030 		ldrsh	r3, [r3]
+ 1718 0424 1846     		mov	r0, r3
+ 1719 0426 7B6C     		ldr	r3, [r7, #68]
+ 1720 0428 9B00     		lsls	r3, r3, #2
+ 1721 042a F96A     		ldr	r1, [r7, #44]
+ 1722 042c 0B44     		add	r3, r3, r1
+ 1723 042e 1968     		ldr	r1, [r3]
+ 1724 0430 3B6C     		ldr	r3, [r7, #64]
+ 1725 0432 0133     		adds	r3, r3, #1
+ 1726 0434 9B00     		lsls	r3, r3, #2
+ 1727 0436 0B44     		add	r3, r3, r1
+ 1728 0438 1B68     		ldr	r3, [r3]
+ 1729 043a C3F30D03 		ubfx	r3, r3, #0, #14
+ 1730 043e 03FB00F3 		mul	r3, r3, r0
+ 1731 0442 9B13     		asrs	r3, r3, #14
+ 1732 0444 1344     		add	r3, r3, r2
+ 1733 0446 7B61     		str	r3, [r7, #20]
+ 495:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xp[i+1][j+2] = SUB32(xp[i][j], mult);
+ 1734              		.loc 2 495 0 discriminator 2
+ 1735 0448 7B6C     		ldr	r3, [r7, #68]
+ 1736 044a 0133     		adds	r3, r3, #1
+ 1737 044c 9B00     		lsls	r3, r3, #2
+ 1738 044e FA6A     		ldr	r2, [r7, #44]
+ 1739 0450 1344     		add	r3, r3, r2
+ 1740 0452 1A68     		ldr	r2, [r3]
+ 1741 0454 3B6C     		ldr	r3, [r7, #64]
+ 1742 0456 0233     		adds	r3, r3, #2
+ 1743 0458 9B00     		lsls	r3, r3, #2
+ 1744 045a 1344     		add	r3, r3, r2
+ 1745 045c 7A6C     		ldr	r2, [r7, #68]
+ 1746 045e 9200     		lsls	r2, r2, #2
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 44
+
+
+ 1747 0460 F96A     		ldr	r1, [r7, #44]
+ 1748 0462 0A44     		add	r2, r2, r1
+ 1749 0464 1168     		ldr	r1, [r2]
+ 1750 0466 3A6C     		ldr	r2, [r7, #64]
+ 1751 0468 9200     		lsls	r2, r2, #2
+ 1752 046a 0A44     		add	r2, r2, r1
+ 1753 046c 1168     		ldr	r1, [r2]
+ 1754 046e 7A69     		ldr	r2, [r7, #20]
+ 1755 0470 8A1A     		subs	r2, r1, r2
+ 1756 0472 1A60     		str	r2, [r3]
+ 496:STM32F10x_Speex_Lib/libspeex/lsp.c ****       mult = MULT16_32_Q14(freqn[2*i+1],xq[i][j+1]);
+ 1757              		.loc 2 496 0 discriminator 2
+ 1758 0474 7B6C     		ldr	r3, [r7, #68]
+ 1759 0476 9B00     		lsls	r3, r3, #2
+ 1760 0478 0233     		adds	r3, r3, #2
+ 1761 047a FA69     		ldr	r2, [r7, #28]
+ 1762 047c 1344     		add	r3, r3, r2
+ 1763 047e B3F90030 		ldrsh	r3, [r3]
+ 1764 0482 1946     		mov	r1, r3
+ 1765 0484 7B6C     		ldr	r3, [r7, #68]
+ 1766 0486 9B00     		lsls	r3, r3, #2
+ 1767 0488 7A6A     		ldr	r2, [r7, #36]
+ 1768 048a 1344     		add	r3, r3, r2
+ 1769 048c 1A68     		ldr	r2, [r3]
+ 1770 048e 3B6C     		ldr	r3, [r7, #64]
+ 1771 0490 0133     		adds	r3, r3, #1
+ 1772 0492 9B00     		lsls	r3, r3, #2
+ 1773 0494 1344     		add	r3, r3, r2
+ 1774 0496 1B68     		ldr	r3, [r3]
+ 1775 0498 9B13     		asrs	r3, r3, #14
+ 1776 049a 1BB2     		sxth	r3, r3
+ 1777 049c 03FB01F2 		mul	r2, r3, r1
+ 1778 04a0 7B6C     		ldr	r3, [r7, #68]
+ 1779 04a2 9B00     		lsls	r3, r3, #2
+ 1780 04a4 0233     		adds	r3, r3, #2
+ 1781 04a6 F969     		ldr	r1, [r7, #28]
+ 1782 04a8 0B44     		add	r3, r3, r1
+ 1783 04aa B3F90030 		ldrsh	r3, [r3]
+ 1784 04ae 1846     		mov	r0, r3
+ 1785 04b0 7B6C     		ldr	r3, [r7, #68]
+ 1786 04b2 9B00     		lsls	r3, r3, #2
+ 1787 04b4 796A     		ldr	r1, [r7, #36]
+ 1788 04b6 0B44     		add	r3, r3, r1
+ 1789 04b8 1968     		ldr	r1, [r3]
+ 1790 04ba 3B6C     		ldr	r3, [r7, #64]
+ 1791 04bc 0133     		adds	r3, r3, #1
+ 1792 04be 9B00     		lsls	r3, r3, #2
+ 1793 04c0 0B44     		add	r3, r3, r1
+ 1794 04c2 1B68     		ldr	r3, [r3]
+ 1795 04c4 C3F30D03 		ubfx	r3, r3, #0, #14
+ 1796 04c8 03FB00F3 		mul	r3, r3, r0
+ 1797 04cc 9B13     		asrs	r3, r3, #14
+ 1798 04ce 1344     		add	r3, r3, r2
+ 1799 04d0 7B61     		str	r3, [r7, #20]
+ 497:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xq[i+1][j+2] = SUB32(xq[i][j], mult);
+ 1800              		.loc 2 497 0 discriminator 2
+ 1801 04d2 7B6C     		ldr	r3, [r7, #68]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 45
+
+
+ 1802 04d4 0133     		adds	r3, r3, #1
+ 1803 04d6 9B00     		lsls	r3, r3, #2
+ 1804 04d8 7A6A     		ldr	r2, [r7, #36]
+ 1805 04da 1344     		add	r3, r3, r2
+ 1806 04dc 1A68     		ldr	r2, [r3]
+ 1807 04de 3B6C     		ldr	r3, [r7, #64]
+ 1808 04e0 0233     		adds	r3, r3, #2
+ 1809 04e2 9B00     		lsls	r3, r3, #2
+ 1810 04e4 1344     		add	r3, r3, r2
+ 1811 04e6 7A6C     		ldr	r2, [r7, #68]
+ 1812 04e8 9200     		lsls	r2, r2, #2
+ 1813 04ea 796A     		ldr	r1, [r7, #36]
+ 1814 04ec 0A44     		add	r2, r2, r1
+ 1815 04ee 1168     		ldr	r1, [r2]
+ 1816 04f0 3A6C     		ldr	r2, [r7, #64]
+ 1817 04f2 9200     		lsls	r2, r2, #2
+ 1818 04f4 0A44     		add	r2, r2, r1
+ 1819 04f6 1168     		ldr	r1, [r2]
+ 1820 04f8 7A69     		ldr	r2, [r7, #20]
+ 1821 04fa 8A1A     		subs	r2, r1, r2
+ 1822 04fc 1A60     		str	r2, [r3]
+ 483:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 1823              		.loc 2 483 0 discriminator 2
+ 1824 04fe 7B6C     		ldr	r3, [r7, #68]
+ 1825 0500 0133     		adds	r3, r3, #1
+ 1826 0502 7B64     		str	r3, [r7, #68]
+ 1827              	.L57:
+ 483:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 1828              		.loc 2 483 0 is_stmt 0 discriminator 1
+ 1829 0504 7A6C     		ldr	r2, [r7, #68]
+ 1830 0506 3B6B     		ldr	r3, [r7, #48]
+ 1831 0508 9A42     		cmp	r2, r3
+ 1832 050a FFF6C0AE 		blt	.L60
+ 498:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 499:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 500:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* process last row to extra a{k} */
+ 501:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 502:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(j=1;j<=lpcrdr;j++) {
+ 1833              		.loc 2 502 0 is_stmt 1
+ 1834 050e 0123     		movs	r3, #1
+ 1835 0510 3B64     		str	r3, [r7, #64]
+ 1836 0512 54E0     		b	.L61
+ 1837              	.L64:
+ 1838              	.LBB4:
+ 503:STM32F10x_Speex_Lib/libspeex/lsp.c ****       int shift = QIMP-13;
+ 1839              		.loc 2 503 0
+ 1840 0514 0823     		movs	r3, #8
+ 1841 0516 3B61     		str	r3, [r7, #16]
+ 504:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 505:STM32F10x_Speex_Lib/libspeex/lsp.c ****       /* final filter sections */
+ 506:STM32F10x_Speex_Lib/libspeex/lsp.c ****       a = PSHR32(xp[m][j+2] + xout1 + xq[m][j+2] - xout2, shift); 
+ 1842              		.loc 2 506 0
+ 1843 0518 3B6B     		ldr	r3, [r7, #48]
+ 1844 051a 9B00     		lsls	r3, r3, #2
+ 1845 051c FA6A     		ldr	r2, [r7, #44]
+ 1846 051e 1344     		add	r3, r3, r2
+ 1847 0520 1A68     		ldr	r2, [r3]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 46
+
+
+ 1848 0522 3B6C     		ldr	r3, [r7, #64]
+ 1849 0524 0233     		adds	r3, r3, #2
+ 1850 0526 9B00     		lsls	r3, r3, #2
+ 1851 0528 1344     		add	r3, r3, r2
+ 1852 052a 1A68     		ldr	r2, [r3]
+ 1853 052c FB6B     		ldr	r3, [r7, #60]
+ 1854 052e 1A44     		add	r2, r2, r3
+ 1855 0530 3B6B     		ldr	r3, [r7, #48]
+ 1856 0532 9B00     		lsls	r3, r3, #2
+ 1857 0534 796A     		ldr	r1, [r7, #36]
+ 1858 0536 0B44     		add	r3, r3, r1
+ 1859 0538 1968     		ldr	r1, [r3]
+ 1860 053a 3B6C     		ldr	r3, [r7, #64]
+ 1861 053c 0233     		adds	r3, r3, #2
+ 1862 053e 9B00     		lsls	r3, r3, #2
+ 1863 0540 0B44     		add	r3, r3, r1
+ 1864 0542 1B68     		ldr	r3, [r3]
+ 1865 0544 1A44     		add	r2, r2, r3
+ 1866 0546 BB6B     		ldr	r3, [r7, #56]
+ 1867 0548 D21A     		subs	r2, r2, r3
+ 1868 054a 0121     		movs	r1, #1
+ 1869 054c 3B69     		ldr	r3, [r7, #16]
+ 1870 054e 01FA03F3 		lsl	r3, r1, r3
+ 1871 0552 5B10     		asrs	r3, r3, #1
+ 1872 0554 1A44     		add	r2, r2, r3
+ 1873 0556 3B69     		ldr	r3, [r7, #16]
+ 1874 0558 42FA03F3 		asr	r3, r2, r3
+ 1875 055c 7B63     		str	r3, [r7, #52]
+ 507:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xout1 = xp[m][j+2];
+ 1876              		.loc 2 507 0
+ 1877 055e 3B6B     		ldr	r3, [r7, #48]
+ 1878 0560 9B00     		lsls	r3, r3, #2
+ 1879 0562 FA6A     		ldr	r2, [r7, #44]
+ 1880 0564 1344     		add	r3, r3, r2
+ 1881 0566 1A68     		ldr	r2, [r3]
+ 1882 0568 3B6C     		ldr	r3, [r7, #64]
+ 1883 056a 0233     		adds	r3, r3, #2
+ 1884 056c 9B00     		lsls	r3, r3, #2
+ 1885 056e 1344     		add	r3, r3, r2
+ 1886 0570 1B68     		ldr	r3, [r3]
+ 1887 0572 FB63     		str	r3, [r7, #60]
+ 508:STM32F10x_Speex_Lib/libspeex/lsp.c ****       xout2 = xq[m][j+2];
+ 1888              		.loc 2 508 0
+ 1889 0574 3B6B     		ldr	r3, [r7, #48]
+ 1890 0576 9B00     		lsls	r3, r3, #2
+ 1891 0578 7A6A     		ldr	r2, [r7, #36]
+ 1892 057a 1344     		add	r3, r3, r2
+ 1893 057c 1A68     		ldr	r2, [r3]
+ 1894 057e 3B6C     		ldr	r3, [r7, #64]
+ 1895 0580 0233     		adds	r3, r3, #2
+ 1896 0582 9B00     		lsls	r3, r3, #2
+ 1897 0584 1344     		add	r3, r3, r2
+ 1898 0586 1B68     		ldr	r3, [r3]
+ 1899 0588 BB63     		str	r3, [r7, #56]
+ 509:STM32F10x_Speex_Lib/libspeex/lsp.c ****       
+ 510:STM32F10x_Speex_Lib/libspeex/lsp.c ****       /* hard limit ak's to +/- 32767 */
+ 511:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 47
+
+
+ 512:STM32F10x_Speex_Lib/libspeex/lsp.c ****       if (a < -32767) a = -32767;
+ 1900              		.loc 2 512 0
+ 1901 058a 7B6B     		ldr	r3, [r7, #52]
+ 1902 058c 13F5004F 		cmn	r3, #32768
+ 1903 0590 01DC     		bgt	.L62
+ 1904              		.loc 2 512 0 is_stmt 0 discriminator 1
+ 1905 0592 0F4B     		ldr	r3, .L65
+ 1906 0594 7B63     		str	r3, [r7, #52]
+ 1907              	.L62:
+ 513:STM32F10x_Speex_Lib/libspeex/lsp.c ****       if (a > 32767) a = 32767;
+ 1908              		.loc 2 513 0 is_stmt 1
+ 1909 0596 7B6B     		ldr	r3, [r7, #52]
+ 1910 0598 B3F5004F 		cmp	r3, #32768
+ 1911 059c 02DB     		blt	.L63
+ 1912              		.loc 2 513 0 is_stmt 0 discriminator 1
+ 1913 059e 47F6FF73 		movw	r3, #32767
+ 1914 05a2 7B63     		str	r3, [r7, #52]
+ 1915              	.L63:
+ 514:STM32F10x_Speex_Lib/libspeex/lsp.c ****       ak[j-1] = (short)a;
+ 1916              		.loc 2 514 0 is_stmt 1 discriminator 2
+ 1917 05a4 3B6C     		ldr	r3, [r7, #64]
+ 1918 05a6 03F10043 		add	r3, r3, #-2147483648
+ 1919 05aa 013B     		subs	r3, r3, #1
+ 1920 05ac 5B00     		lsls	r3, r3, #1
+ 1921 05ae BA68     		ldr	r2, [r7, #8]
+ 1922 05b0 1344     		add	r3, r3, r2
+ 1923 05b2 7A6B     		ldr	r2, [r7, #52]
+ 1924 05b4 12B2     		sxth	r2, r2
+ 1925 05b6 1A80     		strh	r2, [r3]	@ movhi
+ 1926              	.LBE4:
+ 502:STM32F10x_Speex_Lib/libspeex/lsp.c ****       int shift = QIMP-13;
+ 1927              		.loc 2 502 0 discriminator 2
+ 1928 05b8 3B6C     		ldr	r3, [r7, #64]
+ 1929 05ba 0133     		adds	r3, r3, #1
+ 1930 05bc 3B64     		str	r3, [r7, #64]
+ 1931              	.L61:
+ 502:STM32F10x_Speex_Lib/libspeex/lsp.c ****       int shift = QIMP-13;
+ 1932              		.loc 2 502 0 is_stmt 0 discriminator 1
+ 1933 05be 3A6C     		ldr	r2, [r7, #64]
+ 1934 05c0 7B68     		ldr	r3, [r7, #4]
+ 1935 05c2 9A42     		cmp	r2, r3
+ 1936 05c4 A6DD     		ble	.L64
+ 515:STM32F10x_Speex_Lib/libspeex/lsp.c ****      
+ 516:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 517:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 518:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 1937              		.loc 2 518 0 is_stmt 1
+ 1938 05c6 00BF     		nop
+ 1939 05c8 4C37     		adds	r7, r7, #76
+ 1940              	.LCFI36:
+ 1941              		.cfi_def_cfa_offset 12
+ 1942 05ca BD46     		mov	sp, r7
+ 1943              	.LCFI37:
+ 1944              		.cfi_def_cfa_register 13
+ 1945              		@ sp needed
+ 1946 05cc 90BD     		pop	{r4, r7, pc}
+ 1947              	.L66:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 48
+
+
+ 1948 05ce 00BF     		.align	2
+ 1949              	.L65:
+ 1950 05d0 0180FFFF 		.word	-32767
+ 1951              		.cfi_endproc
+ 1952              	.LFE14:
+ 1954              		.section	.text.lsp_enforce_margin,"ax",%progbits
+ 1955              		.align	2
+ 1956              		.global	lsp_enforce_margin
+ 1957              		.thumb
+ 1958              		.thumb_func
+ 1960              	lsp_enforce_margin:
+ 1961              	.LFB15:
+ 519:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 520:STM32F10x_Speex_Lib/libspeex/lsp.c **** #else
+ 521:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 522:STM32F10x_Speex_Lib/libspeex/lsp.c **** void lsp_to_lpc(spx_lsp_t *freq,spx_coef_t *ak,int lpcrdr, char *stack)
+ 523:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *freq 	array of LSP frequencies in the x domain	*/
+ 524:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  float *ak 		array of LPC coefficients 			*/
+ 525:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*  int lpcrdr  	order of LPC coefficients 			*/
+ 526:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 527:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 528:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 529:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int i,j;
+ 530:STM32F10x_Speex_Lib/libspeex/lsp.c ****     float xout1,xout2,xin1,xin2;
+ 531:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(float *Wp);
+ 532:STM32F10x_Speex_Lib/libspeex/lsp.c ****     float *pw,*n1,*n2,*n3,*n4=NULL;
+ 533:STM32F10x_Speex_Lib/libspeex/lsp.c ****     VARDECL(float *x_freq);
+ 534:STM32F10x_Speex_Lib/libspeex/lsp.c ****     int m = lpcrdr>>1;
+ 535:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 536:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(Wp, 4*m+2, float);
+ 537:STM32F10x_Speex_Lib/libspeex/lsp.c ****     pw = Wp;
+ 538:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 539:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* initialise contents of array */
+ 540:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 541:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(i=0;i<=4*m+1;i++){       	/* set contents of buffer to 0 */
+ 542:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	*pw++ = 0.0;
+ 543:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 544:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 545:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* Set pointers up */
+ 546:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 547:STM32F10x_Speex_Lib/libspeex/lsp.c ****     pw = Wp;
+ 548:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xin1 = 1.0;
+ 549:STM32F10x_Speex_Lib/libspeex/lsp.c ****     xin2 = 1.0;
+ 550:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 551:STM32F10x_Speex_Lib/libspeex/lsp.c ****     ALLOC(x_freq, lpcrdr, float);
+ 552:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for (i=0;i<lpcrdr;i++)
+ 553:STM32F10x_Speex_Lib/libspeex/lsp.c ****        x_freq[i] = ANGLE2X(freq[i]);
+ 554:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 555:STM32F10x_Speex_Lib/libspeex/lsp.c ****     /* reconstruct P(z) and Q(z) by  cascading second order
+ 556:STM32F10x_Speex_Lib/libspeex/lsp.c ****       polynomials in form 1 - 2xz(-1) +z(-2), where x is the
+ 557:STM32F10x_Speex_Lib/libspeex/lsp.c ****       LSP coefficient */
+ 558:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 559:STM32F10x_Speex_Lib/libspeex/lsp.c ****     for(j=0;j<=lpcrdr;j++){
+ 560:STM32F10x_Speex_Lib/libspeex/lsp.c ****        int i2=0;
+ 561:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	for(i=0;i<m;i++,i2+=2){
+ 562:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    n1 = pw+(i*4);
+ 563:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    n2 = n1 + 1;
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 49
+
+
+ 564:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    n3 = n2 + 1;
+ 565:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    n4 = n3 + 1;
+ 566:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    xout1 = xin1 - 2.f*x_freq[i2] * *n1 + *n2;
+ 567:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    xout2 = xin2 - 2.f*x_freq[i2+1] * *n3 + *n4;
+ 568:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    *n2 = *n1;
+ 569:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    *n4 = *n3;
+ 570:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    *n1 = xin1;
+ 571:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    *n3 = xin2;
+ 572:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    xin1 = xout1;
+ 573:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	    xin2 = xout2;
+ 574:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	}
+ 575:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xout1 = xin1 + *(n4+1);
+ 576:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xout2 = xin2 - *(n4+2);
+ 577:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	if (j>0)
+ 578:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	   ak[j-1] = (xout1 + xout2)*0.5f;
+ 579:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	*(n4+1) = xin1;
+ 580:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	*(n4+2) = xin2;
+ 581:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 582:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xin1 = 0.0;
+ 583:STM32F10x_Speex_Lib/libspeex/lsp.c **** 	xin2 = 0.0;
+ 584:STM32F10x_Speex_Lib/libspeex/lsp.c ****     }
+ 585:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 586:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 587:STM32F10x_Speex_Lib/libspeex/lsp.c **** #endif
+ 588:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 589:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 590:STM32F10x_Speex_Lib/libspeex/lsp.c **** #ifdef FIXED_POINT
+ 591:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 592:STM32F10x_Speex_Lib/libspeex/lsp.c **** /*Makes sure the LSPs are stable*/
+ 593:STM32F10x_Speex_Lib/libspeex/lsp.c **** void lsp_enforce_margin(spx_lsp_t *lsp, int len, spx_word16_t margin)
+ 594:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 1962              		.loc 2 594 0
+ 1963              		.cfi_startproc
+ 1964              		@ args = 0, pretend = 0, frame = 24
+ 1965              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1966              		@ link register save eliminated.
+ 1967 0000 80B4     		push	{r7}
+ 1968              	.LCFI38:
+ 1969              		.cfi_def_cfa_offset 4
+ 1970              		.cfi_offset 7, -4
+ 1971 0002 87B0     		sub	sp, sp, #28
+ 1972              	.LCFI39:
+ 1973              		.cfi_def_cfa_offset 32
+ 1974 0004 00AF     		add	r7, sp, #0
+ 1975              	.LCFI40:
+ 1976              		.cfi_def_cfa_register 7
+ 1977 0006 F860     		str	r0, [r7, #12]
+ 1978 0008 B960     		str	r1, [r7, #8]
+ 1979 000a 1346     		mov	r3, r2
+ 1980 000c FB80     		strh	r3, [r7, #6]	@ movhi
+ 595:STM32F10x_Speex_Lib/libspeex/lsp.c ****    int i;
+ 596:STM32F10x_Speex_Lib/libspeex/lsp.c ****    spx_word16_t m = margin;
+ 1981              		.loc 2 596 0
+ 1982 000e FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 1983 0010 7B82     		strh	r3, [r7, #18]	@ movhi
+ 597:STM32F10x_Speex_Lib/libspeex/lsp.c ****    spx_word16_t m2 = 25736-margin;
+ 1984              		.loc 2 597 0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 50
+
+
+ 1985 0012 FB88     		ldrh	r3, [r7, #6]
+ 1986 0014 C3F5C943 		rsb	r3, r3, #25728
+ 1987 0018 0833     		adds	r3, r3, #8
+ 1988 001a 9BB2     		uxth	r3, r3
+ 1989 001c 3B82     		strh	r3, [r7, #16]	@ movhi
+ 598:STM32F10x_Speex_Lib/libspeex/lsp.c ****   
+ 599:STM32F10x_Speex_Lib/libspeex/lsp.c ****    if (lsp[0]<m)
+ 1990              		.loc 2 599 0
+ 1991 001e FB68     		ldr	r3, [r7, #12]
+ 1992 0020 B3F90030 		ldrsh	r3, [r3]
+ 1993 0024 B7F91220 		ldrsh	r2, [r7, #18]
+ 1994 0028 9A42     		cmp	r2, r3
+ 1995 002a 02DD     		ble	.L68
+ 600:STM32F10x_Speex_Lib/libspeex/lsp.c ****       lsp[0]=m;
+ 1996              		.loc 2 600 0
+ 1997 002c FB68     		ldr	r3, [r7, #12]
+ 1998 002e 7A8A     		ldrh	r2, [r7, #18]	@ movhi
+ 1999 0030 1A80     		strh	r2, [r3]	@ movhi
+ 2000              	.L68:
+ 601:STM32F10x_Speex_Lib/libspeex/lsp.c ****    if (lsp[len-1]>m2)
+ 2001              		.loc 2 601 0
+ 2002 0032 BB68     		ldr	r3, [r7, #8]
+ 2003 0034 03F10043 		add	r3, r3, #-2147483648
+ 2004 0038 013B     		subs	r3, r3, #1
+ 2005 003a 5B00     		lsls	r3, r3, #1
+ 2006 003c FA68     		ldr	r2, [r7, #12]
+ 2007 003e 1344     		add	r3, r3, r2
+ 2008 0040 B3F90030 		ldrsh	r3, [r3]
+ 2009 0044 B7F91020 		ldrsh	r2, [r7, #16]
+ 2010 0048 9A42     		cmp	r2, r3
+ 2011 004a 08DA     		bge	.L69
+ 602:STM32F10x_Speex_Lib/libspeex/lsp.c ****       lsp[len-1]=m2;
+ 2012              		.loc 2 602 0
+ 2013 004c BB68     		ldr	r3, [r7, #8]
+ 2014 004e 03F10043 		add	r3, r3, #-2147483648
+ 2015 0052 013B     		subs	r3, r3, #1
+ 2016 0054 5B00     		lsls	r3, r3, #1
+ 2017 0056 FA68     		ldr	r2, [r7, #12]
+ 2018 0058 1344     		add	r3, r3, r2
+ 2019 005a 3A8A     		ldrh	r2, [r7, #16]	@ movhi
+ 2020 005c 1A80     		strh	r2, [r3]	@ movhi
+ 2021              	.L69:
+ 603:STM32F10x_Speex_Lib/libspeex/lsp.c ****    for (i=1;i<len-1;i++)
+ 2022              		.loc 2 603 0
+ 2023 005e 0123     		movs	r3, #1
+ 2024 0060 7B61     		str	r3, [r7, #20]
+ 2025 0062 5DE0     		b	.L70
+ 2026              	.L73:
+ 604:STM32F10x_Speex_Lib/libspeex/lsp.c ****    {
+ 605:STM32F10x_Speex_Lib/libspeex/lsp.c ****       if (lsp[i]<lsp[i-1]+m)
+ 2027              		.loc 2 605 0
+ 2028 0064 7B69     		ldr	r3, [r7, #20]
+ 2029 0066 5B00     		lsls	r3, r3, #1
+ 2030 0068 FA68     		ldr	r2, [r7, #12]
+ 2031 006a 1344     		add	r3, r3, r2
+ 2032 006c B3F90030 		ldrsh	r3, [r3]
+ 2033 0070 1946     		mov	r1, r3
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 51
+
+
+ 2034 0072 7B69     		ldr	r3, [r7, #20]
+ 2035 0074 03F10043 		add	r3, r3, #-2147483648
+ 2036 0078 013B     		subs	r3, r3, #1
+ 2037 007a 5B00     		lsls	r3, r3, #1
+ 2038 007c FA68     		ldr	r2, [r7, #12]
+ 2039 007e 1344     		add	r3, r3, r2
+ 2040 0080 B3F90030 		ldrsh	r3, [r3]
+ 2041 0084 1A46     		mov	r2, r3
+ 2042 0086 B7F91230 		ldrsh	r3, [r7, #18]
+ 2043 008a 1344     		add	r3, r3, r2
+ 2044 008c 9942     		cmp	r1, r3
+ 2045 008e 12DA     		bge	.L71
+ 606:STM32F10x_Speex_Lib/libspeex/lsp.c ****          lsp[i]=lsp[i-1]+m;
+ 2046              		.loc 2 606 0
+ 2047 0090 7B69     		ldr	r3, [r7, #20]
+ 2048 0092 5B00     		lsls	r3, r3, #1
+ 2049 0094 FA68     		ldr	r2, [r7, #12]
+ 2050 0096 1A44     		add	r2, r2, r3
+ 2051 0098 7B69     		ldr	r3, [r7, #20]
+ 2052 009a 03F10043 		add	r3, r3, #-2147483648
+ 2053 009e 013B     		subs	r3, r3, #1
+ 2054 00a0 5B00     		lsls	r3, r3, #1
+ 2055 00a2 F968     		ldr	r1, [r7, #12]
+ 2056 00a4 0B44     		add	r3, r3, r1
+ 2057 00a6 B3F90030 		ldrsh	r3, [r3]
+ 2058 00aa 99B2     		uxth	r1, r3
+ 2059 00ac 7B8A     		ldrh	r3, [r7, #18]
+ 2060 00ae 0B44     		add	r3, r3, r1
+ 2061 00b0 9BB2     		uxth	r3, r3
+ 2062 00b2 1BB2     		sxth	r3, r3
+ 2063 00b4 1380     		strh	r3, [r2]	@ movhi
+ 2064              	.L71:
+ 607:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 608:STM32F10x_Speex_Lib/libspeex/lsp.c ****       if (lsp[i]>lsp[i+1]-m)
+ 2065              		.loc 2 608 0
+ 2066 00b6 7B69     		ldr	r3, [r7, #20]
+ 2067 00b8 5B00     		lsls	r3, r3, #1
+ 2068 00ba FA68     		ldr	r2, [r7, #12]
+ 2069 00bc 1344     		add	r3, r3, r2
+ 2070 00be B3F90030 		ldrsh	r3, [r3]
+ 2071 00c2 1946     		mov	r1, r3
+ 2072 00c4 7B69     		ldr	r3, [r7, #20]
+ 2073 00c6 0133     		adds	r3, r3, #1
+ 2074 00c8 5B00     		lsls	r3, r3, #1
+ 2075 00ca FA68     		ldr	r2, [r7, #12]
+ 2076 00cc 1344     		add	r3, r3, r2
+ 2077 00ce B3F90030 		ldrsh	r3, [r3]
+ 2078 00d2 1A46     		mov	r2, r3
+ 2079 00d4 B7F91230 		ldrsh	r3, [r7, #18]
+ 2080 00d8 D31A     		subs	r3, r2, r3
+ 2081 00da 9942     		cmp	r1, r3
+ 2082 00dc 1DDD     		ble	.L72
+ 609:STM32F10x_Speex_Lib/libspeex/lsp.c ****          lsp[i]= SHR16(lsp[i],1) + SHR16(lsp[i+1]-m,1);
+ 2083              		.loc 2 609 0
+ 2084 00de 7B69     		ldr	r3, [r7, #20]
+ 2085 00e0 5B00     		lsls	r3, r3, #1
+ 2086 00e2 FA68     		ldr	r2, [r7, #12]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 52
+
+
+ 2087 00e4 1344     		add	r3, r3, r2
+ 2088 00e6 7A69     		ldr	r2, [r7, #20]
+ 2089 00e8 5200     		lsls	r2, r2, #1
+ 2090 00ea F968     		ldr	r1, [r7, #12]
+ 2091 00ec 0A44     		add	r2, r2, r1
+ 2092 00ee B2F90020 		ldrsh	r2, [r2]
+ 2093 00f2 5210     		asrs	r2, r2, #1
+ 2094 00f4 12B2     		sxth	r2, r2
+ 2095 00f6 91B2     		uxth	r1, r2
+ 2096 00f8 7A69     		ldr	r2, [r7, #20]
+ 2097 00fa 0132     		adds	r2, r2, #1
+ 2098 00fc 5200     		lsls	r2, r2, #1
+ 2099 00fe F868     		ldr	r0, [r7, #12]
+ 2100 0100 0244     		add	r2, r2, r0
+ 2101 0102 B2F90020 		ldrsh	r2, [r2]
+ 2102 0106 1046     		mov	r0, r2
+ 2103 0108 B7F91220 		ldrsh	r2, [r7, #18]
+ 2104 010c 821A     		subs	r2, r0, r2
+ 2105 010e 5210     		asrs	r2, r2, #1
+ 2106 0110 92B2     		uxth	r2, r2
+ 2107 0112 0A44     		add	r2, r2, r1
+ 2108 0114 92B2     		uxth	r2, r2
+ 2109 0116 12B2     		sxth	r2, r2
+ 2110 0118 1A80     		strh	r2, [r3]	@ movhi
+ 2111              	.L72:
+ 603:STM32F10x_Speex_Lib/libspeex/lsp.c ****    {
+ 2112              		.loc 2 603 0 discriminator 2
+ 2113 011a 7B69     		ldr	r3, [r7, #20]
+ 2114 011c 0133     		adds	r3, r3, #1
+ 2115 011e 7B61     		str	r3, [r7, #20]
+ 2116              	.L70:
+ 603:STM32F10x_Speex_Lib/libspeex/lsp.c ****    {
+ 2117              		.loc 2 603 0 is_stmt 0 discriminator 1
+ 2118 0120 BB68     		ldr	r3, [r7, #8]
+ 2119 0122 5A1E     		subs	r2, r3, #1
+ 2120 0124 7B69     		ldr	r3, [r7, #20]
+ 2121 0126 9A42     		cmp	r2, r3
+ 2122 0128 9CDC     		bgt	.L73
+ 610:STM32F10x_Speex_Lib/libspeex/lsp.c ****    }
+ 611:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 2123              		.loc 2 611 0 is_stmt 1
+ 2124 012a 00BF     		nop
+ 2125 012c 1C37     		adds	r7, r7, #28
+ 2126              	.LCFI41:
+ 2127              		.cfi_def_cfa_offset 4
+ 2128 012e BD46     		mov	sp, r7
+ 2129              	.LCFI42:
+ 2130              		.cfi_def_cfa_register 13
+ 2131              		@ sp needed
+ 2132 0130 80BC     		pop	{r7}
+ 2133              	.LCFI43:
+ 2134              		.cfi_restore 7
+ 2135              		.cfi_def_cfa_offset 0
+ 2136 0132 7047     		bx	lr
+ 2137              		.cfi_endproc
+ 2138              	.LFE15:
+ 2140              		.section	.text.lsp_interpolate,"ax",%progbits
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 53
+
+
+ 2141              		.align	2
+ 2142              		.global	lsp_interpolate
+ 2143              		.thumb
+ 2144              		.thumb_func
+ 2146              	lsp_interpolate:
+ 2147              	.LFB16:
+ 612:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 613:STM32F10x_Speex_Lib/libspeex/lsp.c **** 
+ 614:STM32F10x_Speex_Lib/libspeex/lsp.c **** void lsp_interpolate(spx_lsp_t *old_lsp, spx_lsp_t *new_lsp, spx_lsp_t *interp_lsp, int len, int su
+ 615:STM32F10x_Speex_Lib/libspeex/lsp.c **** {
+ 2148              		.loc 2 615 0
+ 2149              		.cfi_startproc
+ 2150              		@ args = 8, pretend = 0, frame = 24
+ 2151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2152              		@ link register save eliminated.
+ 2153 0000 90B4     		push	{r4, r7}
+ 2154              	.LCFI44:
+ 2155              		.cfi_def_cfa_offset 8
+ 2156              		.cfi_offset 4, -8
+ 2157              		.cfi_offset 7, -4
+ 2158 0002 86B0     		sub	sp, sp, #24
+ 2159              	.LCFI45:
+ 2160              		.cfi_def_cfa_offset 32
+ 2161 0004 00AF     		add	r7, sp, #0
+ 2162              	.LCFI46:
+ 2163              		.cfi_def_cfa_register 7
+ 2164 0006 F860     		str	r0, [r7, #12]
+ 2165 0008 B960     		str	r1, [r7, #8]
+ 2166 000a 7A60     		str	r2, [r7, #4]
+ 2167 000c 3B60     		str	r3, [r7]
+ 616:STM32F10x_Speex_Lib/libspeex/lsp.c ****    int i;
+ 617:STM32F10x_Speex_Lib/libspeex/lsp.c ****    spx_word16_t tmp = DIV32_16(SHL32(EXTEND32(1 + subframe),14),nb_subframes);
+ 2168              		.loc 2 617 0
+ 2169 000e 3B6A     		ldr	r3, [r7, #32]
+ 2170 0010 0133     		adds	r3, r3, #1
+ 2171 0012 9B03     		lsls	r3, r3, #14
+ 2172 0014 7A6A     		ldr	r2, [r7, #36]
+ 2173 0016 12B2     		sxth	r2, r2
+ 2174 0018 93FBF2F3 		sdiv	r3, r3, r2
+ 2175 001c 7B82     		strh	r3, [r7, #18]	@ movhi
+ 618:STM32F10x_Speex_Lib/libspeex/lsp.c ****    spx_word16_t tmp2 = 16384-tmp;
+ 2176              		.loc 2 618 0
+ 2177 001e 7B8A     		ldrh	r3, [r7, #18]
+ 2178 0020 C3F58043 		rsb	r3, r3, #16384
+ 2179 0024 9BB2     		uxth	r3, r3
+ 2180 0026 3B82     		strh	r3, [r7, #16]	@ movhi
+ 619:STM32F10x_Speex_Lib/libspeex/lsp.c ****    for (i=0;i<len;i++)
+ 2181              		.loc 2 619 0
+ 2182 0028 0023     		movs	r3, #0
+ 2183 002a 7B61     		str	r3, [r7, #20]
+ 2184 002c 26E0     		b	.L75
+ 2185              	.L76:
+ 620:STM32F10x_Speex_Lib/libspeex/lsp.c ****    {
+ 621:STM32F10x_Speex_Lib/libspeex/lsp.c ****       interp_lsp[i] = MULT16_16_P14(tmp2,old_lsp[i]) + MULT16_16_P14(tmp,new_lsp[i]);
+ 2186              		.loc 2 621 0 discriminator 3
+ 2187 002e 7B69     		ldr	r3, [r7, #20]
+ 2188 0030 5B00     		lsls	r3, r3, #1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 54
+
+
+ 2189 0032 7A68     		ldr	r2, [r7, #4]
+ 2190 0034 1344     		add	r3, r3, r2
+ 2191 0036 B7F91020 		ldrsh	r2, [r7, #16]
+ 2192 003a 7969     		ldr	r1, [r7, #20]
+ 2193 003c 4900     		lsls	r1, r1, #1
+ 2194 003e F868     		ldr	r0, [r7, #12]
+ 2195 0040 0144     		add	r1, r1, r0
+ 2196 0042 B1F90010 		ldrsh	r1, [r1]
+ 2197 0046 01FB02F2 		mul	r2, r1, r2
+ 2198 004a 02F50052 		add	r2, r2, #8192
+ 2199 004e 9213     		asrs	r2, r2, #14
+ 2200 0050 91B2     		uxth	r1, r2
+ 2201 0052 B7F91220 		ldrsh	r2, [r7, #18]
+ 2202 0056 7869     		ldr	r0, [r7, #20]
+ 2203 0058 4000     		lsls	r0, r0, #1
+ 2204 005a BC68     		ldr	r4, [r7, #8]
+ 2205 005c 2044     		add	r0, r0, r4
+ 2206 005e B0F90000 		ldrsh	r0, [r0]
+ 2207 0062 00FB02F2 		mul	r2, r0, r2
+ 2208 0066 02F50052 		add	r2, r2, #8192
+ 2209 006a 9213     		asrs	r2, r2, #14
+ 2210 006c 92B2     		uxth	r2, r2
+ 2211 006e 0A44     		add	r2, r2, r1
+ 2212 0070 92B2     		uxth	r2, r2
+ 2213 0072 12B2     		sxth	r2, r2
+ 2214 0074 1A80     		strh	r2, [r3]	@ movhi
+ 619:STM32F10x_Speex_Lib/libspeex/lsp.c ****    for (i=0;i<len;i++)
+ 2215              		.loc 2 619 0 discriminator 3
+ 2216 0076 7B69     		ldr	r3, [r7, #20]
+ 2217 0078 0133     		adds	r3, r3, #1
+ 2218 007a 7B61     		str	r3, [r7, #20]
+ 2219              	.L75:
+ 619:STM32F10x_Speex_Lib/libspeex/lsp.c ****    for (i=0;i<len;i++)
+ 2220              		.loc 2 619 0 is_stmt 0 discriminator 1
+ 2221 007c 7A69     		ldr	r2, [r7, #20]
+ 2222 007e 3B68     		ldr	r3, [r7]
+ 2223 0080 9A42     		cmp	r2, r3
+ 2224 0082 D4DB     		blt	.L76
+ 622:STM32F10x_Speex_Lib/libspeex/lsp.c ****    }
+ 623:STM32F10x_Speex_Lib/libspeex/lsp.c **** }
+ 2225              		.loc 2 623 0 is_stmt 1
+ 2226 0084 00BF     		nop
+ 2227 0086 1837     		adds	r7, r7, #24
+ 2228              	.LCFI47:
+ 2229              		.cfi_def_cfa_offset 8
+ 2230 0088 BD46     		mov	sp, r7
+ 2231              	.LCFI48:
+ 2232              		.cfi_def_cfa_register 13
+ 2233              		@ sp needed
+ 2234 008a 90BC     		pop	{r4, r7}
+ 2235              	.LCFI49:
+ 2236              		.cfi_restore 7
+ 2237              		.cfi_restore 4
+ 2238              		.cfi_def_cfa_offset 0
+ 2239 008c 7047     		bx	lr
+ 2240              		.cfi_endproc
+ 2241              	.LFE16:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 55
+
+
+ 2243 008e 00BF     		.text
+ 2244              	.Letext0:
+ 2245              		.file 3 "Inc/speex/speex_config_types.h"
+ 2246              		.file 4 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s 			page 56
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 lsp.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:20     .text.spx_ilog4:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:24     .text.spx_ilog4:0000000000000000 spx_ilog4
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:115    .text.spx_sqrt:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:119    .text.spx_sqrt:0000000000000000 spx_sqrt
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:234    .text.spx_acos:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:238    .text.spx_acos:0000000000000000 spx_acos
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:337    .text.spx_cos:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:341    .text.spx_cos:0000000000000000 spx_cos
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:458    .text.spx_cos:00000000000000f0 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:463    .text.cheb_poly_eva:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:467    .text.cheb_poly_eva:0000000000000000 cheb_poly_eva
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:602    .text.lpc_to_lsp:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:607    .text.lpc_to_lsp:0000000000000000 lpc_to_lsp
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:1160   .text.lsp_to_lpc:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:1165   .text.lsp_to_lpc:0000000000000000 lsp_to_lpc
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:1950   .text.lsp_to_lpc:00000000000005d0 $d
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:1955   .text.lsp_enforce_margin:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:1960   .text.lsp_enforce_margin:0000000000000000 lsp_enforce_margin
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:2141   .text.lsp_interpolate:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccewFF7S.s:2146   .text.lsp_interpolate:0000000000000000 lsp_interpolate
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

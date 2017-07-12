@@ -1,0 +1,613 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"vq.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.scal_quant,"ax",%progbits
+  20              		.align	2
+  21              		.global	scal_quant
+  22              		.thumb
+  23              		.thumb_func
+  25              	scal_quant:
+  26              	.LFB0:
+  27              		.file 1 "STM32F10x_Speex_Lib/STM32/libspeex/vq.c"
+   1:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** /* Copyright (C) 2002 Jean-Marc Valin
+   2:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    File: vq.c
+   3:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    Vector quantization
+   4:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+   5:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    Redistribution and use in source and binary forms, with or without
+   6:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    modification, are permitted provided that the following conditions
+   7:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    are met:
+   8:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    
+   9:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    - Redistributions of source code must retain the above copyright
+  10:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    notice, this list of conditions and the following disclaimer.
+  11:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    
+  12:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    - Redistributions in binary form must reproduce the above copyright
+  13:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    notice, this list of conditions and the following disclaimer in the
+  14:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    documentation and/or other materials provided with the distribution.
+  15:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    
+  16:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    - Neither the name of the Xiph.org Foundation nor the names of its
+  17:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    contributors may be used to endorse or promote products derived from
+  18:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    this software without specific prior written permission.
+  19:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    
+  20:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  21:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  22:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  23:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+  24:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  25:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  26:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  27:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  28:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  29:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  30:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  31:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** */
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 2
+
+
+  32:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  33:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** // #ifdef HAVE_CONFIG_H
+  34:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "config.h"
+  35:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** // #endif
+  36:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  37:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "vq.h"
+  38:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "stack_alloc.h"
+  39:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "arch.h"
+  40:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  41:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef _USE_SSE
+  42:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include <xmmintrin.h>
+  43:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "vq_sse.h"
+  44:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #elif defined(SHORTCUTS) && (defined(ARM4_ASM) || defined(ARM5E_ASM))
+  45:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "vq_arm4.h"
+  46:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #elif defined(BFIN_ASM)
+  47:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "vq_bfin.h"
+  48:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+  49:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  50:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** //added by MCD Application Team June 2008
+  51:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef  __CC_ARM               /* ARM Compiler */
+  52:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #include "vq_cortexM3.h"
+  53:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+  54:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  55:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef __IAR_SYSTEMS_ICC__     /* IAR Compiler */
+  56:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #define OVERRIDE_VQ_NBEST
+  57:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+  58:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  59:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef __GNUC__     /* GNU Compiler */
+  60:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #define OVERRIDE_VQ_NBEST
+  61:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+  62:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  63:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** int scal_quant(spx_word16_t in, const spx_word16_t *boundary, int entries)
+  64:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** {
+  28              		.loc 1 64 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 24
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 80B4     		push	{r7}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 87B0     		sub	sp, sp, #28
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 32
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 0346     		mov	r3, r0
+  44 0008 B960     		str	r1, [r7, #8]
+  45 000a 7A60     		str	r2, [r7, #4]
+  46 000c FB81     		strh	r3, [r7, #14]	@ movhi
+  65:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    int i=0;
+  47              		.loc 1 65 0
+  48 000e 0023     		movs	r3, #0
+  49 0010 7B61     		str	r3, [r7, #20]
+  66:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 3
+
+
+  50              		.loc 1 66 0
+  51 0012 05E0     		b	.L2
+  52              	.L4:
+  67:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+  68:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       boundary++;
+  53              		.loc 1 68 0
+  54 0014 BB68     		ldr	r3, [r7, #8]
+  55 0016 0233     		adds	r3, r3, #2
+  56 0018 BB60     		str	r3, [r7, #8]
+  69:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       i++;
+  57              		.loc 1 69 0
+  58 001a 7B69     		ldr	r3, [r7, #20]
+  59 001c 0133     		adds	r3, r3, #1
+  60 001e 7B61     		str	r3, [r7, #20]
+  61              	.L2:
+  66:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+  62              		.loc 1 66 0
+  63 0020 7B68     		ldr	r3, [r7, #4]
+  64 0022 5A1E     		subs	r2, r3, #1
+  65 0024 7B69     		ldr	r3, [r7, #20]
+  66 0026 9A42     		cmp	r2, r3
+  67 0028 06DD     		ble	.L3
+  66:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+  68              		.loc 1 66 0 is_stmt 0 discriminator 1
+  69 002a BB68     		ldr	r3, [r7, #8]
+  70 002c B3F90030 		ldrsh	r3, [r3]
+  71 0030 B7F90E20 		ldrsh	r2, [r7, #14]
+  72 0034 9A42     		cmp	r2, r3
+  73 0036 EDDC     		bgt	.L4
+  74              	.L3:
+  70:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    }
+  71:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    return i;
+  75              		.loc 1 71 0 is_stmt 1
+  76 0038 7B69     		ldr	r3, [r7, #20]
+  72:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** }
+  77              		.loc 1 72 0
+  78 003a 1846     		mov	r0, r3
+  79 003c 1C37     		adds	r7, r7, #28
+  80              	.LCFI3:
+  81              		.cfi_def_cfa_offset 4
+  82 003e BD46     		mov	sp, r7
+  83              	.LCFI4:
+  84              		.cfi_def_cfa_register 13
+  85              		@ sp needed
+  86 0040 80BC     		pop	{r7}
+  87              	.LCFI5:
+  88              		.cfi_restore 7
+  89              		.cfi_def_cfa_offset 0
+  90 0042 7047     		bx	lr
+  91              		.cfi_endproc
+  92              	.LFE0:
+  94              		.section	.text.scal_quant32,"ax",%progbits
+  95              		.align	2
+  96              		.global	scal_quant32
+  97              		.thumb
+  98              		.thumb_func
+ 100              	scal_quant32:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 4
+
+
+ 101              	.LFB1:
+  73:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  74:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** int scal_quant32(spx_word32_t in, const spx_word32_t *boundary, int entries)
+  75:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** {
+ 102              		.loc 1 75 0
+ 103              		.cfi_startproc
+ 104              		@ args = 0, pretend = 0, frame = 24
+ 105              		@ frame_needed = 1, uses_anonymous_args = 0
+ 106              		@ link register save eliminated.
+ 107 0000 80B4     		push	{r7}
+ 108              	.LCFI6:
+ 109              		.cfi_def_cfa_offset 4
+ 110              		.cfi_offset 7, -4
+ 111 0002 87B0     		sub	sp, sp, #28
+ 112              	.LCFI7:
+ 113              		.cfi_def_cfa_offset 32
+ 114 0004 00AF     		add	r7, sp, #0
+ 115              	.LCFI8:
+ 116              		.cfi_def_cfa_register 7
+ 117 0006 F860     		str	r0, [r7, #12]
+ 118 0008 B960     		str	r1, [r7, #8]
+ 119 000a 7A60     		str	r2, [r7, #4]
+  76:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    int i=0;
+ 120              		.loc 1 76 0
+ 121 000c 0023     		movs	r3, #0
+ 122 000e 7B61     		str	r3, [r7, #20]
+  77:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+ 123              		.loc 1 77 0
+ 124 0010 05E0     		b	.L7
+ 125              	.L9:
+  78:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+  79:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       boundary++;
+ 126              		.loc 1 79 0
+ 127 0012 BB68     		ldr	r3, [r7, #8]
+ 128 0014 0433     		adds	r3, r3, #4
+ 129 0016 BB60     		str	r3, [r7, #8]
+  80:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       i++;
+ 130              		.loc 1 80 0
+ 131 0018 7B69     		ldr	r3, [r7, #20]
+ 132 001a 0133     		adds	r3, r3, #1
+ 133 001c 7B61     		str	r3, [r7, #20]
+ 134              	.L7:
+  77:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+ 135              		.loc 1 77 0
+ 136 001e 7B68     		ldr	r3, [r7, #4]
+ 137 0020 5A1E     		subs	r2, r3, #1
+ 138 0022 7B69     		ldr	r3, [r7, #20]
+ 139 0024 9A42     		cmp	r2, r3
+ 140 0026 04DD     		ble	.L8
+  77:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    while (i<entries-1 && in>boundary[0])
+ 141              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 142 0028 BB68     		ldr	r3, [r7, #8]
+ 143 002a 1A68     		ldr	r2, [r3]
+ 144 002c FB68     		ldr	r3, [r7, #12]
+ 145 002e 9A42     		cmp	r2, r3
+ 146 0030 EFDB     		blt	.L9
+ 147              	.L8:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 5
+
+
+  81:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    }
+  82:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    return i;
+ 148              		.loc 1 82 0 is_stmt 1
+ 149 0032 7B69     		ldr	r3, [r7, #20]
+  83:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** }
+ 150              		.loc 1 83 0
+ 151 0034 1846     		mov	r0, r3
+ 152 0036 1C37     		adds	r7, r7, #28
+ 153              	.LCFI9:
+ 154              		.cfi_def_cfa_offset 4
+ 155 0038 BD46     		mov	sp, r7
+ 156              	.LCFI10:
+ 157              		.cfi_def_cfa_register 13
+ 158              		@ sp needed
+ 159 003a 80BC     		pop	{r7}
+ 160              	.LCFI11:
+ 161              		.cfi_restore 7
+ 162              		.cfi_def_cfa_offset 0
+ 163 003c 7047     		bx	lr
+ 164              		.cfi_endproc
+ 165              	.LFE1:
+ 167 003e 00BF     		.section	.text.vq_nbest_sign,"ax",%progbits
+ 168              		.align	2
+ 169              		.global	vq_nbest_sign
+ 170              		.thumb
+ 171              		.thumb_func
+ 173              	vq_nbest_sign:
+ 174              	.LFB2:
+  84:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  85:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+  86:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifndef OVERRIDE_VQ_NBEST
+  87:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** /*Finds the indices of the n-best entries in a codebook*/
+  88:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** void vq_nbest(spx_word16_t *in, const spx_word16_t *codebook, int len, int entries, spx_word32_t *E
+  89:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** {
+  90:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    int i,j,k,used;
+  91:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    used = 0;
+  92:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    for (i=0;i<entries;i++)
+  93:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+  94:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       spx_word32_t dist=0;
+  95:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       for (j=0;j<len;j++)
+  96:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          dist = MAC16_16(dist,in[j],*codebook++);
+  97:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef FIXED_POINT
+  98:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       dist=SUB32(SHR32(E[i],1),dist);
+  99:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #else
+ 100:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       dist=.5f*E[i]-dist;
+ 101:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+ 102:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       if (i<N || dist<best_dist[N-1])
+ 103:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       {
+ 104:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          for (k=N-1; (k >= 1) && (k > used || dist < best_dist[k-1]); k--)
+ 105:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 106:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****             best_dist[k]=best_dist[k-1];
+ 107:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****             nbest[k] = nbest[k-1];
+ 108:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          }
+ 109:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          best_dist[k]=dist;
+ 110:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          nbest[k]=i;
+ 111:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          used++;
+ 112:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       }
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 6
+
+
+ 113:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    }
+ 114:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** }
+ 115:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+ 116:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+ 117:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+ 118:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+ 119:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** 
+ 120:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifndef OVERRIDE_VQ_NBEST_SIGN
+ 121:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** /*Finds the indices of the n-best entries in a codebook with sign*/
+ 122:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** void vq_nbest_sign(spx_word16_t *in, const spx_word16_t *codebook, int len, int entries, spx_word32
+ 123:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** {
+ 175              		.loc 1 123 0
+ 176              		.cfi_startproc
+ 177              		@ args = 20, pretend = 0, frame = 40
+ 178              		@ frame_needed = 1, uses_anonymous_args = 0
+ 179              		@ link register save eliminated.
+ 180 0000 80B4     		push	{r7}
+ 181              	.LCFI12:
+ 182              		.cfi_def_cfa_offset 4
+ 183              		.cfi_offset 7, -4
+ 184 0002 8BB0     		sub	sp, sp, #44
+ 185              	.LCFI13:
+ 186              		.cfi_def_cfa_offset 48
+ 187 0004 00AF     		add	r7, sp, #0
+ 188              	.LCFI14:
+ 189              		.cfi_def_cfa_register 7
+ 190 0006 F860     		str	r0, [r7, #12]
+ 191 0008 B960     		str	r1, [r7, #8]
+ 192 000a 7A60     		str	r2, [r7, #4]
+ 193 000c 3B60     		str	r3, [r7]
+ 124:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    int i,j,k, sign, used;
+ 125:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    used=0;
+ 194              		.loc 1 125 0
+ 195 000e 0023     		movs	r3, #0
+ 196 0010 7B61     		str	r3, [r7, #20]
+ 126:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    for (i=0;i<entries;i++)
+ 197              		.loc 1 126 0
+ 198 0012 0023     		movs	r3, #0
+ 199 0014 7B62     		str	r3, [r7, #36]
+ 200 0016 93E0     		b	.L12
+ 201              	.L22:
+ 202              	.LBB2:
+ 127:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+ 128:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       spx_word32_t dist=0;
+ 203              		.loc 1 128 0
+ 204 0018 0023     		movs	r3, #0
+ 205 001a 3B61     		str	r3, [r7, #16]
+ 129:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       for (j=0;j<len;j++)
+ 206              		.loc 1 129 0
+ 207 001c 0023     		movs	r3, #0
+ 208 001e 3B62     		str	r3, [r7, #32]
+ 209 0020 13E0     		b	.L13
+ 210              	.L14:
+ 130:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          dist = MAC16_16(dist,in[j],*codebook++);
+ 211              		.loc 1 130 0 discriminator 3
+ 212 0022 3B6A     		ldr	r3, [r7, #32]
+ 213 0024 5B00     		lsls	r3, r3, #1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 7
+
+
+ 214 0026 FA68     		ldr	r2, [r7, #12]
+ 215 0028 1344     		add	r3, r3, r2
+ 216 002a B3F90030 		ldrsh	r3, [r3]
+ 217 002e 1946     		mov	r1, r3
+ 218 0030 BB68     		ldr	r3, [r7, #8]
+ 219 0032 9A1C     		adds	r2, r3, #2
+ 220 0034 BA60     		str	r2, [r7, #8]
+ 221 0036 B3F90030 		ldrsh	r3, [r3]
+ 222 003a 03FB01F3 		mul	r3, r3, r1
+ 223 003e 3A69     		ldr	r2, [r7, #16]
+ 224 0040 1344     		add	r3, r3, r2
+ 225 0042 3B61     		str	r3, [r7, #16]
+ 129:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       for (j=0;j<len;j++)
+ 226              		.loc 1 129 0 discriminator 3
+ 227 0044 3B6A     		ldr	r3, [r7, #32]
+ 228 0046 0133     		adds	r3, r3, #1
+ 229 0048 3B62     		str	r3, [r7, #32]
+ 230              	.L13:
+ 129:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       for (j=0;j<len;j++)
+ 231              		.loc 1 129 0 is_stmt 0 discriminator 1
+ 232 004a 3A6A     		ldr	r2, [r7, #32]
+ 233 004c 7B68     		ldr	r3, [r7, #4]
+ 234 004e 9A42     		cmp	r2, r3
+ 235 0050 E7DB     		blt	.L14
+ 131:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       if (dist>0)
+ 236              		.loc 1 131 0 is_stmt 1
+ 237 0052 3B69     		ldr	r3, [r7, #16]
+ 238 0054 002B     		cmp	r3, #0
+ 239 0056 05DD     		ble	.L15
+ 132:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       {
+ 133:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          sign=0;
+ 240              		.loc 1 133 0
+ 241 0058 0023     		movs	r3, #0
+ 242 005a BB61     		str	r3, [r7, #24]
+ 134:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          dist=-dist;
+ 243              		.loc 1 134 0
+ 244 005c 3B69     		ldr	r3, [r7, #16]
+ 245 005e 5B42     		negs	r3, r3
+ 246 0060 3B61     		str	r3, [r7, #16]
+ 247 0062 01E0     		b	.L16
+ 248              	.L15:
+ 135:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       } else
+ 136:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       {
+ 137:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          sign=1;
+ 249              		.loc 1 137 0
+ 250 0064 0123     		movs	r3, #1
+ 251 0066 BB61     		str	r3, [r7, #24]
+ 252              	.L16:
+ 138:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       }
+ 139:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #ifdef FIXED_POINT
+ 140:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       dist = ADD32(dist,SHR32(E[i],1));
+ 253              		.loc 1 140 0
+ 254 0068 7B6A     		ldr	r3, [r7, #36]
+ 255 006a 9B00     		lsls	r3, r3, #2
+ 256 006c 3A6B     		ldr	r2, [r7, #48]
+ 257 006e 1344     		add	r3, r3, r2
+ 258 0070 1B68     		ldr	r3, [r3]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 8
+
+
+ 259 0072 5B10     		asrs	r3, r3, #1
+ 260 0074 3A69     		ldr	r2, [r7, #16]
+ 261 0076 1344     		add	r3, r3, r2
+ 262 0078 3B61     		str	r3, [r7, #16]
+ 141:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #else
+ 142:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       dist = ADD32(dist,.5f*E[i]);
+ 143:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** #endif
+ 144:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       if (i<N || dist<best_dist[N-1])
+ 263              		.loc 1 144 0
+ 264 007a 7A6A     		ldr	r2, [r7, #36]
+ 265 007c 7B6B     		ldr	r3, [r7, #52]
+ 266 007e 9A42     		cmp	r2, r3
+ 267 0080 0ADB     		blt	.L17
+ 268              		.loc 1 144 0 is_stmt 0 discriminator 1
+ 269 0082 7B6B     		ldr	r3, [r7, #52]
+ 270 0084 03F18043 		add	r3, r3, #1073741824
+ 271 0088 013B     		subs	r3, r3, #1
+ 272 008a 9B00     		lsls	r3, r3, #2
+ 273 008c FA6B     		ldr	r2, [r7, #60]
+ 274 008e 1344     		add	r3, r3, r2
+ 275 0090 1A68     		ldr	r2, [r3]
+ 276 0092 3B69     		ldr	r3, [r7, #16]
+ 277 0094 9A42     		cmp	r2, r3
+ 278 0096 50DD     		ble	.L18
+ 279              	.L17:
+ 145:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       {
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          for (k=N-1; (k >= 1) && (k > used || dist < best_dist[k-1]); k--)
+ 280              		.loc 1 146 0 is_stmt 1
+ 281 0098 7B6B     		ldr	r3, [r7, #52]
+ 282 009a 013B     		subs	r3, r3, #1
+ 283 009c FB61     		str	r3, [r7, #28]
+ 284 009e 1CE0     		b	.L19
+ 285              	.L21:
+ 147:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 148:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****             best_dist[k]=best_dist[k-1];
+ 286              		.loc 1 148 0 discriminator 6
+ 287 00a0 FB69     		ldr	r3, [r7, #28]
+ 288 00a2 9B00     		lsls	r3, r3, #2
+ 289 00a4 FA6B     		ldr	r2, [r7, #60]
+ 290 00a6 1A44     		add	r2, r2, r3
+ 291 00a8 FB69     		ldr	r3, [r7, #28]
+ 292 00aa 03F18043 		add	r3, r3, #1073741824
+ 293 00ae 013B     		subs	r3, r3, #1
+ 294 00b0 9B00     		lsls	r3, r3, #2
+ 295 00b2 F96B     		ldr	r1, [r7, #60]
+ 296 00b4 0B44     		add	r3, r3, r1
+ 297 00b6 1B68     		ldr	r3, [r3]
+ 298 00b8 1360     		str	r3, [r2]
+ 149:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****             nbest[k] = nbest[k-1];
+ 299              		.loc 1 149 0 discriminator 6
+ 300 00ba FB69     		ldr	r3, [r7, #28]
+ 301 00bc 9B00     		lsls	r3, r3, #2
+ 302 00be BA6B     		ldr	r2, [r7, #56]
+ 303 00c0 1A44     		add	r2, r2, r3
+ 304 00c2 FB69     		ldr	r3, [r7, #28]
+ 305 00c4 03F18043 		add	r3, r3, #1073741824
+ 306 00c8 013B     		subs	r3, r3, #1
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 9
+
+
+ 307 00ca 9B00     		lsls	r3, r3, #2
+ 308 00cc B96B     		ldr	r1, [r7, #56]
+ 309 00ce 0B44     		add	r3, r3, r1
+ 310 00d0 1B68     		ldr	r3, [r3]
+ 311 00d2 1360     		str	r3, [r2]
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 312              		.loc 1 146 0 discriminator 6
+ 313 00d4 FB69     		ldr	r3, [r7, #28]
+ 314 00d6 013B     		subs	r3, r3, #1
+ 315 00d8 FB61     		str	r3, [r7, #28]
+ 316              	.L19:
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 317              		.loc 1 146 0 is_stmt 0 discriminator 1
+ 318 00da FB69     		ldr	r3, [r7, #28]
+ 319 00dc 002B     		cmp	r3, #0
+ 320 00de 0EDD     		ble	.L20
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 321              		.loc 1 146 0 discriminator 3
+ 322 00e0 FA69     		ldr	r2, [r7, #28]
+ 323 00e2 7B69     		ldr	r3, [r7, #20]
+ 324 00e4 9A42     		cmp	r2, r3
+ 325 00e6 DBDC     		bgt	.L21
+ 146:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          {
+ 326              		.loc 1 146 0 discriminator 5
+ 327 00e8 FB69     		ldr	r3, [r7, #28]
+ 328 00ea 03F18043 		add	r3, r3, #1073741824
+ 329 00ee 013B     		subs	r3, r3, #1
+ 330 00f0 9B00     		lsls	r3, r3, #2
+ 331 00f2 FA6B     		ldr	r2, [r7, #60]
+ 332 00f4 1344     		add	r3, r3, r2
+ 333 00f6 1A68     		ldr	r2, [r3]
+ 334 00f8 3B69     		ldr	r3, [r7, #16]
+ 335 00fa 9A42     		cmp	r2, r3
+ 336 00fc D0DC     		bgt	.L21
+ 337              	.L20:
+ 150:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          }
+ 151:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          best_dist[k]=dist;
+ 338              		.loc 1 151 0 is_stmt 1
+ 339 00fe FB69     		ldr	r3, [r7, #28]
+ 340 0100 9B00     		lsls	r3, r3, #2
+ 341 0102 FA6B     		ldr	r2, [r7, #60]
+ 342 0104 1344     		add	r3, r3, r2
+ 343 0106 3A69     		ldr	r2, [r7, #16]
+ 344 0108 1A60     		str	r2, [r3]
+ 152:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          nbest[k]=i;
+ 345              		.loc 1 152 0
+ 346 010a FB69     		ldr	r3, [r7, #28]
+ 347 010c 9B00     		lsls	r3, r3, #2
+ 348 010e BA6B     		ldr	r2, [r7, #56]
+ 349 0110 1344     		add	r3, r3, r2
+ 350 0112 7A6A     		ldr	r2, [r7, #36]
+ 351 0114 1A60     		str	r2, [r3]
+ 153:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          used++;
+ 352              		.loc 1 153 0
+ 353 0116 7B69     		ldr	r3, [r7, #20]
+ 354 0118 0133     		adds	r3, r3, #1
+ 355 011a 7B61     		str	r3, [r7, #20]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 10
+
+
+ 154:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****          if (sign)
+ 356              		.loc 1 154 0
+ 357 011c BB69     		ldr	r3, [r7, #24]
+ 358 011e 002B     		cmp	r3, #0
+ 359 0120 0BD0     		beq	.L18
+ 155:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****             nbest[k]+=entries;
+ 360              		.loc 1 155 0
+ 361 0122 FB69     		ldr	r3, [r7, #28]
+ 362 0124 9B00     		lsls	r3, r3, #2
+ 363 0126 BA6B     		ldr	r2, [r7, #56]
+ 364 0128 1344     		add	r3, r3, r2
+ 365 012a FA69     		ldr	r2, [r7, #28]
+ 366 012c 9200     		lsls	r2, r2, #2
+ 367 012e B96B     		ldr	r1, [r7, #56]
+ 368 0130 0A44     		add	r2, r2, r1
+ 369 0132 1168     		ldr	r1, [r2]
+ 370 0134 3A68     		ldr	r2, [r7]
+ 371 0136 0A44     		add	r2, r2, r1
+ 372 0138 1A60     		str	r2, [r3]
+ 373              	.L18:
+ 374              	.LBE2:
+ 126:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+ 375              		.loc 1 126 0 discriminator 2
+ 376 013a 7B6A     		ldr	r3, [r7, #36]
+ 377 013c 0133     		adds	r3, r3, #1
+ 378 013e 7B62     		str	r3, [r7, #36]
+ 379              	.L12:
+ 126:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    {
+ 380              		.loc 1 126 0 is_stmt 0 discriminator 1
+ 381 0140 7A6A     		ldr	r2, [r7, #36]
+ 382 0142 3B68     		ldr	r3, [r7]
+ 383 0144 9A42     		cmp	r2, r3
+ 384 0146 FFF667AF 		blt	.L22
+ 156:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****       }
+ 157:STM32F10x_Speex_Lib/STM32/libspeex/vq.c ****    }
+ 158:STM32F10x_Speex_Lib/STM32/libspeex/vq.c **** }
+ 385              		.loc 1 158 0 is_stmt 1
+ 386 014a 00BF     		nop
+ 387 014c 2C37     		adds	r7, r7, #44
+ 388              	.LCFI15:
+ 389              		.cfi_def_cfa_offset 4
+ 390 014e BD46     		mov	sp, r7
+ 391              	.LCFI16:
+ 392              		.cfi_def_cfa_register 13
+ 393              		@ sp needed
+ 394 0150 80BC     		pop	{r7}
+ 395              	.LCFI17:
+ 396              		.cfi_restore 7
+ 397              		.cfi_def_cfa_offset 0
+ 398 0152 7047     		bx	lr
+ 399              		.cfi_endproc
+ 400              	.LFE2:
+ 402              		.text
+ 403              	.Letext0:
+ 404              		.file 2 "Inc/speex/speex_config_types.h"
+ 405              		.file 3 "STM32F10x_Speex_Lib/libspeex/arch.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 vq.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:20     .text.scal_quant:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:25     .text.scal_quant:0000000000000000 scal_quant
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:95     .text.scal_quant32:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:100    .text.scal_quant32:0000000000000000 scal_quant32
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:168    .text.vq_nbest_sign:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//ccyi1OD9.s:173    .text.vq_nbest_sign:0000000000000000 vq_nbest_sign
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

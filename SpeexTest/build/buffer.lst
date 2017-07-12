@@ -1,0 +1,1181 @@
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"buffer.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.speex_alloc,"ax",%progbits
+  20              		.align	2
+  21              		.thumb
+  22              		.thumb_func
+  24              	speex_alloc:
+  25              	.LFB1:
+  26              		.file 1 "STM32F10x_Speex_Lib/libspeex/os_support.h"
+   1:STM32F10x_Speex_Lib/libspeex/os_support.h **** /* Copyright (C) 2007 Jean-Marc Valin
+   2:STM32F10x_Speex_Lib/libspeex/os_support.h ****       
+   3:STM32F10x_Speex_Lib/libspeex/os_support.h ****    File: os_support.h
+   4:STM32F10x_Speex_Lib/libspeex/os_support.h ****    This is the (tiny) OS abstraction layer. Aside from math.h, this is the
+   5:STM32F10x_Speex_Lib/libspeex/os_support.h ****    only place where system headers are allowed.
+   6:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+   7:STM32F10x_Speex_Lib/libspeex/os_support.h ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/os_support.h ****    modification, are permitted provided that the following conditions are
+   9:STM32F10x_Speex_Lib/libspeex/os_support.h ****    met:
+  10:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  11:STM32F10x_Speex_Lib/libspeex/os_support.h ****    1. Redistributions of source code must retain the above copyright notice,
+  12:STM32F10x_Speex_Lib/libspeex/os_support.h ****    this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  14:STM32F10x_Speex_Lib/libspeex/os_support.h ****    2. Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/os_support.h ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/os_support.h ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  18:STM32F10x_Speex_Lib/libspeex/os_support.h ****    3. The name of the author may not be used to endorse or promote products
+  19:STM32F10x_Speex_Lib/libspeex/os_support.h ****    derived from this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  21:STM32F10x_Speex_Lib/libspeex/os_support.h ****    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  22:STM32F10x_Speex_Lib/libspeex/os_support.h ****    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  23:STM32F10x_Speex_Lib/libspeex/os_support.h ****    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  24:STM32F10x_Speex_Lib/libspeex/os_support.h ****    DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+  25:STM32F10x_Speex_Lib/libspeex/os_support.h ****    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  26:STM32F10x_Speex_Lib/libspeex/os_support.h ****    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  27:STM32F10x_Speex_Lib/libspeex/os_support.h ****    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  28:STM32F10x_Speex_Lib/libspeex/os_support.h ****    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  29:STM32F10x_Speex_Lib/libspeex/os_support.h ****    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  30:STM32F10x_Speex_Lib/libspeex/os_support.h ****    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:STM32F10x_Speex_Lib/libspeex/os_support.h ****    POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/libspeex/os_support.h **** */
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 2
+
+
+  33:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  34:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OS_SUPPORT_H
+  35:STM32F10x_Speex_Lib/libspeex/os_support.h **** #define OS_SUPPORT_H
+  36:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  37:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <string.h>
+  38:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdio.h>
+  39:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include <stdlib.h>
+  40:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  41:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #ifdef HAVE_CONFIG_H
+  42:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "config.h"
+  43:STM32F10x_Speex_Lib/libspeex/os_support.h **** // #endif
+  44:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifdef OS_SUPPORT_CUSTOM
+  45:STM32F10x_Speex_Lib/libspeex/os_support.h **** #include "os_support_custom.h"
+  46:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  47:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  48:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+  49:STM32F10x_Speex_Lib/libspeex/os_support.h ****     NOTE: speex_alloc needs to CLEAR THE MEMORY */
+  50:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC
+  51:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc (int size)
+  52:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  27              		.loc 1 52 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 16
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  53:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* WARNING: this is not equivalent to malloc(). If you want to use malloc() 
+  54:STM32F10x_Speex_Lib/libspeex/os_support.h ****       or your own allocator, YOU NEED TO CLEAR THE MEMORY ALLOCATED. Otherwise
+  55:STM32F10x_Speex_Lib/libspeex/os_support.h ****       you will experience strange bugs */
+  56:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+  43              		.loc 1 56 0
+  44 0008 7B68     		ldr	r3, [r7, #4]
+  45 000a 0121     		movs	r1, #1
+  46 000c 1846     		mov	r0, r3
+  47 000e FFF7FEFF 		bl	calloc
+  48 0012 0346     		mov	r3, r0
+  57:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  49              		.loc 1 57 0
+  50 0014 1846     		mov	r0, r3
+  51 0016 0837     		adds	r7, r7, #8
+  52              	.LCFI3:
+  53              		.cfi_def_cfa_offset 8
+  54 0018 BD46     		mov	sp, r7
+  55              	.LCFI4:
+  56              		.cfi_def_cfa_register 13
+  57              		@ sp needed
+  58 001a 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 3
+
+
+  59              		.cfi_endproc
+  60              	.LFE1:
+  62              		.section	.text.speex_realloc,"ax",%progbits
+  63              		.align	2
+  64              		.thumb
+  65              		.thumb_func
+  67              	speex_realloc:
+  68              	.LFB3:
+  58:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  59:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  60:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Same as speex_alloc, except that the area is only needed inside a Speex call (might cause probl
+  61:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_ALLOC_SCRATCH
+  62:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_alloc_scratch (int size)
+  63:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  64:STM32F10x_Speex_Lib/libspeex/os_support.h ****    /* Scratch space doesn't need to be cleared */
+  65:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return calloc(size,1);
+  66:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  67:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  68:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  69:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for realloc. To do your own dynamic allocation, all you need to do is replace thi
+  70:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_REALLOC
+  71:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void *speex_realloc (void *ptr, int size)
+  72:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+  69              		.loc 1 72 0
+  70              		.cfi_startproc
+  71              		@ args = 0, pretend = 0, frame = 8
+  72              		@ frame_needed = 1, uses_anonymous_args = 0
+  73 0000 80B5     		push	{r7, lr}
+  74              	.LCFI5:
+  75              		.cfi_def_cfa_offset 8
+  76              		.cfi_offset 7, -8
+  77              		.cfi_offset 14, -4
+  78 0002 82B0     		sub	sp, sp, #8
+  79              	.LCFI6:
+  80              		.cfi_def_cfa_offset 16
+  81 0004 00AF     		add	r7, sp, #0
+  82              	.LCFI7:
+  83              		.cfi_def_cfa_register 7
+  84 0006 7860     		str	r0, [r7, #4]
+  85 0008 3960     		str	r1, [r7]
+  73:STM32F10x_Speex_Lib/libspeex/os_support.h ****    return realloc(ptr, size);
+  86              		.loc 1 73 0
+  87 000a 3B68     		ldr	r3, [r7]
+  88 000c 1946     		mov	r1, r3
+  89 000e 7868     		ldr	r0, [r7, #4]
+  90 0010 FFF7FEFF 		bl	realloc
+  91 0014 0346     		mov	r3, r0
+  74:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+  92              		.loc 1 74 0
+  93 0016 1846     		mov	r0, r3
+  94 0018 0837     		adds	r7, r7, #8
+  95              	.LCFI8:
+  96              		.cfi_def_cfa_offset 8
+  97 001a BD46     		mov	sp, r7
+  98              	.LCFI9:
+  99              		.cfi_def_cfa_register 13
+ 100              		@ sp needed
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 4
+
+
+ 101 001c 80BD     		pop	{r7, pc}
+ 102              		.cfi_endproc
+ 103              	.LFE3:
+ 105 001e 00BF     		.section	.text.speex_free,"ax",%progbits
+ 106              		.align	2
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	speex_free:
+ 111              	.LFB4:
+  75:STM32F10x_Speex_Lib/libspeex/os_support.h **** #endif
+  76:STM32F10x_Speex_Lib/libspeex/os_support.h **** 
+  77:STM32F10x_Speex_Lib/libspeex/os_support.h **** /** Speex wrapper for calloc. To do your own dynamic allocation, all you need to do is replace this
+  78:STM32F10x_Speex_Lib/libspeex/os_support.h **** #ifndef OVERRIDE_SPEEX_FREE
+  79:STM32F10x_Speex_Lib/libspeex/os_support.h **** static inline void speex_free (void *ptr)
+  80:STM32F10x_Speex_Lib/libspeex/os_support.h **** {
+ 112              		.loc 1 80 0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 8
+ 115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 116 0000 80B5     		push	{r7, lr}
+ 117              	.LCFI10:
+ 118              		.cfi_def_cfa_offset 8
+ 119              		.cfi_offset 7, -8
+ 120              		.cfi_offset 14, -4
+ 121 0002 82B0     		sub	sp, sp, #8
+ 122              	.LCFI11:
+ 123              		.cfi_def_cfa_offset 16
+ 124 0004 00AF     		add	r7, sp, #0
+ 125              	.LCFI12:
+ 126              		.cfi_def_cfa_register 7
+ 127 0006 7860     		str	r0, [r7, #4]
+  81:STM32F10x_Speex_Lib/libspeex/os_support.h ****    free(ptr);
+ 128              		.loc 1 81 0
+ 129 0008 7868     		ldr	r0, [r7, #4]
+ 130 000a FFF7FEFF 		bl	free
+  82:STM32F10x_Speex_Lib/libspeex/os_support.h **** }
+ 131              		.loc 1 82 0
+ 132 000e 00BF     		nop
+ 133 0010 0837     		adds	r7, r7, #8
+ 134              	.LCFI13:
+ 135              		.cfi_def_cfa_offset 8
+ 136 0012 BD46     		mov	sp, r7
+ 137              	.LCFI14:
+ 138              		.cfi_def_cfa_register 13
+ 139              		@ sp needed
+ 140 0014 80BD     		pop	{r7, pc}
+ 141              		.cfi_endproc
+ 142              	.LFE4:
+ 144 0016 00BF     		.section	.text.speex_buffer_init,"ax",%progbits
+ 145              		.align	2
+ 146              		.global	speex_buffer_init
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	speex_buffer_init:
+ 151              	.LFB9:
+ 152              		.file 2 "STM32F10x_Speex_Lib/libspeex/buffer.c"
+   1:STM32F10x_Speex_Lib/libspeex/buffer.c **** /* Copyright (C) 2007 Jean-Marc Valin
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 5
+
+
+   2:STM32F10x_Speex_Lib/libspeex/buffer.c ****       
+   3:STM32F10x_Speex_Lib/libspeex/buffer.c ****    File: buffer.c
+   4:STM32F10x_Speex_Lib/libspeex/buffer.c ****    This is a very simple ring buffer implementation. It is not thread-safe
+   5:STM32F10x_Speex_Lib/libspeex/buffer.c ****    so you need to do your own locking.
+   6:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+   7:STM32F10x_Speex_Lib/libspeex/buffer.c ****    Redistribution and use in source and binary forms, with or without
+   8:STM32F10x_Speex_Lib/libspeex/buffer.c ****    modification, are permitted provided that the following conditions are
+   9:STM32F10x_Speex_Lib/libspeex/buffer.c ****    met:
+  10:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  11:STM32F10x_Speex_Lib/libspeex/buffer.c ****    1. Redistributions of source code must retain the above copyright notice,
+  12:STM32F10x_Speex_Lib/libspeex/buffer.c ****    this list of conditions and the following disclaimer.
+  13:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  14:STM32F10x_Speex_Lib/libspeex/buffer.c ****    2. Redistributions in binary form must reproduce the above copyright
+  15:STM32F10x_Speex_Lib/libspeex/buffer.c ****    notice, this list of conditions and the following disclaimer in the
+  16:STM32F10x_Speex_Lib/libspeex/buffer.c ****    documentation and/or other materials provided with the distribution.
+  17:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  18:STM32F10x_Speex_Lib/libspeex/buffer.c ****    3. The name of the author may not be used to endorse or promote products
+  19:STM32F10x_Speex_Lib/libspeex/buffer.c ****    derived from this software without specific prior written permission.
+  20:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  21:STM32F10x_Speex_Lib/libspeex/buffer.c ****    THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+  22:STM32F10x_Speex_Lib/libspeex/buffer.c ****    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+  23:STM32F10x_Speex_Lib/libspeex/buffer.c ****    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  24:STM32F10x_Speex_Lib/libspeex/buffer.c ****    DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
+  25:STM32F10x_Speex_Lib/libspeex/buffer.c ****    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  26:STM32F10x_Speex_Lib/libspeex/buffer.c ****    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  27:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+  28:STM32F10x_Speex_Lib/libspeex/buffer.c ****    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  29:STM32F10x_Speex_Lib/libspeex/buffer.c ****    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+  30:STM32F10x_Speex_Lib/libspeex/buffer.c ****    ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:STM32F10x_Speex_Lib/libspeex/buffer.c ****    POSSIBILITY OF SUCH DAMAGE.
+  32:STM32F10x_Speex_Lib/libspeex/buffer.c **** */
+  33:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  34:STM32F10x_Speex_Lib/libspeex/buffer.c **** // #ifdef HAVE_CONFIG_H
+  35:STM32F10x_Speex_Lib/libspeex/buffer.c **** #include "config.h"
+  36:STM32F10x_Speex_Lib/libspeex/buffer.c **** // #endif
+  37:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  38:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  39:STM32F10x_Speex_Lib/libspeex/buffer.c **** #include "os_support.h"
+  40:STM32F10x_Speex_Lib/libspeex/buffer.c **** #include "arch.h"
+  41:STM32F10x_Speex_Lib/libspeex/buffer.c **** #include <speex/speex_buffer.h>
+  42:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  43:STM32F10x_Speex_Lib/libspeex/buffer.c **** struct SpeexBuffer_ {
+  44:STM32F10x_Speex_Lib/libspeex/buffer.c ****    char *data;
+  45:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int   size;
+  46:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int   read_ptr;
+  47:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int   write_ptr;
+  48:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int   available;
+  49:STM32F10x_Speex_Lib/libspeex/buffer.c **** };
+  50:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  51:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT SpeexBuffer *speex_buffer_init(int size)
+  52:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 153              		.loc 2 52 0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 16
+ 156              		@ frame_needed = 1, uses_anonymous_args = 0
+ 157 0000 80B5     		push	{r7, lr}
+ 158              	.LCFI15:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 6
+
+
+ 159              		.cfi_def_cfa_offset 8
+ 160              		.cfi_offset 7, -8
+ 161              		.cfi_offset 14, -4
+ 162 0002 84B0     		sub	sp, sp, #16
+ 163              	.LCFI16:
+ 164              		.cfi_def_cfa_offset 24
+ 165 0004 00AF     		add	r7, sp, #0
+ 166              	.LCFI17:
+ 167              		.cfi_def_cfa_register 7
+ 168 0006 7860     		str	r0, [r7, #4]
+  53:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SpeexBuffer *st = speex_alloc(sizeof(SpeexBuffer));
+ 169              		.loc 2 53 0
+ 170 0008 1420     		movs	r0, #20
+ 171 000a FFF7FEFF 		bl	speex_alloc
+ 172 000e F860     		str	r0, [r7, #12]
+  54:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->data = speex_alloc(size);
+ 173              		.loc 2 54 0
+ 174 0010 7868     		ldr	r0, [r7, #4]
+ 175 0012 FFF7FEFF 		bl	speex_alloc
+ 176 0016 0246     		mov	r2, r0
+ 177 0018 FB68     		ldr	r3, [r7, #12]
+ 178 001a 1A60     		str	r2, [r3]
+  55:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->size = size;
+ 179              		.loc 2 55 0
+ 180 001c FB68     		ldr	r3, [r7, #12]
+ 181 001e 7A68     		ldr	r2, [r7, #4]
+ 182 0020 5A60     		str	r2, [r3, #4]
+  56:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->read_ptr = 0;
+ 183              		.loc 2 56 0
+ 184 0022 FB68     		ldr	r3, [r7, #12]
+ 185 0024 0022     		movs	r2, #0
+ 186 0026 9A60     		str	r2, [r3, #8]
+  57:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->write_ptr = 0;
+ 187              		.loc 2 57 0
+ 188 0028 FB68     		ldr	r3, [r7, #12]
+ 189 002a 0022     		movs	r2, #0
+ 190 002c DA60     		str	r2, [r3, #12]
+  58:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->available = 0;
+ 191              		.loc 2 58 0
+ 192 002e FB68     		ldr	r3, [r7, #12]
+ 193 0030 0022     		movs	r2, #0
+ 194 0032 1A61     		str	r2, [r3, #16]
+  59:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return st;
+ 195              		.loc 2 59 0
+ 196 0034 FB68     		ldr	r3, [r7, #12]
+  60:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 197              		.loc 2 60 0
+ 198 0036 1846     		mov	r0, r3
+ 199 0038 1037     		adds	r7, r7, #16
+ 200              	.LCFI18:
+ 201              		.cfi_def_cfa_offset 8
+ 202 003a BD46     		mov	sp, r7
+ 203              	.LCFI19:
+ 204              		.cfi_def_cfa_register 13
+ 205              		@ sp needed
+ 206 003c 80BD     		pop	{r7, pc}
+ 207              		.cfi_endproc
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 7
+
+
+ 208              	.LFE9:
+ 210 003e 00BF     		.section	.text.speex_buffer_destroy,"ax",%progbits
+ 211              		.align	2
+ 212              		.global	speex_buffer_destroy
+ 213              		.thumb
+ 214              		.thumb_func
+ 216              	speex_buffer_destroy:
+ 217              	.LFB10:
+  61:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  62:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT void speex_buffer_destroy(SpeexBuffer *st)
+  63:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 218              		.loc 2 63 0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 8
+ 221              		@ frame_needed = 1, uses_anonymous_args = 0
+ 222 0000 80B5     		push	{r7, lr}
+ 223              	.LCFI20:
+ 224              		.cfi_def_cfa_offset 8
+ 225              		.cfi_offset 7, -8
+ 226              		.cfi_offset 14, -4
+ 227 0002 82B0     		sub	sp, sp, #8
+ 228              	.LCFI21:
+ 229              		.cfi_def_cfa_offset 16
+ 230 0004 00AF     		add	r7, sp, #0
+ 231              	.LCFI22:
+ 232              		.cfi_def_cfa_register 7
+ 233 0006 7860     		str	r0, [r7, #4]
+  64:STM32F10x_Speex_Lib/libspeex/buffer.c ****    speex_free(st->data);
+ 234              		.loc 2 64 0
+ 235 0008 7B68     		ldr	r3, [r7, #4]
+ 236 000a 1B68     		ldr	r3, [r3]
+ 237 000c 1846     		mov	r0, r3
+ 238 000e FFF7FEFF 		bl	speex_free
+  65:STM32F10x_Speex_Lib/libspeex/buffer.c ****    speex_free(st);
+ 239              		.loc 2 65 0
+ 240 0012 7868     		ldr	r0, [r7, #4]
+ 241 0014 FFF7FEFF 		bl	speex_free
+  66:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 242              		.loc 2 66 0
+ 243 0018 00BF     		nop
+ 244 001a 0837     		adds	r7, r7, #8
+ 245              	.LCFI23:
+ 246              		.cfi_def_cfa_offset 8
+ 247 001c BD46     		mov	sp, r7
+ 248              	.LCFI24:
+ 249              		.cfi_def_cfa_register 13
+ 250              		@ sp needed
+ 251 001e 80BD     		pop	{r7, pc}
+ 252              		.cfi_endproc
+ 253              	.LFE10:
+ 255              		.section	.text.speex_buffer_write,"ax",%progbits
+ 256              		.align	2
+ 257              		.global	speex_buffer_write
+ 258              		.thumb
+ 259              		.thumb_func
+ 261              	speex_buffer_write:
+ 262              	.LFB11:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 8
+
+
+  67:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+  68:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT int speex_buffer_write(SpeexBuffer *st, void *_data, int len)
+  69:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 263              		.loc 2 69 0
+ 264              		.cfi_startproc
+ 265              		@ args = 0, pretend = 0, frame = 32
+ 266              		@ frame_needed = 1, uses_anonymous_args = 0
+ 267 0000 80B5     		push	{r7, lr}
+ 268              	.LCFI25:
+ 269              		.cfi_def_cfa_offset 8
+ 270              		.cfi_offset 7, -8
+ 271              		.cfi_offset 14, -4
+ 272 0002 88B0     		sub	sp, sp, #32
+ 273              	.LCFI26:
+ 274              		.cfi_def_cfa_offset 40
+ 275 0004 00AF     		add	r7, sp, #0
+ 276              	.LCFI27:
+ 277              		.cfi_def_cfa_register 7
+ 278 0006 F860     		str	r0, [r7, #12]
+ 279 0008 B960     		str	r1, [r7, #8]
+ 280 000a 7A60     		str	r2, [r7, #4]
+  70:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int end;
+  71:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int end1;
+  72:STM32F10x_Speex_Lib/libspeex/buffer.c ****    char *data = _data;
+ 281              		.loc 2 72 0
+ 282 000c BB68     		ldr	r3, [r7, #8]
+ 283 000e BB61     		str	r3, [r7, #24]
+  73:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (len > st->size)
+ 284              		.loc 2 73 0
+ 285 0010 FB68     		ldr	r3, [r7, #12]
+ 286 0012 5A68     		ldr	r2, [r3, #4]
+ 287 0014 7B68     		ldr	r3, [r7, #4]
+ 288 0016 9A42     		cmp	r2, r3
+ 289 0018 0ADA     		bge	.L10
+  74:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+  75:STM32F10x_Speex_Lib/libspeex/buffer.c ****       data += len-st->size;
+ 290              		.loc 2 75 0
+ 291 001a FB68     		ldr	r3, [r7, #12]
+ 292 001c 5B68     		ldr	r3, [r3, #4]
+ 293 001e 7A68     		ldr	r2, [r7, #4]
+ 294 0020 D31A     		subs	r3, r2, r3
+ 295 0022 1A46     		mov	r2, r3
+ 296 0024 BB69     		ldr	r3, [r7, #24]
+ 297 0026 1344     		add	r3, r3, r2
+ 298 0028 BB61     		str	r3, [r7, #24]
+  76:STM32F10x_Speex_Lib/libspeex/buffer.c ****       len = st->size;
+ 299              		.loc 2 76 0
+ 300 002a FB68     		ldr	r3, [r7, #12]
+ 301 002c 5B68     		ldr	r3, [r3, #4]
+ 302 002e 7B60     		str	r3, [r7, #4]
+ 303              	.L10:
+  77:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+  78:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end = st->write_ptr + len;
+ 304              		.loc 2 78 0
+ 305 0030 FB68     		ldr	r3, [r7, #12]
+ 306 0032 DA68     		ldr	r2, [r3, #12]
+ 307 0034 7B68     		ldr	r3, [r7, #4]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 9
+
+
+ 308 0036 1344     		add	r3, r3, r2
+ 309 0038 7B61     		str	r3, [r7, #20]
+  79:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end1 = end;
+ 310              		.loc 2 79 0
+ 311 003a 7B69     		ldr	r3, [r7, #20]
+ 312 003c FB61     		str	r3, [r7, #28]
+  80:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end1 > st->size)
+ 313              		.loc 2 80 0
+ 314 003e FB68     		ldr	r3, [r7, #12]
+ 315 0040 5A68     		ldr	r2, [r3, #4]
+ 316 0042 FB69     		ldr	r3, [r7, #28]
+ 317 0044 9A42     		cmp	r2, r3
+ 318 0046 02DA     		bge	.L11
+  81:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end1 = st->size;
+ 319              		.loc 2 81 0
+ 320 0048 FB68     		ldr	r3, [r7, #12]
+ 321 004a 5B68     		ldr	r3, [r3, #4]
+ 322 004c FB61     		str	r3, [r7, #28]
+ 323              	.L11:
+  82:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SPEEX_COPY(st->data + st->write_ptr, data, end1 - st->write_ptr);
+ 324              		.loc 2 82 0
+ 325 004e FB68     		ldr	r3, [r7, #12]
+ 326 0050 1B68     		ldr	r3, [r3]
+ 327 0052 FA68     		ldr	r2, [r7, #12]
+ 328 0054 D268     		ldr	r2, [r2, #12]
+ 329 0056 9818     		adds	r0, r3, r2
+ 330 0058 FB68     		ldr	r3, [r7, #12]
+ 331 005a DB68     		ldr	r3, [r3, #12]
+ 332 005c FA69     		ldr	r2, [r7, #28]
+ 333 005e D31A     		subs	r3, r2, r3
+ 334 0060 1A46     		mov	r2, r3
+ 335 0062 B969     		ldr	r1, [r7, #24]
+ 336 0064 FFF7FEFF 		bl	memcpy
+  83:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end > st->size)
+ 337              		.loc 2 83 0
+ 338 0068 FB68     		ldr	r3, [r7, #12]
+ 339 006a 5A68     		ldr	r2, [r3, #4]
+ 340 006c 7B69     		ldr	r3, [r7, #20]
+ 341 006e 9A42     		cmp	r2, r3
+ 342 0070 10DA     		bge	.L12
+  84:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+  85:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end -= st->size;
+ 343              		.loc 2 85 0
+ 344 0072 FB68     		ldr	r3, [r7, #12]
+ 345 0074 5B68     		ldr	r3, [r3, #4]
+ 346 0076 7A69     		ldr	r2, [r7, #20]
+ 347 0078 D31A     		subs	r3, r2, r3
+ 348 007a 7B61     		str	r3, [r7, #20]
+  86:STM32F10x_Speex_Lib/libspeex/buffer.c ****       SPEEX_COPY(st->data, data+end1 - st->write_ptr, end);
+ 349              		.loc 2 86 0
+ 350 007c FB68     		ldr	r3, [r7, #12]
+ 351 007e 1868     		ldr	r0, [r3]
+ 352 0080 FB69     		ldr	r3, [r7, #28]
+ 353 0082 FA68     		ldr	r2, [r7, #12]
+ 354 0084 D268     		ldr	r2, [r2, #12]
+ 355 0086 9B1A     		subs	r3, r3, r2
+ 356 0088 BA69     		ldr	r2, [r7, #24]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 10
+
+
+ 357 008a 1344     		add	r3, r3, r2
+ 358 008c 7A69     		ldr	r2, [r7, #20]
+ 359 008e 1946     		mov	r1, r3
+ 360 0090 FFF7FEFF 		bl	memcpy
+ 361              	.L12:
+  87:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+  88:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->available += len;
+ 362              		.loc 2 88 0
+ 363 0094 FB68     		ldr	r3, [r7, #12]
+ 364 0096 1A69     		ldr	r2, [r3, #16]
+ 365 0098 7B68     		ldr	r3, [r7, #4]
+ 366 009a 1A44     		add	r2, r2, r3
+ 367 009c FB68     		ldr	r3, [r7, #12]
+ 368 009e 1A61     		str	r2, [r3, #16]
+  89:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (st->available > st->size)
+ 369              		.loc 2 89 0
+ 370 00a0 FB68     		ldr	r3, [r7, #12]
+ 371 00a2 1A69     		ldr	r2, [r3, #16]
+ 372 00a4 FB68     		ldr	r3, [r7, #12]
+ 373 00a6 5B68     		ldr	r3, [r3, #4]
+ 374 00a8 9A42     		cmp	r2, r3
+ 375 00aa 07DD     		ble	.L13
+  90:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+  91:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->available = st->size;
+ 376              		.loc 2 91 0
+ 377 00ac FB68     		ldr	r3, [r7, #12]
+ 378 00ae 5A68     		ldr	r2, [r3, #4]
+ 379 00b0 FB68     		ldr	r3, [r7, #12]
+ 380 00b2 1A61     		str	r2, [r3, #16]
+  92:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->read_ptr = st->write_ptr;
+ 381              		.loc 2 92 0
+ 382 00b4 FB68     		ldr	r3, [r7, #12]
+ 383 00b6 DA68     		ldr	r2, [r3, #12]
+ 384 00b8 FB68     		ldr	r3, [r7, #12]
+ 385 00ba 9A60     		str	r2, [r3, #8]
+ 386              	.L13:
+  93:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+  94:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->write_ptr += len;
+ 387              		.loc 2 94 0
+ 388 00bc FB68     		ldr	r3, [r7, #12]
+ 389 00be DA68     		ldr	r2, [r3, #12]
+ 390 00c0 7B68     		ldr	r3, [r7, #4]
+ 391 00c2 1A44     		add	r2, r2, r3
+ 392 00c4 FB68     		ldr	r3, [r7, #12]
+ 393 00c6 DA60     		str	r2, [r3, #12]
+  95:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (st->write_ptr > st->size)
+ 394              		.loc 2 95 0
+ 395 00c8 FB68     		ldr	r3, [r7, #12]
+ 396 00ca DA68     		ldr	r2, [r3, #12]
+ 397 00cc FB68     		ldr	r3, [r7, #12]
+ 398 00ce 5B68     		ldr	r3, [r3, #4]
+ 399 00d0 9A42     		cmp	r2, r3
+ 400 00d2 06DD     		ble	.L14
+  96:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->write_ptr -= st->size;
+ 401              		.loc 2 96 0
+ 402 00d4 FB68     		ldr	r3, [r7, #12]
+ 403 00d6 DA68     		ldr	r2, [r3, #12]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 11
+
+
+ 404 00d8 FB68     		ldr	r3, [r7, #12]
+ 405 00da 5B68     		ldr	r3, [r3, #4]
+ 406 00dc D21A     		subs	r2, r2, r3
+ 407 00de FB68     		ldr	r3, [r7, #12]
+ 408 00e0 DA60     		str	r2, [r3, #12]
+ 409              	.L14:
+  97:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return len;
+ 410              		.loc 2 97 0
+ 411 00e2 7B68     		ldr	r3, [r7, #4]
+  98:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 412              		.loc 2 98 0
+ 413 00e4 1846     		mov	r0, r3
+ 414 00e6 2037     		adds	r7, r7, #32
+ 415              	.LCFI28:
+ 416              		.cfi_def_cfa_offset 8
+ 417 00e8 BD46     		mov	sp, r7
+ 418              	.LCFI29:
+ 419              		.cfi_def_cfa_register 13
+ 420              		@ sp needed
+ 421 00ea 80BD     		pop	{r7, pc}
+ 422              		.cfi_endproc
+ 423              	.LFE11:
+ 425              		.section	.text.speex_buffer_writezeros,"ax",%progbits
+ 426              		.align	2
+ 427              		.global	speex_buffer_writezeros
+ 428              		.thumb
+ 429              		.thumb_func
+ 431              	speex_buffer_writezeros:
+ 432              	.LFB12:
+  99:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+ 100:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT int speex_buffer_writezeros(SpeexBuffer *st, int len)
+ 101:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 433              		.loc 2 101 0
+ 434              		.cfi_startproc
+ 435              		@ args = 0, pretend = 0, frame = 16
+ 436              		@ frame_needed = 1, uses_anonymous_args = 0
+ 437 0000 80B5     		push	{r7, lr}
+ 438              	.LCFI30:
+ 439              		.cfi_def_cfa_offset 8
+ 440              		.cfi_offset 7, -8
+ 441              		.cfi_offset 14, -4
+ 442 0002 84B0     		sub	sp, sp, #16
+ 443              	.LCFI31:
+ 444              		.cfi_def_cfa_offset 24
+ 445 0004 00AF     		add	r7, sp, #0
+ 446              	.LCFI32:
+ 447              		.cfi_def_cfa_register 7
+ 448 0006 7860     		str	r0, [r7, #4]
+ 449 0008 3960     		str	r1, [r7]
+ 102:STM32F10x_Speex_Lib/libspeex/buffer.c ****    /* This is almost the same as for speex_buffer_write() but using 
+ 103:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SPEEX_MEMSET() instead of SPEEX_COPY(). Update accordingly. */
+ 104:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int end;
+ 105:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int end1;
+ 106:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (len > st->size)
+ 450              		.loc 2 106 0
+ 451 000a 7B68     		ldr	r3, [r7, #4]
+ 452 000c 5A68     		ldr	r2, [r3, #4]
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 12
+
+
+ 453 000e 3B68     		ldr	r3, [r7]
+ 454 0010 9A42     		cmp	r2, r3
+ 455 0012 02DA     		bge	.L17
+ 107:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ 108:STM32F10x_Speex_Lib/libspeex/buffer.c ****       len = st->size;
+ 456              		.loc 2 108 0
+ 457 0014 7B68     		ldr	r3, [r7, #4]
+ 458 0016 5B68     		ldr	r3, [r3, #4]
+ 459 0018 3B60     		str	r3, [r7]
+ 460              	.L17:
+ 109:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 110:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end = st->write_ptr + len;
+ 461              		.loc 2 110 0
+ 462 001a 7B68     		ldr	r3, [r7, #4]
+ 463 001c DA68     		ldr	r2, [r3, #12]
+ 464 001e 3B68     		ldr	r3, [r7]
+ 465 0020 1344     		add	r3, r3, r2
+ 466 0022 BB60     		str	r3, [r7, #8]
+ 111:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end1 = end;
+ 467              		.loc 2 111 0
+ 468 0024 BB68     		ldr	r3, [r7, #8]
+ 469 0026 FB60     		str	r3, [r7, #12]
+ 112:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end1 > st->size)
+ 470              		.loc 2 112 0
+ 471 0028 7B68     		ldr	r3, [r7, #4]
+ 472 002a 5A68     		ldr	r2, [r3, #4]
+ 473 002c FB68     		ldr	r3, [r7, #12]
+ 474 002e 9A42     		cmp	r2, r3
+ 475 0030 02DA     		bge	.L18
+ 113:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end1 = st->size;
+ 476              		.loc 2 113 0
+ 477 0032 7B68     		ldr	r3, [r7, #4]
+ 478 0034 5B68     		ldr	r3, [r3, #4]
+ 479 0036 FB60     		str	r3, [r7, #12]
+ 480              	.L18:
+ 114:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SPEEX_MEMSET(st->data + st->write_ptr, 0, end1 - st->write_ptr);
+ 481              		.loc 2 114 0
+ 482 0038 7B68     		ldr	r3, [r7, #4]
+ 483 003a 1B68     		ldr	r3, [r3]
+ 484 003c 7A68     		ldr	r2, [r7, #4]
+ 485 003e D268     		ldr	r2, [r2, #12]
+ 486 0040 9818     		adds	r0, r3, r2
+ 487 0042 7B68     		ldr	r3, [r7, #4]
+ 488 0044 DB68     		ldr	r3, [r3, #12]
+ 489 0046 FA68     		ldr	r2, [r7, #12]
+ 490 0048 D31A     		subs	r3, r2, r3
+ 491 004a 1A46     		mov	r2, r3
+ 492 004c 0021     		movs	r1, #0
+ 493 004e FFF7FEFF 		bl	memset
+ 115:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end > st->size)
+ 494              		.loc 2 115 0
+ 495 0052 7B68     		ldr	r3, [r7, #4]
+ 496 0054 5A68     		ldr	r2, [r3, #4]
+ 497 0056 BB68     		ldr	r3, [r7, #8]
+ 498 0058 9A42     		cmp	r2, r3
+ 499 005a 0BDA     		bge	.L19
+ 116:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 13
+
+
+ 117:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end -= st->size;
+ 500              		.loc 2 117 0
+ 501 005c 7B68     		ldr	r3, [r7, #4]
+ 502 005e 5B68     		ldr	r3, [r3, #4]
+ 503 0060 BA68     		ldr	r2, [r7, #8]
+ 504 0062 D31A     		subs	r3, r2, r3
+ 505 0064 BB60     		str	r3, [r7, #8]
+ 118:STM32F10x_Speex_Lib/libspeex/buffer.c ****       SPEEX_MEMSET(st->data, 0, end);
+ 506              		.loc 2 118 0
+ 507 0066 7B68     		ldr	r3, [r7, #4]
+ 508 0068 1B68     		ldr	r3, [r3]
+ 509 006a BA68     		ldr	r2, [r7, #8]
+ 510 006c 0021     		movs	r1, #0
+ 511 006e 1846     		mov	r0, r3
+ 512 0070 FFF7FEFF 		bl	memset
+ 513              	.L19:
+ 119:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 120:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->available += len;
+ 514              		.loc 2 120 0
+ 515 0074 7B68     		ldr	r3, [r7, #4]
+ 516 0076 1A69     		ldr	r2, [r3, #16]
+ 517 0078 3B68     		ldr	r3, [r7]
+ 518 007a 1A44     		add	r2, r2, r3
+ 519 007c 7B68     		ldr	r3, [r7, #4]
+ 520 007e 1A61     		str	r2, [r3, #16]
+ 121:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (st->available > st->size)
+ 521              		.loc 2 121 0
+ 522 0080 7B68     		ldr	r3, [r7, #4]
+ 523 0082 1A69     		ldr	r2, [r3, #16]
+ 524 0084 7B68     		ldr	r3, [r7, #4]
+ 525 0086 5B68     		ldr	r3, [r3, #4]
+ 526 0088 9A42     		cmp	r2, r3
+ 527 008a 07DD     		ble	.L20
+ 122:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ 123:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->available = st->size;
+ 528              		.loc 2 123 0
+ 529 008c 7B68     		ldr	r3, [r7, #4]
+ 530 008e 5A68     		ldr	r2, [r3, #4]
+ 531 0090 7B68     		ldr	r3, [r7, #4]
+ 532 0092 1A61     		str	r2, [r3, #16]
+ 124:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->read_ptr = st->write_ptr;
+ 533              		.loc 2 124 0
+ 534 0094 7B68     		ldr	r3, [r7, #4]
+ 535 0096 DA68     		ldr	r2, [r3, #12]
+ 536 0098 7B68     		ldr	r3, [r7, #4]
+ 537 009a 9A60     		str	r2, [r3, #8]
+ 538              	.L20:
+ 125:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 126:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->write_ptr += len;
+ 539              		.loc 2 126 0
+ 540 009c 7B68     		ldr	r3, [r7, #4]
+ 541 009e DA68     		ldr	r2, [r3, #12]
+ 542 00a0 3B68     		ldr	r3, [r7]
+ 543 00a2 1A44     		add	r2, r2, r3
+ 544 00a4 7B68     		ldr	r3, [r7, #4]
+ 545 00a6 DA60     		str	r2, [r3, #12]
+ 127:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (st->write_ptr > st->size)
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 14
+
+
+ 546              		.loc 2 127 0
+ 547 00a8 7B68     		ldr	r3, [r7, #4]
+ 548 00aa DA68     		ldr	r2, [r3, #12]
+ 549 00ac 7B68     		ldr	r3, [r7, #4]
+ 550 00ae 5B68     		ldr	r3, [r3, #4]
+ 551 00b0 9A42     		cmp	r2, r3
+ 552 00b2 06DD     		ble	.L21
+ 128:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->write_ptr -= st->size;
+ 553              		.loc 2 128 0
+ 554 00b4 7B68     		ldr	r3, [r7, #4]
+ 555 00b6 DA68     		ldr	r2, [r3, #12]
+ 556 00b8 7B68     		ldr	r3, [r7, #4]
+ 557 00ba 5B68     		ldr	r3, [r3, #4]
+ 558 00bc D21A     		subs	r2, r2, r3
+ 559 00be 7B68     		ldr	r3, [r7, #4]
+ 560 00c0 DA60     		str	r2, [r3, #12]
+ 561              	.L21:
+ 129:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return len;
+ 562              		.loc 2 129 0
+ 563 00c2 3B68     		ldr	r3, [r7]
+ 130:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 564              		.loc 2 130 0
+ 565 00c4 1846     		mov	r0, r3
+ 566 00c6 1037     		adds	r7, r7, #16
+ 567              	.LCFI33:
+ 568              		.cfi_def_cfa_offset 8
+ 569 00c8 BD46     		mov	sp, r7
+ 570              	.LCFI34:
+ 571              		.cfi_def_cfa_register 13
+ 572              		@ sp needed
+ 573 00ca 80BD     		pop	{r7, pc}
+ 574              		.cfi_endproc
+ 575              	.LFE12:
+ 577              		.section	.text.speex_buffer_read,"ax",%progbits
+ 578              		.align	2
+ 579              		.global	speex_buffer_read
+ 580              		.thumb
+ 581              		.thumb_func
+ 583              	speex_buffer_read:
+ 584              	.LFB13:
+ 131:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+ 132:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT int speex_buffer_read(SpeexBuffer *st, void *_data, int len)
+ 133:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 585              		.loc 2 133 0
+ 586              		.cfi_startproc
+ 587              		@ args = 0, pretend = 0, frame = 32
+ 588              		@ frame_needed = 1, uses_anonymous_args = 0
+ 589 0000 80B5     		push	{r7, lr}
+ 590              	.LCFI35:
+ 591              		.cfi_def_cfa_offset 8
+ 592              		.cfi_offset 7, -8
+ 593              		.cfi_offset 14, -4
+ 594 0002 88B0     		sub	sp, sp, #32
+ 595              	.LCFI36:
+ 596              		.cfi_def_cfa_offset 40
+ 597 0004 00AF     		add	r7, sp, #0
+ 598              	.LCFI37:
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 15
+
+
+ 599              		.cfi_def_cfa_register 7
+ 600 0006 F860     		str	r0, [r7, #12]
+ 601 0008 B960     		str	r1, [r7, #8]
+ 602 000a 7A60     		str	r2, [r7, #4]
+ 134:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int end, end1;
+ 135:STM32F10x_Speex_Lib/libspeex/buffer.c ****    char *data = _data;
+ 603              		.loc 2 135 0
+ 604 000c BB68     		ldr	r3, [r7, #8]
+ 605 000e BB61     		str	r3, [r7, #24]
+ 136:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (len > st->available)
+ 606              		.loc 2 136 0
+ 607 0010 FB68     		ldr	r3, [r7, #12]
+ 608 0012 1A69     		ldr	r2, [r3, #16]
+ 609 0014 7B68     		ldr	r3, [r7, #4]
+ 610 0016 9A42     		cmp	r2, r3
+ 611 0018 10DA     		bge	.L24
+ 137:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ 138:STM32F10x_Speex_Lib/libspeex/buffer.c ****       SPEEX_MEMSET(data+st->available, 0, st->size-st->available);
+ 612              		.loc 2 138 0
+ 613 001a FB68     		ldr	r3, [r7, #12]
+ 614 001c 1B69     		ldr	r3, [r3, #16]
+ 615 001e 1A46     		mov	r2, r3
+ 616 0020 BB69     		ldr	r3, [r7, #24]
+ 617 0022 9818     		adds	r0, r3, r2
+ 618 0024 FB68     		ldr	r3, [r7, #12]
+ 619 0026 5A68     		ldr	r2, [r3, #4]
+ 620 0028 FB68     		ldr	r3, [r7, #12]
+ 621 002a 1B69     		ldr	r3, [r3, #16]
+ 622 002c D31A     		subs	r3, r2, r3
+ 623 002e 1A46     		mov	r2, r3
+ 624 0030 0021     		movs	r1, #0
+ 625 0032 FFF7FEFF 		bl	memset
+ 139:STM32F10x_Speex_Lib/libspeex/buffer.c ****       len = st->available;
+ 626              		.loc 2 139 0
+ 627 0036 FB68     		ldr	r3, [r7, #12]
+ 628 0038 1B69     		ldr	r3, [r3, #16]
+ 629 003a 7B60     		str	r3, [r7, #4]
+ 630              	.L24:
+ 140:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 141:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end = st->read_ptr + len;
+ 631              		.loc 2 141 0
+ 632 003c FB68     		ldr	r3, [r7, #12]
+ 633 003e 9A68     		ldr	r2, [r3, #8]
+ 634 0040 7B68     		ldr	r3, [r7, #4]
+ 635 0042 1344     		add	r3, r3, r2
+ 636 0044 7B61     		str	r3, [r7, #20]
+ 142:STM32F10x_Speex_Lib/libspeex/buffer.c ****    end1 = end;
+ 637              		.loc 2 142 0
+ 638 0046 7B69     		ldr	r3, [r7, #20]
+ 639 0048 FB61     		str	r3, [r7, #28]
+ 143:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end1 > st->size)
+ 640              		.loc 2 143 0
+ 641 004a FB68     		ldr	r3, [r7, #12]
+ 642 004c 5A68     		ldr	r2, [r3, #4]
+ 643 004e FB69     		ldr	r3, [r7, #28]
+ 644 0050 9A42     		cmp	r2, r3
+ 645 0052 02DA     		bge	.L25
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 16
+
+
+ 144:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end1 = st->size;
+ 646              		.loc 2 144 0
+ 647 0054 FB68     		ldr	r3, [r7, #12]
+ 648 0056 5B68     		ldr	r3, [r3, #4]
+ 649 0058 FB61     		str	r3, [r7, #28]
+ 650              	.L25:
+ 145:STM32F10x_Speex_Lib/libspeex/buffer.c ****    SPEEX_COPY(data, st->data + st->read_ptr, end1 - st->read_ptr);
+ 651              		.loc 2 145 0
+ 652 005a FB68     		ldr	r3, [r7, #12]
+ 653 005c 1B68     		ldr	r3, [r3]
+ 654 005e FA68     		ldr	r2, [r7, #12]
+ 655 0060 9268     		ldr	r2, [r2, #8]
+ 656 0062 9918     		adds	r1, r3, r2
+ 657 0064 FB68     		ldr	r3, [r7, #12]
+ 658 0066 9B68     		ldr	r3, [r3, #8]
+ 659 0068 FA69     		ldr	r2, [r7, #28]
+ 660 006a D31A     		subs	r3, r2, r3
+ 661 006c 1A46     		mov	r2, r3
+ 662 006e B869     		ldr	r0, [r7, #24]
+ 663 0070 FFF7FEFF 		bl	memcpy
+ 146:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+ 147:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (end > st->size)
+ 664              		.loc 2 147 0
+ 665 0074 FB68     		ldr	r3, [r7, #12]
+ 666 0076 5A68     		ldr	r2, [r3, #4]
+ 667 0078 7B69     		ldr	r3, [r7, #20]
+ 668 007a 9A42     		cmp	r2, r3
+ 669 007c 10DA     		bge	.L26
+ 148:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ 149:STM32F10x_Speex_Lib/libspeex/buffer.c ****       end -= st->size;
+ 670              		.loc 2 149 0
+ 671 007e FB68     		ldr	r3, [r7, #12]
+ 672 0080 5B68     		ldr	r3, [r3, #4]
+ 673 0082 7A69     		ldr	r2, [r7, #20]
+ 674 0084 D31A     		subs	r3, r2, r3
+ 675 0086 7B61     		str	r3, [r7, #20]
+ 150:STM32F10x_Speex_Lib/libspeex/buffer.c ****       SPEEX_COPY(data+end1 - st->read_ptr, st->data, end);
+ 676              		.loc 2 150 0
+ 677 0088 FB69     		ldr	r3, [r7, #28]
+ 678 008a FA68     		ldr	r2, [r7, #12]
+ 679 008c 9268     		ldr	r2, [r2, #8]
+ 680 008e 9B1A     		subs	r3, r3, r2
+ 681 0090 BA69     		ldr	r2, [r7, #24]
+ 682 0092 D018     		adds	r0, r2, r3
+ 683 0094 FB68     		ldr	r3, [r7, #12]
+ 684 0096 1B68     		ldr	r3, [r3]
+ 685 0098 7A69     		ldr	r2, [r7, #20]
+ 686 009a 1946     		mov	r1, r3
+ 687 009c FFF7FEFF 		bl	memcpy
+ 688              	.L26:
+ 151:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 152:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->available -= len;
+ 689              		.loc 2 152 0
+ 690 00a0 FB68     		ldr	r3, [r7, #12]
+ 691 00a2 1A69     		ldr	r2, [r3, #16]
+ 692 00a4 7B68     		ldr	r3, [r7, #4]
+ 693 00a6 D21A     		subs	r2, r2, r3
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 17
+
+
+ 694 00a8 FB68     		ldr	r3, [r7, #12]
+ 695 00aa 1A61     		str	r2, [r3, #16]
+ 153:STM32F10x_Speex_Lib/libspeex/buffer.c ****    st->read_ptr += len;
+ 696              		.loc 2 153 0
+ 697 00ac FB68     		ldr	r3, [r7, #12]
+ 698 00ae 9A68     		ldr	r2, [r3, #8]
+ 699 00b0 7B68     		ldr	r3, [r7, #4]
+ 700 00b2 1A44     		add	r2, r2, r3
+ 701 00b4 FB68     		ldr	r3, [r7, #12]
+ 702 00b6 9A60     		str	r2, [r3, #8]
+ 154:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (st->read_ptr > st->size)
+ 703              		.loc 2 154 0
+ 704 00b8 FB68     		ldr	r3, [r7, #12]
+ 705 00ba 9A68     		ldr	r2, [r3, #8]
+ 706 00bc FB68     		ldr	r3, [r7, #12]
+ 707 00be 5B68     		ldr	r3, [r3, #4]
+ 708 00c0 9A42     		cmp	r2, r3
+ 709 00c2 06DD     		ble	.L27
+ 155:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->read_ptr -= st->size;
+ 710              		.loc 2 155 0
+ 711 00c4 FB68     		ldr	r3, [r7, #12]
+ 712 00c6 9A68     		ldr	r2, [r3, #8]
+ 713 00c8 FB68     		ldr	r3, [r7, #12]
+ 714 00ca 5B68     		ldr	r3, [r3, #4]
+ 715 00cc D21A     		subs	r2, r2, r3
+ 716 00ce FB68     		ldr	r3, [r7, #12]
+ 717 00d0 9A60     		str	r2, [r3, #8]
+ 718              	.L27:
+ 156:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return len;
+ 719              		.loc 2 156 0
+ 720 00d2 7B68     		ldr	r3, [r7, #4]
+ 157:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 721              		.loc 2 157 0
+ 722 00d4 1846     		mov	r0, r3
+ 723 00d6 2037     		adds	r7, r7, #32
+ 724              	.LCFI38:
+ 725              		.cfi_def_cfa_offset 8
+ 726 00d8 BD46     		mov	sp, r7
+ 727              	.LCFI39:
+ 728              		.cfi_def_cfa_register 13
+ 729              		@ sp needed
+ 730 00da 80BD     		pop	{r7, pc}
+ 731              		.cfi_endproc
+ 732              	.LFE13:
+ 734              		.section	.text.speex_buffer_get_available,"ax",%progbits
+ 735              		.align	2
+ 736              		.global	speex_buffer_get_available
+ 737              		.thumb
+ 738              		.thumb_func
+ 740              	speex_buffer_get_available:
+ 741              	.LFB14:
+ 158:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+ 159:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT int speex_buffer_get_available(SpeexBuffer *st)
+ 160:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 742              		.loc 2 160 0
+ 743              		.cfi_startproc
+ 744              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 18
+
+
+ 745              		@ frame_needed = 1, uses_anonymous_args = 0
+ 746              		@ link register save eliminated.
+ 747 0000 80B4     		push	{r7}
+ 748              	.LCFI40:
+ 749              		.cfi_def_cfa_offset 4
+ 750              		.cfi_offset 7, -4
+ 751 0002 83B0     		sub	sp, sp, #12
+ 752              	.LCFI41:
+ 753              		.cfi_def_cfa_offset 16
+ 754 0004 00AF     		add	r7, sp, #0
+ 755              	.LCFI42:
+ 756              		.cfi_def_cfa_register 7
+ 757 0006 7860     		str	r0, [r7, #4]
+ 161:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return st->available;
+ 758              		.loc 2 161 0
+ 759 0008 7B68     		ldr	r3, [r7, #4]
+ 760 000a 1B69     		ldr	r3, [r3, #16]
+ 162:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 761              		.loc 2 162 0
+ 762 000c 1846     		mov	r0, r3
+ 763 000e 0C37     		adds	r7, r7, #12
+ 764              	.LCFI43:
+ 765              		.cfi_def_cfa_offset 4
+ 766 0010 BD46     		mov	sp, r7
+ 767              	.LCFI44:
+ 768              		.cfi_def_cfa_register 13
+ 769              		@ sp needed
+ 770 0012 80BC     		pop	{r7}
+ 771              	.LCFI45:
+ 772              		.cfi_restore 7
+ 773              		.cfi_def_cfa_offset 0
+ 774 0014 7047     		bx	lr
+ 775              		.cfi_endproc
+ 776              	.LFE14:
+ 778 0016 00BF     		.section	.text.speex_buffer_resize,"ax",%progbits
+ 779              		.align	2
+ 780              		.global	speex_buffer_resize
+ 781              		.thumb
+ 782              		.thumb_func
+ 784              	speex_buffer_resize:
+ 785              	.LFB15:
+ 163:STM32F10x_Speex_Lib/libspeex/buffer.c **** 
+ 164:STM32F10x_Speex_Lib/libspeex/buffer.c **** EXPORT int speex_buffer_resize(SpeexBuffer *st, int len)
+ 165:STM32F10x_Speex_Lib/libspeex/buffer.c **** {
+ 786              		.loc 2 165 0
+ 787              		.cfi_startproc
+ 788              		@ args = 0, pretend = 0, frame = 16
+ 789              		@ frame_needed = 1, uses_anonymous_args = 0
+ 790 0000 80B5     		push	{r7, lr}
+ 791              	.LCFI46:
+ 792              		.cfi_def_cfa_offset 8
+ 793              		.cfi_offset 7, -8
+ 794              		.cfi_offset 14, -4
+ 795 0002 84B0     		sub	sp, sp, #16
+ 796              	.LCFI47:
+ 797              		.cfi_def_cfa_offset 24
+ 798 0004 00AF     		add	r7, sp, #0
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 19
+
+
+ 799              	.LCFI48:
+ 800              		.cfi_def_cfa_register 7
+ 801 0006 7860     		str	r0, [r7, #4]
+ 802 0008 3960     		str	r1, [r7]
+ 166:STM32F10x_Speex_Lib/libspeex/buffer.c ****    int old_len = st->size;
+ 803              		.loc 2 166 0
+ 804 000a 7B68     		ldr	r3, [r7, #4]
+ 805 000c 5B68     		ldr	r3, [r3, #4]
+ 806 000e FB60     		str	r3, [r7, #12]
+ 167:STM32F10x_Speex_Lib/libspeex/buffer.c ****    if (len > old_len)
+ 807              		.loc 2 167 0
+ 808 0010 3A68     		ldr	r2, [r7]
+ 809 0012 FB68     		ldr	r3, [r7, #12]
+ 810 0014 9A42     		cmp	r2, r3
+ 811 0016 09DD     		ble	.L32
+ 168:STM32F10x_Speex_Lib/libspeex/buffer.c ****    {
+ 169:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->data = speex_realloc(st->data, len);
+ 812              		.loc 2 169 0
+ 813 0018 7B68     		ldr	r3, [r7, #4]
+ 814 001a 1B68     		ldr	r3, [r3]
+ 815 001c 3968     		ldr	r1, [r7]
+ 816 001e 1846     		mov	r0, r3
+ 817 0020 FFF7FEFF 		bl	speex_realloc
+ 818 0024 0246     		mov	r2, r0
+ 819 0026 7B68     		ldr	r3, [r7, #4]
+ 820 0028 1A60     		str	r2, [r3]
+ 821 002a 08E0     		b	.L33
+ 822              	.L32:
+ 170:STM32F10x_Speex_Lib/libspeex/buffer.c ****       /* FIXME: move data/pointers properly for growing the buffer */
+ 171:STM32F10x_Speex_Lib/libspeex/buffer.c ****    } else {
+ 172:STM32F10x_Speex_Lib/libspeex/buffer.c ****       /* FIXME: move data/pointers properly for shrinking the buffer */
+ 173:STM32F10x_Speex_Lib/libspeex/buffer.c ****       st->data = speex_realloc(st->data, len);
+ 823              		.loc 2 173 0
+ 824 002c 7B68     		ldr	r3, [r7, #4]
+ 825 002e 1B68     		ldr	r3, [r3]
+ 826 0030 3968     		ldr	r1, [r7]
+ 827 0032 1846     		mov	r0, r3
+ 828 0034 FFF7FEFF 		bl	speex_realloc
+ 829 0038 0246     		mov	r2, r0
+ 830 003a 7B68     		ldr	r3, [r7, #4]
+ 831 003c 1A60     		str	r2, [r3]
+ 832              	.L33:
+ 174:STM32F10x_Speex_Lib/libspeex/buffer.c ****    }
+ 175:STM32F10x_Speex_Lib/libspeex/buffer.c ****    return len;
+ 833              		.loc 2 175 0
+ 834 003e 3B68     		ldr	r3, [r7]
+ 176:STM32F10x_Speex_Lib/libspeex/buffer.c **** }
+ 835              		.loc 2 176 0
+ 836 0040 1846     		mov	r0, r3
+ 837 0042 1037     		adds	r7, r7, #16
+ 838              	.LCFI49:
+ 839              		.cfi_def_cfa_offset 8
+ 840 0044 BD46     		mov	sp, r7
+ 841              	.LCFI50:
+ 842              		.cfi_def_cfa_register 13
+ 843              		@ sp needed
+ 844 0046 80BD     		pop	{r7, pc}
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 20
+
+
+ 845              		.cfi_endproc
+ 846              	.LFE15:
+ 848              		.text
+ 849              	.Letext0:
+ 850              		.file 3 "Inc/speex/speex_buffer.h"
+ARM GAS  /var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 buffer.c
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:20     .text.speex_alloc:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:24     .text.speex_alloc:0000000000000000 speex_alloc
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:63     .text.speex_realloc:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:67     .text.speex_realloc:0000000000000000 speex_realloc
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:106    .text.speex_free:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:110    .text.speex_free:0000000000000000 speex_free
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:145    .text.speex_buffer_init:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:150    .text.speex_buffer_init:0000000000000000 speex_buffer_init
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:211    .text.speex_buffer_destroy:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:216    .text.speex_buffer_destroy:0000000000000000 speex_buffer_destroy
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:256    .text.speex_buffer_write:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:261    .text.speex_buffer_write:0000000000000000 speex_buffer_write
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:426    .text.speex_buffer_writezeros:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:431    .text.speex_buffer_writezeros:0000000000000000 speex_buffer_writezeros
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:578    .text.speex_buffer_read:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:583    .text.speex_buffer_read:0000000000000000 speex_buffer_read
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:735    .text.speex_buffer_get_available:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:740    .text.speex_buffer_get_available:0000000000000000 speex_buffer_get_available
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:779    .text.speex_buffer_resize:0000000000000000 $t
+/var/folders/kh/x4vltyy52lbg7p4pcyglc5080000gp/T//cciHOU6g.s:784    .text.speex_buffer_resize:0000000000000000 speex_buffer_resize
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+calloc
+realloc
+free
+memcpy
+memset
